@@ -16,7 +16,7 @@ void load_obj(const char* filename, Vertex** vertices, int* number_of_vertices) 
     }
     char line[22000];
     int count = 0;
-    //pontok megszámolása
+
     while(fgets(line, sizeof(line), file)){
         if(line[0] == 'v' && line[1] == ' ') count++;
     }
