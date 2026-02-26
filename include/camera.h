@@ -16,6 +16,7 @@ typedef struct{
 
 void initialize_camera(Camera* camera);
 void update_camera(Camera* camera);
-void handle_camera_input(SDL_Event* event, Camera* camera, bool* isRunning);
+void handle_camera_input(SDL_Event* event, Camera* camera);
+void handle_wasd_input(SDL_Event* event, Camera* camera, bool* isRunning, float deltaTime);
 
 #endif //SNAILSPACE_CAMERA_H
