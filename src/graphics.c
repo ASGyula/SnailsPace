@@ -29,11 +29,11 @@ void setup_projection(const int width, const int height){
 }
 
 void render_lidar(const Vertex* vertices, const int number_of_vertices, const float x, const float y, const float z){
-    glLoadIdentity();
+    // update_camera() kezeli a Camerában
+    // glLoadIdentity();
+    // glTranslatef(-x, -y, -z);
 
-    glTranslatef(-x, -y, -z);
     glPointSize(4.0f);
-
     glBegin(GL_POINTS);
     for(int i = 0; i<number_of_vertices;i++){
         const float dx = vertices[i].x - x;
@@ -42,6 +42,13 @@ void render_lidar(const Vertex* vertices, const int number_of_vertices, const fl
 
         const float distance = sqrtf(dx*dx + dy*dy + dz*dz);
         if(distance < LIDAR_DRAW_DISTANCE){
+            if(distance > 5){
+                const int randomHidePoint = rand()%4;
+                if(randomHidePoint <=1){
+                    continue;
+                }
+            }
+
             float intensity = 1.0f - (distance/LIDAR_DRAW_DISTANCE);
             intensity = fmaxf(0.0f, fminf(1.0f, intensity));
             float r = 1.0f - fabsf(intensity - 0.5f) * 2.0f;
@@ -59,5 +66,4 @@ void render_lidar(const Vertex* vertices, const int number_of_vertices, const fl
     }
 
     glEnd();
-
 }

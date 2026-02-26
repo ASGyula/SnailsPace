@@ -5,6 +5,7 @@
 #include <SDL_opengl.h>
 #include <stdio.h>
 
+#include "camera.h"
 #include "graphics.h"
 
 #define SCREEN_WIDTH 1000
@@ -12,7 +13,7 @@
 
 int main(int argc, char *argv[]){
     bool isRunning = true;
-    float camX = 0.0f, camY = 1.6f, camZ = 3.00f;
+    Camera camera;
 
     Vertex* palya = NULL;
     int palya_pontok_szama = 0;
@@ -23,15 +24,17 @@ int main(int argc, char *argv[]){
     load_obj("assets/elso_folyoso.obj", &palya, &palya_pontok_szama);
 
     SDL_Event event;
+
+    initialize_camera(&camera);
+
     while(isRunning){
         while(SDL_PollEvent(&event)){
-            if(event.type == SDL_QUIT){
-                isRunning = false;
-            }
+            handle_camera_input(&event, &camera, &isRunning);
         }
 
         setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);
-        render_lidar(palya, palya_pontok_szama, camX, camY, camZ);
+        update_camera(&camera);
+        render_lidar(palya, palya_pontok_szama, camera.x, camera.y, camera.z);
 
         SDL_GL_SwapWindow(window);
     }

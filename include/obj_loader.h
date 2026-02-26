@@ -4,7 +4,6 @@
 
 #ifndef SNAILSPACE_OBJ_LOADER_H
 #define SNAILSPACE_OBJ_LOADER_H
-#include <stddef.h>
 
 typedef struct{
     float x, y, z;
