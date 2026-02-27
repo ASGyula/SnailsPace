@@ -16,14 +16,20 @@ int main(int argc, char *argv[]){
     Camera camera;
 
     Vertex* palya = NULL;
-    int palya_pontok_szama = 0;
 
+    Model Helsie;
     SDL_Window *window = SDL_CreateWindow("Snail's Pace", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN);
     SDL_GLContext *glContext = SDL_GL_CreateContext(window);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
-    load_obj("assets/elso_folyoso2.obj", &palya, &palya_pontok_szama);
+    load_obj("assets/elso_folyoso2.obj", &palya);
+    // load_obj("assets/External/MiSide/level_4_Miside.obj", &palya);
+    load_textured_obj("assets/External/Helsie/HelsieMidnightbyRedEyes.obj", &Helsie);
 
-    prepare_lidar_data(palya, palya_pontok_szama);
+    GLuint textureID;
+    textureID = load_texture("assets/External/Helsie/T_MysticFang_Body_D.png");
+
+    prepare_lidar_data(palya);
 
     SDL_Event event;
 
@@ -47,8 +53,16 @@ int main(int argc, char *argv[]){
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         update_camera(&camera);
-        render_lidar(palya, palya_pontok_szama, camera.x, camera.y, camera.z);
-        // render_lidar_fast(palya_pontok_szama);
+        render_lidar(palya, palya->number_of_vertex, &camera);
+        // render_lidar_fast(palya->number_of_vertex);
+
+        // render_lidar(Helsie, Helsie->number_of_vertex, camera.x, camera.y, camera.z);
+
+        // render_lidar_fast(Helsie->number_of_vertex);
+
+        glPushMatrix();
+        render_model(&Helsie, textureID);
+        glPopMatrix();
 
         SDL_GL_SwapWindow(window);
     }
