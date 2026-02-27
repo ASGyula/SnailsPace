@@ -4,6 +4,7 @@
 
 #include "graphics.h"
 #include <SDL_opengl.h>
+#include <SDL2/SDL_image.h>
 #include <math.h>
 #include <stdio.h>
 
@@ -36,20 +37,23 @@ void setup_projection(const int width, const int height){
 
     glMatrixMode(GL_MODELVIEW);
     glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
 }
 
-void render_lidar(const Vertex* vertices, const int number_of_vertices, const float x, const float y, const float z){
+void render_lidar(const Vertex* vertices, const int number_of_vertices, const Camera* camera){
     // update_camera() kezeli a Camerában
     // glLoadIdentity();
     // glTranslatef(-x, -y, -z);
 
     // glPointSize(4.0f);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
     glPointSize(10.0f);
     glBegin(GL_POINTS);
     for(int i = 0; i<number_of_vertices;i++){
-        const float dx = vertices[i].x - x;
-        const float dy = vertices[i].y - y;
-        const float dz = vertices[i].z - z;
+        const float dx = vertices[i].x - camera->x;
+        const float dy = vertices[i].y - camera->y;
+        const float dz = vertices[i].z - camera->z;
 
         const float distance = sqrtf(dx*dx + dy*dy + dz*dz);
         if(distance < LIDAR_DRAW_DISTANCE){
@@ -83,6 +87,9 @@ void render_lidar(const Vertex* vertices, const int number_of_vertices, const fl
 }
 
 void render_lidar_fast(int number_of_vertices){
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+    glPointSize(2.0f);
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
     glVertexPointer(3, GL_FLOAT, sizeof(PointData), &gpu_data[0].x);
@@ -92,7 +99,8 @@ void render_lidar_fast(int number_of_vertices){
     glDisableClientState(GL_COLOR_ARRAY);
 }
 
-void prepare_lidar_data(Vertex* vertices, int number_of_vertices){
+void prepare_lidar_data(Vertex* vertices){
+    int number_of_vertices = vertices->number_of_vertex;
     gpu_data = malloc(sizeof(PointData)*number_of_vertices);
 
     for(int i = 0; i < number_of_vertices; i++){
@@ -105,4 +113,38 @@ void prepare_lidar_data(Vertex* vertices, int number_of_vertices){
         gpu_data[i].g = h;
         gpu_data[i].b = 1.0f-h;
     }
+}
+
+GLuint load_texture(const char* filename){
+    SDL_Surface* surface = IMG_Load(filename);
+    if(!surface){
+        printf("[HIBA] Nem sikerult betolteni a texturat: %s\n", IMG_GetError());
+        return 0;
+    }
+
+    GLuint textureID;
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    int mode = surface->format->BytesPerPixel == 4 ? GL_RGBA : GL_RGB;
+    glTexImage2D(GL_TEXTURE_2D, 0, mode, surface->w, surface->h, 0, mode, GL_UNSIGNED_BYTE, surface->pixels);
+
+    SDL_FreeSurface(surface);
+    return textureID;
+}
+
+void render_model(const Model* model, GLuint textureID){
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    glColor3f(1.0f, 1.0f, 1.0f);
+
+    glBegin(GL_TRIANGLES);
+    for(int i = 0; i < model->number_of_vertex; i++) {
+        glTexCoord2f(model->vertices[i].u, model->vertices[i].v);
+        glVertex3f(model->vertices[i].x, model->vertices[i].y, model->vertices[i].z);
+    }
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
 }
