@@ -7,13 +7,6 @@
 #include <SDL_events.h>
 #include <SDL_opengl.h>
 
-typedef struct{
-    Uint32 startTime;
-    Uint16 duration;
-    Uint16 delay;
-    float sens;
-    bool isSouthSource;
-} Shout;
 
 typedef struct{
     float x, y, z;
@@ -21,7 +14,6 @@ typedef struct{
     float mouseSpeed;
     float moveSpeed;
     bool isInvertedMouseY;
-    Shout shout;
     int screenWidth;
     int screenHeight;
 } Camera;
