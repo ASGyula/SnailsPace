@@ -18,30 +18,33 @@ int main(int argc, char *argv[]){
     camera.screenWidth = SCREEN_WIDTH;
     camera.screenHeight = SCREEN_HEIGHT;
 
-    Vertex* palya = NULL;
+    // Vertex* palya = NULL;
 
     if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0){
         printf("[HIBA] Nem sikerult inincializalni a Mixert");
     }
 
+
     Model Helsie;
     Model masodikFolyoso;
+    Model palya;
     UIElement spaceToShoutUIElement;
     SDL_Window *window = SDL_CreateWindow("Snail's Pace", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN);
     SDL_GLContext *glContext = SDL_GL_CreateContext(window);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
-    load_obj("assets/elso_folyoso.obj", &palya);
+    // load_obj("assets/elso_folyoso.obj", &palya);
+    load_textured_obj("assets/Blender/masodik_folyoso.obj", &palya);
     // load_obj("assets/External/MiSide/level_4_Miside.obj", &palya);
     // load_textured_obj("assets/External/MiSide/level_4_Miside.obj", &masodikFolyoso);
-    load_textured_obj("assets/Blender/masodik_szoba/masodik_szoba.obj", &masodikFolyoso);
+    // load_textured_obj("assets/Blender/masodik_szoba/masodik_szoba.obj", &palya);
     load_textured_obj("assets/External/Helsie/HelsieMidnightbyRedEyes.obj", &Helsie);
 
 
     Helsie.textureID = load_texture("assets/External/Helsie/T_MysticFang_Body_D.png");
     spaceToShoutUIElement.textureID = load_texture("assets/External/Gemini/SpaceToShout.png");
 
-    prepare_lidar_data(palya);
+    // prepare_lidar_data(palya);
 
     SDL_Event event;
 
@@ -67,7 +70,8 @@ int main(int argc, char *argv[]){
         // spaceToShoutUIElement.isShowing = !camera.shout.isSouthSource || (SDL_GetTicks() - camera.shout.startTime > camera.shout.duration + camera.shout.delay);
 
         update_camera(&camera);
-        render_bat_vision(&masodikFolyoso, &camera, currentTime);
+        render_bat_vision(&palya, currentTime);
+        // render_bat_vision(&Helsie, currentTime);
         // render_lidar(palya, &camera);
         // render_lidar_eco(palya, &camera, currentTime);
         // render_lidar_fast(palya->number_of_vertex);
@@ -86,7 +90,7 @@ int main(int argc, char *argv[]){
         SDL_GL_SwapWindow(window);
     }
 
-    free(palya);
+    // free(palya);
     SDL_GL_DeleteContext(glContext);
     SDL_DestroyWindow(window);
     SDL_Quit();
