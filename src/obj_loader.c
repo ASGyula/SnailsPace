@@ -15,7 +15,7 @@ void load_obj(const char* filename, Vertex** vertices){
         printf("[HIBA] Nem sikerult beolvasni a kovetkezo fajlt: %s\n", filename);
         return;
     }
-    char line[1024];
+    char line[2200];
     int count = 0;
 
     while(fgets(line, sizeof(line), file)){
@@ -45,7 +45,7 @@ void load_obj(const char* filename, Vertex** vertices){
         }
     }
     fclose(file);
-    printf("[SIKER] %s sikeresen beolvasva\n", filename);
+    printf("[SIKER] %s sikeresen beolvasva (v=%f)\n", filename, (*vertices)->number_of_vertex);
 }
 
 bool load_textured_obj(const char* filename, Model* model){

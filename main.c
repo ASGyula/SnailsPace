@@ -14,20 +14,27 @@
 int main(int argc, char *argv[]){
     bool isRunning = true;
     Camera camera;
+    camera.screenWidth = SCREEN_WIDTH;
+    camera.screenHeight = SCREEN_HEIGHT;
 
     Vertex* palya = NULL;
 
     Model Helsie;
+    Model masodikFolyoso;
+    UIElement spaceToShoutUIElement;
     SDL_Window *window = SDL_CreateWindow("Snail's Pace", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN);
     SDL_GLContext *glContext = SDL_GL_CreateContext(window);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
-    load_obj("assets/elso_folyoso2.obj", &palya);
+    load_obj("assets/elso_folyoso.obj", &palya);
     // load_obj("assets/External/MiSide/level_4_Miside.obj", &palya);
+    // load_textured_obj("assets/External/MiSide/level_4_Miside.obj", &masodikFolyoso);
+    load_textured_obj("assets/Blender/masodik_szoba/masodik_szoba.obj", &masodikFolyoso);
     load_textured_obj("assets/External/Helsie/HelsieMidnightbyRedEyes.obj", &Helsie);
 
-    GLuint textureID;
-    textureID = load_texture("assets/External/Helsie/T_MysticFang_Body_D.png");
+
+    Helsie.textureID = load_texture("assets/External/Helsie/T_MysticFang_Body_D.png");
+    spaceToShoutUIElement.textureID = load_texture("assets/External/Gemini/SpaceToShout.png");
 
     prepare_lidar_data(palya);
 
@@ -52,16 +59,23 @@ int main(int argc, char *argv[]){
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        spaceToShoutUIElement.isShowing = !camera.shout.isSouthSource || (SDL_GetTicks() - camera.shout.startTime > camera.shout.duration + camera.shout.delay);
+
         update_camera(&camera);
-        render_lidar(palya, palya->number_of_vertex, &camera);
+        render_bat_vision(&masodikFolyoso, &camera, currentTime);
+        // render_lidar(palya, &camera);
+        // render_lidar_eco(palya, &camera, currentTime);
         // render_lidar_fast(palya->number_of_vertex);
 
         // render_lidar(Helsie, Helsie->number_of_vertex, camera.x, camera.y, camera.z);
 
         // render_lidar_fast(Helsie->number_of_vertex);
 
+
         glPushMatrix();
-        render_model(&Helsie, textureID);
+        // render_model_wt(&masodikFolyoso);
+        render_model(&Helsie);
+        render_ui_texture(spaceToShoutUIElement, SCREEN_WIDTH, SCREEN_HEIGHT, true);
         glPopMatrix();
 
         SDL_GL_SwapWindow(window);
