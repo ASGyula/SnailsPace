@@ -29,7 +29,7 @@ GLuint load_texture(const char* filename);
 void render_model(const Model* model);
 void render_model_wt(const Model* model);
 
-void render_bat_vision(const Model* model, const Camera* camera, const Uint32 currentTime);
+void render_bat_vision(const Model* model, const Uint32 currentTime);
 
 void render_ui_texture(UIElement element, int screenWidth, int screenHeight, bool isShowingFog);
 void trigger_bat_scream(Camera* camera);
