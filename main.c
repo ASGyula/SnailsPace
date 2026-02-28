@@ -3,6 +3,7 @@
 #include "include/obj_loader.h"
 #include <SDL.h>
 #include <SDL_opengl.h>
+#include <SDL_mixer.h>
 #include <stdio.h>
 
 #include "camera.h"
@@ -18,6 +19,10 @@ int main(int argc, char *argv[]){
     camera.screenHeight = SCREEN_HEIGHT;
 
     Vertex* palya = NULL;
+
+    if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0){
+        printf("[HIBA] Nem sikerult inincializalni a Mixert");
+    }
 
     Model Helsie;
     Model masodikFolyoso;
@@ -59,7 +64,7 @@ int main(int argc, char *argv[]){
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        spaceToShoutUIElement.isShowing = !camera.shout.isSouthSource || (SDL_GetTicks() - camera.shout.startTime > camera.shout.duration + camera.shout.delay);
+        // spaceToShoutUIElement.isShowing = !camera.shout.isSouthSource || (SDL_GetTicks() - camera.shout.startTime > camera.shout.duration + camera.shout.delay);
 
         update_camera(&camera);
         render_bat_vision(&masodikFolyoso, &camera, currentTime);

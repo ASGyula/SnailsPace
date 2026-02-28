@@ -14,6 +14,18 @@
 #define farVal 100.0f
 #define LIDAR_DRAW_DISTANCE 10.0f
 
+#define MAX_WAVES 20
+
+typedef struct {
+    Uint32 start_time;
+    float x, y, z;
+    float speed;
+    float max_distance;
+    float width;
+    bool active;
+} SoundWave;
+static SoundWave sound_waves[MAX_WAVES];
+
 PointData* gpu_data = NULL;
 void setup_projection(const int width, const int height){
     glViewport(0, 0, width, height);
@@ -194,6 +206,30 @@ void render_model_wt(const Model* model){
     glEnable(GL_CULL_FACE);
 }
 
+void add_sound_wave(float x, float y, float z, float speed, float max_dist, float width) {
+    int index = -1;
+
+    for(int i = 0; i < MAX_WAVES; i++){
+        if(!sound_waves[i].active){
+            index = i;
+            break;
+        }
+    }
+
+    if(index == -1){
+        index = rand() % MAX_WAVES;
+    }
+
+    sound_waves[index].start_time = SDL_GetTicks();
+    sound_waves[index].x = x;
+    sound_waves[index].y = y;
+    sound_waves[index].z = z;
+    sound_waves[index].speed = speed;
+    sound_waves[index].max_distance = max_dist;
+    sound_waves[index].width = width;
+    sound_waves[index].active = true;
+}
+
 void render_bat_vision(const Model* model, const Camera* camera, const Uint32 currentTime){
     if(!model || !model->vertices) return;
 
@@ -202,96 +238,110 @@ void render_bat_vision(const Model* model, const Camera* camera, const Uint32 cu
     glFogfv(GL_FOG_COLOR, fogColor);
     glFogf(GL_FOG_MODE, GL_LINEAR);
 
-    Uint32 timeElapsed = currentTime - camera->shout.startTime;
-
-    if(timeElapsed >= camera->shout.duration){
-        return;
-    }
-
-    const float waveSpeed = camera->shout.sens;
-    const float timeInSeconds = (float)timeElapsed/1000.0f;
-    const float waveFront = timeInSeconds*waveSpeed;
-    constexpr float waveThickness = 15.0f;
-    const float waveBack = waveFront-waveThickness;
-
-    glFogf(GL_FOG_START, waveFront);
-    glFogf(GL_FOG_END, waveBack);
-
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glColor3f(0.0f, 0.0f, 0.0f);
-
     glBegin(GL_TRIANGLES);
     for(int i = 0; i < model->number_of_vertex; i++){
         glVertex3f(model->vertices[i].x, model->vertices[i].y, model->vertices[i].z);
     }
     glEnd();
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glLineWidth(2.0f);
-    glColor3f(0.0f, 1.0f, 1.0f);
-    glEnable(GL_POLYGON_OFFSET_LINE);
-    glPolygonOffset(-1.0f, -1.0f);
+    for(int w = 0; w < MAX_WAVES; w++){
+        const float waveSpeed = sound_waves[w].speed;
+        Uint32 timeElapsed = currentTime - sound_waves[w].start_time;
 
-    glBegin(GL_LINES);
-    for(int i = 0; i < model->number_of_vertex; i+=3){
-        const float dx = model->vertices[i].x - camera->x;
-        const float dy = model->vertices[i].y - camera->y;
-        const float dz = model->vertices[i].z - camera->z;
-        const float distance = sqrtf(dx*dx + dy*dy + dz*dz);
+        const float timeInSeconds = (float)timeElapsed/1000.0f;
+        const float waveFront = timeInSeconds*waveSpeed;
+        const float waveThickness = sound_waves[w].width;
+        const float waveBack = waveFront-waveThickness;
 
-        if(distance >= (waveBack-10.0f) && distance <= waveFront){
-            const float brightness = (distance - (waveBack-10.0f)) / (waveFront - (waveBack-10.0f));
-            glColor3f(brightness, brightness, brightness);
+        if(waveFront > sound_waves[w].max_distance){
+            sound_waves[w].active = false;
+            glFogf(GL_FOG_START, 0);
+            continue;
+        }
 
-            if(i + 2 >= model->number_of_vertex) break;
+        glFogf(GL_FOG_START, waveFront);
+        glFogf(GL_FOG_END, waveBack);
 
-            bool is_quad_part1 = false;
-            bool is_quad_part2 = false;
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        glColor3f(0.0f, 0.0f, 0.0f);
 
-            if(i % 6 == 0 && i + 5 < model->number_of_vertex){
-                if(model->vertices[i].x == model->vertices[i + 3].x &&
-                   model->vertices[i].y == model->vertices[i + 3].y &&
-                   model->vertices[i].z == model->vertices[i + 3].z &&
-                   model->vertices[i + 2].x == model->vertices[i + 4].x &&
-                   model->vertices[i + 2].y == model->vertices[i + 4].y &&
-                   model->vertices[i + 2].z == model->vertices[i + 4].z){
-                    is_quad_part1 = true;
-                   }
-            }else if(i % 6 == 3 && i - 3 >= 0){
-                if(model->vertices[i - 3].x == model->vertices[i].x &&
-                   model->vertices[i - 3].y == model->vertices[i].y &&
-                   model->vertices[i - 3].z == model->vertices[i].z &&
-                   model->vertices[i - 1].x == model->vertices[i + 1].x &&
-                   model->vertices[i - 1].y == model->vertices[i + 1].y &&
-                   model->vertices[i - 1].z == model->vertices[i + 1].z){
-                    is_quad_part2 = true;
-                   }
-            }
+        glBegin(GL_TRIANGLES);
+        for(int i = 0; i < model->number_of_vertex; i++){
+            glVertex3f(model->vertices[i].x, model->vertices[i].y, model->vertices[i].z);
+        }
+        glEnd();
 
-            if(is_quad_part1){
-                glVertex3f(model->vertices[i].x, model->vertices[i].y, model->vertices[i].z);
-                glVertex3f(model->vertices[i + 1].x, model->vertices[i + 1].y, model->vertices[i + 1].z);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glLineWidth(2.0f);
+        glColor3f(0.0f, 1.0f, 1.0f);
+        glEnable(GL_POLYGON_OFFSET_LINE);
+        glPolygonOffset(-1.0f, -1.0f);
 
-                glVertex3f(model->vertices[i + 1].x, model->vertices[i + 1].y, model->vertices[i + 1].z);
-                glVertex3f(model->vertices[i + 2].x, model->vertices[i + 2].y, model->vertices[i + 2].z);
-            }else if(is_quad_part2){
-                glVertex3f(model->vertices[i + 1].x, model->vertices[i + 1].y, model->vertices[i + 1].z);
-                glVertex3f(model->vertices[i + 2].x, model->vertices[i + 2].y, model->vertices[i + 2].z);
+        glBegin(GL_LINES);
+        float originX = sound_waves[w].x;
+        float originY = sound_waves[w].y;
+        float originZ = sound_waves[w].z;
 
-                glVertex3f(model->vertices[i + 2].x, model->vertices[i + 2].y, model->vertices[i + 2].z);
-                glVertex3f(model->vertices[i].x, model->vertices[i].y, model->vertices[i].z);
-            }else{
-                glVertex3f(model->vertices[i].x, model->vertices[i].y, model->vertices[i].z);
-                glVertex3f(model->vertices[i + 1].x, model->vertices[i + 1].y, model->vertices[i + 1].z);
+        for(int i = 0; i < model->number_of_vertex; i+=3){
+            const float dx = model->vertices[i].x - originX;
+            const float dy = model->vertices[i].y - originY;
+            const float dz = model->vertices[i].z - originZ;
+            const float distance = sqrtf(dx*dx + dy*dy + dz*dz);
+            if(distance >= (waveBack-5.0f) && distance <= waveFront) {
+                const float brightness = (distance - (waveBack-5.0f)) / (waveFront - (waveBack-5.0f));
+                glColor3f(brightness, brightness, brightness);
+                if(i + 2 >= model->number_of_vertex) break;
+                bool is_quad_part1 = false;
+                bool is_quad_part2 = false;
+                if(i % 6 == 0 && i + 5 < model->number_of_vertex) {
+                    if(model->vertices[i].x == model->vertices[i + 3].x &&
+                        model->vertices[i].y == model->vertices[i + 3].y &&
+                        model->vertices[i].z == model->vertices[i + 3].z &&
+                        model->vertices[i + 2].x == model->vertices[i + 4].x &&
+                        model->vertices[i + 2].y == model->vertices[i + 4].y &&
+                        model->vertices[i + 2].z == model->vertices[i + 4].z) {
+                        is_quad_part1 = true;
 
-                glVertex3f(model->vertices[i + 1].x, model->vertices[i + 1].y, model->vertices[i + 1].z);
-                glVertex3f(model->vertices[i + 2].x, model->vertices[i + 2].y, model->vertices[i + 2].z);
+                    }
+                }else if(i % 6 == 3 && i - 3 >= 0) {
+                    if(model->vertices[i - 3].x == model->vertices[i].x &&
+                        model->vertices[i - 3].y == model->vertices[i].y &&
+                        model->vertices[i - 3].z == model->vertices[i].z &&
+                        model->vertices[i - 1].x == model->vertices[i + 1].x &&
+                        model->vertices[i - 1].y == model->vertices[i + 1].y &&
+                        model->vertices[i - 1].z == model->vertices[i + 1].z) {
+                        is_quad_part2 = true;
 
-                glVertex3f(model->vertices[i + 2].x, model->vertices[i + 2].y, model->vertices[i + 2].z);
-                glVertex3f(model->vertices[i].x, model->vertices[i].y, model->vertices[i].z);
+                    }
+                }
+
+                if(is_quad_part1) {
+                    glVertex3f(model->vertices[i].x, model->vertices[i].y, model->vertices[i].z);
+                    glVertex3f(model->vertices[i + 1].x, model->vertices[i + 1].y, model->vertices[i + 1].z);
+                    glVertex3f(model->vertices[i + 1].x, model->vertices[i + 1].y, model->vertices[i + 1].z);
+                    glVertex3f(model->vertices[i + 2].x, model->vertices[i + 2].y, model->vertices[i + 2].z);
+
+                }else if(is_quad_part2) {
+                    glVertex3f(model->vertices[i + 1].x, model->vertices[i + 1].y, model->vertices[i + 1].z);
+                    glVertex3f(model->vertices[i + 2].x, model->vertices[i + 2].y, model->vertices[i + 2].z);
+                    glVertex3f(model->vertices[i + 2].x, model->vertices[i + 2].y, model->vertices[i + 2].z);
+                    glVertex3f(model->vertices[i].x, model->vertices[i].y, model->vertices[i].z);
+
+                }else {
+                    glVertex3f(model->vertices[i].x, model->vertices[i].y, model->vertices[i].z);
+                    glVertex3f(model->vertices[i + 1].x, model->vertices[i + 1].y, model->vertices[i + 1].z);
+                    glVertex3f(model->vertices[i + 1].x, model->vertices[i + 1].y, model->vertices[i + 1].z);
+                    glVertex3f(model->vertices[i + 2].x, model->vertices[i + 2].y, model->vertices[i + 2].z);
+                    glVertex3f(model->vertices[i + 2].x, model->vertices[i + 2].y, model->vertices[i + 2].z);
+                    glVertex3f(model->vertices[i].x, model->vertices[i].y, model->vertices[i].z);
+                }
             }
         }
     }
+
+
     glEnd();
     glDisable(GL_POLYGON_OFFSET_LINE);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -318,7 +368,6 @@ GLuint load_texture(const char* filename){
 }
 
 void render_ui_texture(UIElement element, int screenWidth, int screenHeight, bool isShowingFog){
-    if(!element.isShowing) return;
     if(isShowingFog)glDisable(GL_FOG);
     glDisable(GL_DEPTH_TEST);
     glMatrixMode(GL_PROJECTION);
