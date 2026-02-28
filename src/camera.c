@@ -13,14 +13,14 @@
 
 #define BASE_MOVEMENT_SPEED 5.0f
 
-#define SHOUT_SHOUT_DISTANCE 20.0f
-#define SHOUT_SHOUT_COOLDOWN 400
-#define SHOUT_SHOUT_SPEED 20
+#define SHOUT_SHOUT_DISTANCE 30.0f
+#define SHOUT_SHOUT_COOLDOWN 1500
+#define SHOUT_SHOUT_SPEED 30
 #define SHOUT_SHOUT_SENS 20.0f
-#define MOVEMENT_SHOUT_DISTANCE 10.0f
-#define MOVEMENT_SHOUT_COOLDOWN 400
-#define MOVEMENT_SHOUT_SPEED 10
-#define MOVEMENT_SHOUT_SENS 10.0f
+#define MOVEMENT_SHOUT_DISTANCE 20.0f
+#define MOVEMENT_SHOUT_COOLDOWN 500
+#define MOVEMENT_SHOUT_SPEED 25
+#define MOVEMENT_SHOUT_SENS 4.0f
 
 static Mix_Chunk* shoutSound;
 
@@ -35,6 +35,7 @@ void initialize_camera(Camera* camera){
     camera->mouseSpeed = 0.1f;
     camera->moveSpeed = 1.0f;
     camera->isInvertedMouseY = true;
+
 
     SDL_SetRelativeMouseMode(SDL_TRUE);
 }

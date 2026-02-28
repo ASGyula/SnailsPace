@@ -14,7 +14,7 @@
 #define farVal 100.0f
 #define LIDAR_DRAW_DISTANCE 10.0f
 
-#define MAX_WAVES 20
+#define QUEUE_SIZE 10
 
 typedef struct {
     Uint32 start_time;
@@ -24,9 +24,29 @@ typedef struct {
     float width;
     bool active;
 } SoundWave;
-static SoundWave sound_waves[MAX_WAVES];
+
+static SoundWave wave_queue[QUEUE_SIZE];
+static int queue_count = 0;
+static SoundWave active_wave;
+static bool is_wave_running = false;
+
+void add_sound_wave(float x, float y, float z, float speed, float max_dist, float width) {
+    if(queue_count < QUEUE_SIZE){
+        wave_queue[queue_count].x = x;
+        wave_queue[queue_count].y = y;
+        wave_queue[queue_count].z = z;
+        wave_queue[queue_count].speed = speed;
+        wave_queue[queue_count].max_distance = max_dist;
+        wave_queue[queue_count].width = width;
+        wave_queue[queue_count].start_time = SDL_GetTicks();
+        wave_queue[queue_count].active = true;
+        queue_count++;
+    }
+}
 
 PointData* gpu_data = NULL;
+
+
 void setup_projection(const int width, const int height){
     glViewport(0, 0, width, height);
 
@@ -171,7 +191,6 @@ void prepare_lidar_data(Vertex* vertices){
     }
 }
 
-
 void render_model(const Model* model){
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, model->textureID);
@@ -206,91 +225,70 @@ void render_model_wt(const Model* model){
     glEnable(GL_CULL_FACE);
 }
 
-void add_sound_wave(float x, float y, float z, float speed, float max_dist, float width) {
-    int index = -1;
 
-    for(int i = 0; i < MAX_WAVES; i++){
-        if(!sound_waves[i].active){
-            index = i;
-            break;
-        }
-    }
-
-    if(index == -1){
-        index = rand() % MAX_WAVES;
-    }
-
-    sound_waves[index].start_time = SDL_GetTicks();
-    sound_waves[index].x = x;
-    sound_waves[index].y = y;
-    sound_waves[index].z = z;
-    sound_waves[index].speed = speed;
-    sound_waves[index].max_distance = max_dist;
-    sound_waves[index].width = width;
-    sound_waves[index].active = true;
-}
-
-void render_bat_vision(const Model* model, const Camera* camera, const Uint32 currentTime){
-    if(!model || !model->vertices) return;
-
-    glEnable(GL_FOG);
+void render_bat_vision(const Model* model, const Uint32 currentTime) {
+    glDisable(GL_FOG);
     float fogColor[] = {0.0f, 0.0f, 0.0f, 1.0f};
     glFogfv(GL_FOG_COLOR, fogColor);
     glFogf(GL_FOG_MODE, GL_LINEAR);
+    glFogf(GL_FOG_START, 5.0f);
+    glFogf(GL_FOG_END, 10.0f);
+
+    if(!is_wave_running && queue_count > 0){
+        Uint32 requestTime = wave_queue[0].start_time;
+        Uint32 waitTime = currentTime - requestTime;
+
+        if(waitTime > 400){
+            for(int i = 0; i < queue_count - 1; i++){
+                wave_queue[i] = wave_queue[i + 1];
+                queue_count--;
+            }
+        }
+
+        active_wave = wave_queue[0];
+        active_wave.start_time = currentTime;
+        is_wave_running = true;
+
+        for(int i = 0; i < queue_count - 1; i++){
+            wave_queue[i] = wave_queue[i + 1];
+        }
+        queue_count--;
+        printf("Uj hullam inditva a sorbol!\n");
+    }
+
+    if(!is_wave_running) return;
+
+    Uint32 elapsed = currentTime - active_wave.start_time;
+    float waveFront = (elapsed / 1000.0f) * active_wave.speed;
+    float waveBack = waveFront - active_wave.width;
+
+    if(waveFront > active_wave.max_distance){
+        is_wave_running = false;
+        return;
+    }
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glColor3f(0.0f, 0.0f, 0.0f);
+
     glBegin(GL_TRIANGLES);
     for(int i = 0; i < model->number_of_vertex; i++){
         glVertex3f(model->vertices[i].x, model->vertices[i].y, model->vertices[i].z);
     }
     glEnd();
 
-    for(int w = 0; w < MAX_WAVES; w++){
-        const float waveSpeed = sound_waves[w].speed;
-        Uint32 timeElapsed = currentTime - sound_waves[w].start_time;
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-        const float timeInSeconds = (float)timeElapsed/1000.0f;
-        const float waveFront = timeInSeconds*waveSpeed;
-        const float waveThickness = sound_waves[w].width;
-        const float waveBack = waveFront-waveThickness;
+    glLineWidth(4.0f);
+    glBegin(GL_LINES);
+    glColor3f(1.0f, 1.0f, 1.0f);
 
-        if(waveFront > sound_waves[w].max_distance){
-            sound_waves[w].active = false;
-            glFogf(GL_FOG_START, 0);
-            continue;
-        }
+    for(int i = 0; i < model->number_of_vertex; i += 3){
+        float dx = model->vertices[i].x - active_wave.x;
+        float dz = model->vertices[i].z - active_wave.z;
+        float dist = sqrtf(dx*dx + dz*dz);
 
-        glFogf(GL_FOG_START, waveFront);
-        glFogf(GL_FOG_END, waveBack);
-
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-        glColor3f(0.0f, 0.0f, 0.0f);
-
-        glBegin(GL_TRIANGLES);
-        for(int i = 0; i < model->number_of_vertex; i++){
-            glVertex3f(model->vertices[i].x, model->vertices[i].y, model->vertices[i].z);
-        }
-        glEnd();
-
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        glLineWidth(2.0f);
-        glColor3f(0.0f, 1.0f, 1.0f);
-        glEnable(GL_POLYGON_OFFSET_LINE);
-        glPolygonOffset(-1.0f, -1.0f);
-
-        glBegin(GL_LINES);
-        float originX = sound_waves[w].x;
-        float originY = sound_waves[w].y;
-        float originZ = sound_waves[w].z;
-
-        for(int i = 0; i < model->number_of_vertex; i+=3){
-            const float dx = model->vertices[i].x - originX;
-            const float dy = model->vertices[i].y - originY;
-            const float dz = model->vertices[i].z - originZ;
-            const float distance = sqrtf(dx*dx + dy*dy + dz*dz);
-            if(distance >= (waveBack-5.0f) && distance <= waveFront) {
-                const float brightness = (distance - (waveBack-5.0f)) / (waveFront - (waveBack-5.0f));
+        if(dist >= (waveBack-5.0f) && dist <= (waveFront+5.0)){
+                const float brightness = (dist - (waveBack-5.0f)) / (waveFront - (waveBack-5.0f));
                 glColor3f(brightness, brightness, brightness);
                 if(i + 2 >= model->number_of_vertex) break;
                 bool is_quad_part1 = false;
@@ -339,13 +337,13 @@ void render_bat_vision(const Model* model, const Camera* camera, const Uint32 cu
                 }
             }
         }
-    }
-
 
     glEnd();
+
     glDisable(GL_POLYGON_OFFSET_LINE);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
+
 
 GLuint load_texture(const char* filename){
     SDL_Surface* surface = IMG_Load(filename);
