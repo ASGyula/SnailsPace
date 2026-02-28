@@ -17,14 +17,20 @@ typedef struct{
 
 void setup_projection(int width, int height);
 
-void render_lidar(const Vertex* vertices, int number_of_vertices, const Camera* camera);
+void render_lidar(const Vertex* vertices, const Camera* camera);
+void render_lidar_eco(const Vertex* vertices, const Camera* camera, const Uint32 currentTime);
 
 void prepare_lidar_data(Vertex* vertices);
-
 void render_lidar_fast(int number_of_vertices);
 
 GLuint load_texture(const char* filename);
 
-void render_model(const Model* model, GLuint textureID);
+void render_model(const Model* model);
+void render_model_wt(const Model* model);
+
+void render_bat_vision(const Model* model, const Camera* camera, const Uint32 currentTime);
+
+void render_ui_texture(UIElement element, int screenWidth, int screenHeight, bool isShowingFog);
+void trigger_bat_scream();
 
 #endif //SNAILSPACE_GRAPHICS_H

@@ -4,6 +4,7 @@
 
 #ifndef SNAILSPACE_OBJ_LOADER_H
 #define SNAILSPACE_OBJ_LOADER_H
+#include <SDL_opengl.h>
 
 typedef struct{
     float x, y, z;
@@ -13,12 +14,14 @@ typedef struct{
 typedef struct{
     float x, y, z;
     float u, v;
+    GLboolean edgeFlag;
 } ModelVertex;
 
 typedef struct{
     ModelVertex* vertices;
     int number_of_vertex;
-}  Model;
+    GLuint textureID;
+} Model;
 
 void load_obj(const char* filename, Vertex** vertices);
 
