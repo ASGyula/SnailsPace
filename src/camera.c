@@ -13,14 +13,16 @@
 
 #define BASE_MOVEMENT_SPEED 5.0f
 
-#define SHOUT_SHOUT_DISTANCE 30.0f
-#define SHOUT_SHOUT_COOLDOWN 1500
-#define SHOUT_SHOUT_SPEED 30
-#define SHOUT_SHOUT_SENS 20.0f
-#define MOVEMENT_SHOUT_DISTANCE 20.0f
-#define MOVEMENT_SHOUT_COOLDOWN 500
-#define MOVEMENT_SHOUT_SPEED 25
-#define MOVEMENT_SHOUT_SENS 4.0f
+#define SHOUT_DISTANCE 30.0f
+#define SHOUT_COOLDOWN 1500
+#define SHOUT_SPEED 30
+#define SHOUT_SOURCE 's'
+#define SHOUT_SENS 20.0f
+#define STEPS_DISTANCE 20.0f
+#define STEPS_COOLDOWN 600
+#define STEPS_SPEED 20
+#define STEPS_SOURCE 'm'
+#define STEPS_SENS 2.0f
 
 static Mix_Chunk* shoutSound;
 
@@ -68,40 +70,40 @@ void handle_wasd_input(SDL_Event* event, Camera* camera, bool* isRunning, float 
         camera->x += sinf(rad_yaw) * moveSpeed;
         camera->z -= cosf(rad_yaw) * moveSpeed;
         if(SDL_GetTicks() > nextStepWave){
-            add_sound_wave(camera->x, camera->y, camera->z, MOVEMENT_SHOUT_SPEED, MOVEMENT_SHOUT_DISTANCE, MOVEMENT_SHOUT_SENS);
-            nextStepWave = SDL_GetTicks() + MOVEMENT_SHOUT_COOLDOWN;
+            add_sound_wave(camera->x, camera->y, camera->z, STEPS_SPEED, STEPS_DISTANCE, STEPS_SENS, STEPS_SOURCE);
+            nextStepWave = SDL_GetTicks() + STEPS_COOLDOWN;
         }
     }
     if(state[SDL_SCANCODE_A]){
         camera->x -= cosf(rad_yaw) * moveSpeed;
         camera->z -= sinf(rad_yaw) * moveSpeed;
         if(SDL_GetTicks() > nextStepWave){
-            add_sound_wave(camera->x, camera->y, camera->z, MOVEMENT_SHOUT_SPEED, MOVEMENT_SHOUT_DISTANCE, MOVEMENT_SHOUT_SENS);
-            nextStepWave = SDL_GetTicks() + MOVEMENT_SHOUT_COOLDOWN;
+            add_sound_wave(camera->x, camera->y, camera->z, STEPS_SPEED, STEPS_DISTANCE, STEPS_SENS, STEPS_SOURCE);
+            nextStepWave = SDL_GetTicks() + STEPS_COOLDOWN;
         }
     }
     if(state[SDL_SCANCODE_S]){
         camera->x -= sinf(rad_yaw) * moveSpeed;
         camera->z += cosf(rad_yaw) * moveSpeed;
         if(SDL_GetTicks() > nextStepWave){
-            add_sound_wave(camera->x, camera->y, camera->z, MOVEMENT_SHOUT_SPEED, MOVEMENT_SHOUT_DISTANCE, MOVEMENT_SHOUT_SENS);
-            nextStepWave = SDL_GetTicks() + MOVEMENT_SHOUT_COOLDOWN;
+            add_sound_wave(camera->x, camera->y, camera->z, STEPS_SPEED, STEPS_DISTANCE, STEPS_SENS, STEPS_SOURCE);
+            nextStepWave = SDL_GetTicks() + STEPS_COOLDOWN;
         }
     }
     if(state[SDL_SCANCODE_D]){
         camera->x += cosf(rad_yaw) * moveSpeed;
         camera->z += sinf(rad_yaw) * moveSpeed;
         if(SDL_GetTicks() > nextStepWave){
-            add_sound_wave(camera->x, camera->y, camera->z, MOVEMENT_SHOUT_SPEED, MOVEMENT_SHOUT_DISTANCE, MOVEMENT_SHOUT_SENS);
-            nextStepWave = SDL_GetTicks() + MOVEMENT_SHOUT_COOLDOWN;
+            add_sound_wave(camera->x, camera->y, camera->z, STEPS_SPEED, STEPS_DISTANCE, STEPS_SENS, STEPS_SOURCE);
+            nextStepWave = SDL_GetTicks() + STEPS_COOLDOWN;
         }
     }
 
     if(state[SDL_SCANCODE_SPACE]){
         static Uint32 lastShout = 0;
-        if(SDL_GetTicks() - lastShout > SHOUT_SHOUT_COOLDOWN){
+        if(SDL_GetTicks() - lastShout > SHOUT_COOLDOWN){
             Mix_PlayChannel(-1, shoutSound, 0);
-            add_sound_wave(camera->x, camera->y, camera->z, SHOUT_SHOUT_SPEED, SHOUT_SHOUT_DISTANCE, SHOUT_SHOUT_SENS);
+            add_sound_wave(camera->x, camera->y, camera->z, SHOUT_SPEED, SHOUT_DISTANCE, SHOUT_SENS, SHOUT_SOURCE);
             lastShout = SDL_GetTicks();
         }
     }
