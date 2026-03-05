@@ -16,13 +16,14 @@
 
 #define QUEUE_SIZE 10
 
-typedef struct {
+typedef struct{
     Uint32 start_time;
     float x, y, z;
     float speed;
     float max_distance;
     float width;
     bool active;
+    char source;
 } SoundWave;
 
 static SoundWave wave_queue[QUEUE_SIZE];
@@ -30,7 +31,7 @@ static int queue_count = 0;
 static SoundWave active_wave;
 static bool is_wave_running = false;
 
-void add_sound_wave(float x, float y, float z, float speed, float max_dist, float width) {
+void add_sound_wave(float x, float y, float z, float speed, float max_dist, float width, char source){
     if(queue_count < QUEUE_SIZE){
         wave_queue[queue_count].x = x;
         wave_queue[queue_count].y = y;
@@ -40,6 +41,7 @@ void add_sound_wave(float x, float y, float z, float speed, float max_dist, floa
         wave_queue[queue_count].width = width;
         wave_queue[queue_count].start_time = SDL_GetTicks();
         wave_queue[queue_count].active = true;
+        wave_queue[queue_count].source = source;
         queue_count++;
     }
 }
@@ -205,7 +207,7 @@ void render_model(const Model* model){
     glDisable(GL_TEXTURE_2D);
 }
 
-void render_model_wt(const Model* model){
+void render_model_without_texture(const Model* model){
     glDisable(GL_CULL_FACE);
     glColor3f(0.0f, 0.0f, 0.0f);
     glEnable(GL_POLYGON_OFFSET_FILL);
@@ -225,8 +227,7 @@ void render_model_wt(const Model* model){
     glEnable(GL_CULL_FACE);
 }
 
-
-void render_bat_vision(const Model* model, const Uint32 currentTime) {
+void render_bat_vision(const Model* model, const Uint32 currentTime){
     glDisable(GL_FOG);
     float fogColor[] = {0.0f, 0.0f, 0.0f, 1.0f};
     glFogfv(GL_FOG_COLOR, fogColor);
@@ -238,7 +239,7 @@ void render_bat_vision(const Model* model, const Uint32 currentTime) {
         Uint32 requestTime = wave_queue[0].start_time;
         Uint32 waitTime = currentTime - requestTime;
 
-        if(waitTime > 400){
+        if(waitTime > (active_wave.speed * active_wave.max_distance) * 1000.0f){
             for(int i = 0; i < queue_count - 1; i++){
                 wave_queue[i] = wave_queue[i + 1];
                 queue_count--;
@@ -253,7 +254,6 @@ void render_bat_vision(const Model* model, const Uint32 currentTime) {
             wave_queue[i] = wave_queue[i + 1];
         }
         queue_count--;
-        printf("Uj hullam inditva a sorbol!\n");
     }
 
     if(!is_wave_running) return;
@@ -287,56 +287,52 @@ void render_bat_vision(const Model* model, const Uint32 currentTime) {
         float dz = model->vertices[i].z - active_wave.z;
         float dist = sqrtf(dx*dx + dz*dz);
 
-        if(dist >= (waveBack-5.0f) && dist <= (waveFront+5.0)){
-                const float brightness = (dist - (waveBack-5.0f)) / (waveFront - (waveBack-5.0f));
-                glColor3f(brightness, brightness, brightness);
-                if(i + 2 >= model->number_of_vertex) break;
-                bool is_quad_part1 = false;
-                bool is_quad_part2 = false;
-                if(i % 6 == 0 && i + 5 < model->number_of_vertex) {
-                    if(model->vertices[i].x == model->vertices[i + 3].x &&
-                        model->vertices[i].y == model->vertices[i + 3].y &&
-                        model->vertices[i].z == model->vertices[i + 3].z &&
-                        model->vertices[i + 2].x == model->vertices[i + 4].x &&
-                        model->vertices[i + 2].y == model->vertices[i + 4].y &&
-                        model->vertices[i + 2].z == model->vertices[i + 4].z) {
+        if(dist >= (waveBack-active_wave.width) && dist <= (waveFront+active_wave.width)){
+            const float brightness = (dist - (waveBack-5.0f)) / (waveFront - (waveBack-5.0f));
+            glColor3f(brightness, brightness, brightness);
+            if(i + 2 >= model->number_of_vertex) break;
+            bool is_quad_part1 = false;
+            bool is_quad_part2 = false;
+            if(i % 6 == 0 && i + 5 < model->number_of_vertex){
+                if(model->vertices[i].x == model->vertices[i + 3].x &&
+                    model->vertices[i].y == model->vertices[i + 3].y &&
+                    model->vertices[i].z == model->vertices[i + 3].z &&
+                    model->vertices[i + 2].x == model->vertices[i + 4].x &&
+                    model->vertices[i + 2].y == model->vertices[i + 4].y &&
+                    model->vertices[i + 2].z == model->vertices[i + 4].z){
                         is_quad_part1 = true;
-
-                    }
-                }else if(i % 6 == 3 && i - 3 >= 0) {
-                    if(model->vertices[i - 3].x == model->vertices[i].x &&
-                        model->vertices[i - 3].y == model->vertices[i].y &&
-                        model->vertices[i - 3].z == model->vertices[i].z &&
-                        model->vertices[i - 1].x == model->vertices[i + 1].x &&
-                        model->vertices[i - 1].y == model->vertices[i + 1].y &&
-                        model->vertices[i - 1].z == model->vertices[i + 1].z) {
+                }
+            }else if(i % 6 == 3 && i - 3 >= 0){
+                if(model->vertices[i - 3].x == model->vertices[i].x &&
+                    model->vertices[i - 3].y == model->vertices[i].y &&
+                    model->vertices[i - 3].z == model->vertices[i].z &&
+                    model->vertices[i - 1].x == model->vertices[i + 1].x &&
+                    model->vertices[i - 1].y == model->vertices[i + 1].y &&
+                    model->vertices[i - 1].z == model->vertices[i + 1].z){
                         is_quad_part2 = true;
-
                     }
-                }
+            }
 
-                if(is_quad_part1) {
-                    glVertex3f(model->vertices[i].x, model->vertices[i].y, model->vertices[i].z);
-                    glVertex3f(model->vertices[i + 1].x, model->vertices[i + 1].y, model->vertices[i + 1].z);
-                    glVertex3f(model->vertices[i + 1].x, model->vertices[i + 1].y, model->vertices[i + 1].z);
-                    glVertex3f(model->vertices[i + 2].x, model->vertices[i + 2].y, model->vertices[i + 2].z);
-
-                }else if(is_quad_part2) {
-                    glVertex3f(model->vertices[i + 1].x, model->vertices[i + 1].y, model->vertices[i + 1].z);
-                    glVertex3f(model->vertices[i + 2].x, model->vertices[i + 2].y, model->vertices[i + 2].z);
-                    glVertex3f(model->vertices[i + 2].x, model->vertices[i + 2].y, model->vertices[i + 2].z);
-                    glVertex3f(model->vertices[i].x, model->vertices[i].y, model->vertices[i].z);
-
-                }else {
-                    glVertex3f(model->vertices[i].x, model->vertices[i].y, model->vertices[i].z);
-                    glVertex3f(model->vertices[i + 1].x, model->vertices[i + 1].y, model->vertices[i + 1].z);
-                    glVertex3f(model->vertices[i + 1].x, model->vertices[i + 1].y, model->vertices[i + 1].z);
-                    glVertex3f(model->vertices[i + 2].x, model->vertices[i + 2].y, model->vertices[i + 2].z);
-                    glVertex3f(model->vertices[i + 2].x, model->vertices[i + 2].y, model->vertices[i + 2].z);
-                    glVertex3f(model->vertices[i].x, model->vertices[i].y, model->vertices[i].z);
-                }
+            if(is_quad_part1){
+                glVertex3f(model->vertices[i].x, model->vertices[i].y, model->vertices[i].z);
+                glVertex3f(model->vertices[i + 1].x, model->vertices[i + 1].y, model->vertices[i + 1].z);
+                glVertex3f(model->vertices[i + 1].x, model->vertices[i + 1].y, model->vertices[i + 1].z);
+                glVertex3f(model->vertices[i + 2].x, model->vertices[i + 2].y, model->vertices[i + 2].z);
+            }else if(is_quad_part2){
+                glVertex3f(model->vertices[i + 1].x, model->vertices[i + 1].y, model->vertices[i + 1].z);
+                glVertex3f(model->vertices[i + 2].x, model->vertices[i + 2].y, model->vertices[i + 2].z);
+                glVertex3f(model->vertices[i + 2].x, model->vertices[i + 2].y, model->vertices[i + 2].z);
+                glVertex3f(model->vertices[i].x, model->vertices[i].y, model->vertices[i].z);
+            }else{
+                glVertex3f(model->vertices[i].x, model->vertices[i].y, model->vertices[i].z);
+                glVertex3f(model->vertices[i + 1].x, model->vertices[i + 1].y, model->vertices[i + 1].z);
+                glVertex3f(model->vertices[i + 1].x, model->vertices[i + 1].y, model->vertices[i + 1].z);
+                glVertex3f(model->vertices[i + 2].x, model->vertices[i + 2].y, model->vertices[i + 2].z);
+                glVertex3f(model->vertices[i + 2].x, model->vertices[i + 2].y, model->vertices[i + 2].z);
+                glVertex3f(model->vertices[i].x, model->vertices[i].y, model->vertices[i].z);
             }
         }
+    }
 
     glEnd();
 
