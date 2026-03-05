@@ -8,17 +8,18 @@
 
 #include "camera.h"
 #include "graphics.h"
+#include "player.h"
 
 #define SCREEN_WIDTH 1000
 #define SCREEN_HEIGHT 800
 
 int main(int argc, char *argv[]){
     bool isRunning = true;
-    Camera camera;
-    camera.screenWidth = SCREEN_WIDTH;
-    camera.screenHeight = SCREEN_HEIGHT;
+    Player player;
+    player.camera.screenWidth = SCREEN_WIDTH;
+    player.camera.screenHeight = SCREEN_HEIGHT;
 
-    // Vertex* palya = NULL;
+    Vertex* palya = NULL;
 
     if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0){
         printf("[HIBA] Nem sikerult inincializalni a Mixert");
@@ -27,14 +28,13 @@ int main(int argc, char *argv[]){
 
     Model Helsie;
     Model masodikFolyoso;
-    Model palya;
     UIElement spaceToShoutUIElement;
     SDL_Window *window = SDL_CreateWindow("Snail's Pace", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN);
     SDL_GLContext *glContext = SDL_GL_CreateContext(window);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
-    // load_obj("assets/elso_folyoso.obj", &palya);
-    load_textured_obj("assets/Blender/masodik_folyoso.obj", &palya);
+    load_obj("assets/elso_folyoso.obj", &palya);
+    load_textured_obj("assets/Blender/masodik_folyoso.obj", &masodikFolyoso);
     // load_obj("assets/External/MiSide/level_4_Miside.obj", &palya);
     // load_textured_obj("assets/External/MiSide/level_4_Miside.obj", &masodikFolyoso);
     // load_textured_obj("assets/Blender/masodik_szoba/masodik_szoba.obj", &palya);
@@ -48,7 +48,7 @@ int main(int argc, char *argv[]){
 
     SDL_Event event;
 
-    initialize_camera(&camera);
+    initialize_camera(&player.camera);
 
     Uint32 lastTime = SDL_GetTicks();
     setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -60,17 +60,17 @@ int main(int argc, char *argv[]){
 
         if(deltaTime > 0.1f) deltaTime = 0.1f;
         while(SDL_PollEvent(&event)){
-            handle_camera_input(&event, &camera);
+            handle_camera_input(&event, &player.camera);
         }
 
-        handle_wasd_input(&event, &camera, &isRunning, deltaTime);
+        handle_wasd_input(&event, &player.camera, &isRunning, deltaTime);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // spaceToShoutUIElement.isShowing = !camera.shout.isSouthSource || (SDL_GetTicks() - camera.shout.startTime > camera.shout.duration + camera.shout.delay);
 
-        update_camera(&camera);
-        render_bat_vision(&palya, currentTime);
+        update_camera(&player.camera);
+        render_bat_vision(&masodikFolyoso, currentTime);
         // render_bat_vision(&Helsie, currentTime);
         // render_lidar(palya, &camera);
         // render_lidar_eco(palya, &camera, currentTime);
@@ -81,11 +81,11 @@ int main(int argc, char *argv[]){
         // render_lidar_fast(Helsie->number_of_vertex);
 
 
-        glPushMatrix();
-        // render_model_wt(&masodikFolyoso);
+        // glPushMatrix();
+        // render_model_without_texture(&masodikFolyoso);
         render_model(&Helsie);
         render_ui_texture(spaceToShoutUIElement, SCREEN_WIDTH, SCREEN_HEIGHT, true);
-        glPopMatrix();
+        // glPopMatrix();
 
         SDL_GL_SwapWindow(window);
     }
