@@ -61,28 +61,36 @@ int main(int argc, char *argv[]){
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        if(game.scene == VN_INTRO){
-            while(SDL_PollEvent(&event)){
-                handle_mouse_input_visual_novel(&event, &game.visualNovelState, &dialogue, &game.textureAssets);
-            }
+        switch(game.scene){
+            case VN_INTRO:
+                while(SDL_PollEvent(&event)){
+                    handle_mouse_input_visual_novel(&event, &game.visualNovelState, &dialogue, &game.textureAssets);
+                }
 
-            if(game.visualNovelState.currentDialogID == DLG_MONSTER_APPEARS){
-                scene_switch(&game, DEALER_ROOM);
-            }
+                if(game.visualNovelState.currentDialogID == DLG_MONSTER_APPEARS){
+                    setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);
+                    scene_switch(&game, DEALER_ROOM);
+                }
 
-            render_dialogue_box(SCREEN_WIDTH, SCREEN_HEIGHT, &dialogue);
-            update_dialogue(&dialogue, currentTime);
-            render_dialogue_name(&dialogue, game.textureAssets.mainFont);
-            render_dialogue_text(&dialogue, game.textureAssets.mainFont);
-            render_ui_texture(dialogue.speaker, screen);
+                render_dialogue_box(SCREEN_WIDTH, SCREEN_HEIGHT, &dialogue);
+                update_dialogue(&dialogue, currentTime);
+                render_dialogue_name(&dialogue, game.textureAssets.mainFont);
+                render_dialogue_text(&dialogue, game.textureAssets.mainFont);
+                render_ui_texture(dialogue.speaker, screen);
+                break;
+            case DEALER_ROOM:
+                while(SDL_PollEvent(&event)){
+                    handle_mouse_input(&event, &game.player.camera);
+                }
+                setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-        }else{
-            if(deltaTime > 0.1f) deltaTime = 0.1f;
-            while(SDL_PollEvent(&event)){
-                handle_mouse_input(&event, &game.player.camera);
-            }
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+                update_camera_view(&game.player.camera);
+                render_model(&game.gameObjects.Dealer);
+                break;
+            default:
+                break;
         }
+
 
         handle_wasd_input(&event, &game.player.camera, &game.isRunning, deltaTime);
 
