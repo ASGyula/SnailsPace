@@ -166,7 +166,7 @@ void handle_mouse_input_visual_novel(SDL_Event* event, VisualNovelState* visual_
                     increase_visual_novel_state(visual_novel_state, 2);
                     break;
                 case DLG_DEALER_GREETING:
-                    newDialog = create_dialogue_from_id(DLG_PLAYER_SEARCHING_HELSIE, visual_novel_state->playerName, &texture_assets->Gyulasz_Thinking);
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_SEARCHING_HELSIE, visual_novel_state->playerName, &texture_assets->Gyulasz_Determined);
                     increase_visual_novel_state(visual_novel_state, 3);
                     break;
                 case DLG_PLAYER_SEARCHING_HELSIE:
@@ -182,7 +182,7 @@ void handle_mouse_input_visual_novel(SDL_Event* event, VisualNovelState* visual_
                     increase_visual_novel_state(visual_novel_state, 6);
                     break;
                 case DLG_DEALER_KNOWS_HELSIE:
-                    newDialog = create_dialogue_from_id(DLG_GYULASZ_EYES_SPARKING, visual_novel_state->playerName, &texture_assets->Gyulasz_Suprised);
+                    newDialog = create_dialogue_from_id(DLG_GYULASZ_EYES_SPARKING, visual_novel_state->playerName, &texture_assets->Gyulasz_Determined);
                     increase_visual_novel_state(visual_novel_state, 7);
                     break;
                 case DLG_GYULASZ_EYES_SPARKING:

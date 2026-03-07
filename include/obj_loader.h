@@ -23,6 +23,11 @@ typedef struct{
     GLuint textureID;
 } Model;
 
+typedef struct{
+    Model Helsie;
+    Model Dealer;
+} GameObjects;
+
 void load_obj(const char* filename, Vertex** vertices);
 
 bool load_textured_obj(const char* filename, Model* model);
