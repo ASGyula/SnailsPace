@@ -7,6 +7,7 @@
 #include <SDL_opengl.h>
 #include <SDL2/SDL_image.h>
 #include <math.h>
+#include <SDL_mixer.h>
 #include <stdio.h>
 #include <stdbool.h>
 
@@ -15,6 +16,8 @@
 #define LIDAR_DRAW_DISTANCE 10.0f
 
 #define QUEUE_SIZE 10
+
+#define ASSETS_PREFIX "assets/"
 
 typedef struct{
     Uint32 start_time;
@@ -341,7 +344,10 @@ void render_bat_vision(const Model* model, const Uint32 currentTime){
 }
 
 
-GLuint load_texture(const char* filename){
+GLuint load_texture(const char* name){
+    printf("[INFO] Textura betoltese: %s\n", name);
+    char filename[256];
+    snprintf(filename, sizeof(filename), "%s%s", ASSETS_PREFIX, name);
     SDL_Surface* surface = IMG_Load(filename);
     if(!surface){
         printf("[HIBA] Nem sikerult betolteni a texturat: %s\n", IMG_GetError());
@@ -359,48 +365,4 @@ GLuint load_texture(const char* filename){
 
     SDL_FreeSurface(surface);
     return textureID;
-}
-
-void render_ui_texture(UIElement element, int screenWidth, int screenHeight, bool isShowingFog){
-    if(isShowingFog)glDisable(GL_FOG);
-    glDisable(GL_DEPTH_TEST);
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glOrtho(0, screenWidth, screenHeight, 0, -1, 1);
-
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
-
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, element.textureID);
-
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    glColor3f(1.0f, 1.0f, 1.0f);
-
-    int w = 300;
-    int h = 100;
-    int x = (screenWidth - w) / 2;
-    int y = screenHeight - h - 20;
-
-    glBegin(GL_QUADS);
-    glTexCoord2f(0, 0); glVertex2i(x, y);
-    glTexCoord2f(1, 0); glVertex2i(x + w, y);
-    glTexCoord2f(1, 1); glVertex2i(x + w, y + h);
-    glTexCoord2f(0, 1); glVertex2i(x, y + h);
-    glEnd();
-
-    glDisable(GL_BLEND);
-    glDisable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, 0);
-
-    glPopMatrix();
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    glEnable(GL_DEPTH_TEST);
-    if(isShowingFog)glEnable(GL_FOG);
 }

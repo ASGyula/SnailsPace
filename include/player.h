@@ -8,6 +8,7 @@
 
 typedef struct{
     Camera camera;
+    char* playerName[64];
 } Player;
 
 #endif //SNAILSPACE_PLAYER_H

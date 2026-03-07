@@ -7,93 +7,90 @@
 #include <stdio.h>
 
 #include "camera.h"
+#include "dialogue_data.h"
+#include "game_manager.h"
 #include "graphics.h"
 #include "player.h"
+#include "ui_manager.h"
+#ifdef _WIN32
+    #include <windows.h>
+    #include <lmcons.h>
+    #define PLATFORM_GET_USER(buf, size) GetUserNameA(buf, &size)
+    #define MAX_USER_LEN (UNLEN + 1)
+#else
+    #include <unistd.h>
+    #include <limits.h>
+    #define PLATFORM_GET_USER(buf, size) getlogin_r(buf, size)
+    #define MAX_USER_LEN (LOGIN_NAME_MAX + 1)
+#endif
 
 #define SCREEN_WIDTH 1000
 #define SCREEN_HEIGHT 800
 
 int main(int argc, char *argv[]){
-    bool isRunning = true;
-    Player player;
-    player.camera.screenWidth = SCREEN_WIDTH;
-    player.camera.screenHeight = SCREEN_HEIGHT;
-
-    Vertex* palya = NULL;
-
-    if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0){
-        printf("[HIBA] Nem sikerult inincializalni a Mixert");
+    if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) != 0){
+        printf("[HIBA] SDL Init hiba: %s\n", SDL_GetError());
+        return 1;
     }
 
+    if(TTF_Init() == -1){
+        printf("[HIBA] SDL_ttf nem indult el: %s\n", TTF_GetError());
+        return 1;
+    }
 
-    Model Helsie;
-    Model masodikFolyoso;
-    UIElement spaceToShoutUIElement;
-    SDL_Window *window = SDL_CreateWindow("Snail's Pace", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN);
-    SDL_GLContext *glContext = SDL_GL_CreateContext(window);
-    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+    if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0){
+        printf("[HIBA] Nem sikerult inincializalni a Mixert: %s\n", Mix_GetError());
+    }
 
-    load_obj("assets/elso_folyoso.obj", &palya);
-    load_textured_obj("assets/Blender/masodik_folyoso.obj", &masodikFolyoso);
-    // load_obj("assets/External/MiSide/level_4_Miside.obj", &palya);
-    // load_textured_obj("assets/External/MiSide/level_4_Miside.obj", &masodikFolyoso);
-    // load_textured_obj("assets/Blender/masodik_szoba/masodik_szoba.obj", &palya);
-    load_textured_obj("assets/External/Helsie/HelsieMidnightbyRedEyes.obj", &Helsie);
+    char winName[UNLEN + 1];
+    DWORD winSize = sizeof(winName);
+    GetUserName(winName, &winSize);
+    Game game = init_game(SCREEN_WIDTH, SCREEN_HEIGHT, winName);
+    Screen screen = {
+        .screenWidth = SCREEN_WIDTH,
+        .screenHeight = SCREEN_HEIGHT
+    };
 
-
-    Helsie.textureID = load_texture("assets/External/Helsie/T_MysticFang_Body_D.png");
-    spaceToShoutUIElement.textureID = load_texture("assets/External/Gemini/SpaceToShout.png");
-
-    // prepare_lidar_data(palya);
+    Dialogue dialogue = create_dialogue_from_id(DLG_INTRO, winName, &game.textureAssets.Gyulasz_Scared);
 
     SDL_Event event;
-
-    initialize_camera(&player.camera);
-
-    Uint32 lastTime = SDL_GetTicks();
-    setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);
-
-    while(isRunning){
+    while(game.isRunning){
         Uint32 currentTime = SDL_GetTicks();
-        float deltaTime = (currentTime-lastTime)/1000.0f;
-        lastTime = currentTime;
-
-        if(deltaTime > 0.1f) deltaTime = 0.1f;
-        while(SDL_PollEvent(&event)){
-            handle_camera_input(&event, &player.camera);
-        }
-
-        handle_wasd_input(&event, &player.camera, &isRunning, deltaTime);
+        float deltaTime = (currentTime-game.lastTime)/1000.0f;
+        game.lastTime = currentTime;
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // spaceToShoutUIElement.isShowing = !camera.shout.isSouthSource || (SDL_GetTicks() - camera.shout.startTime > camera.shout.duration + camera.shout.delay);
+        if(game.scene == VN_INTRO){
+            while(SDL_PollEvent(&event)){
+                handle_mouse_input_visual_novel(&event, &game.visualNovelState, &dialogue, &game.textureAssets);
+            }
 
-        update_camera(&player.camera);
-        render_bat_vision(&masodikFolyoso, currentTime);
-        // render_bat_vision(&Helsie, currentTime);
-        // render_lidar(palya, &camera);
-        // render_lidar_eco(palya, &camera, currentTime);
-        // render_lidar_fast(palya->number_of_vertex);
+            if(game.visualNovelState.currentDialogID == DLG_MONSTER_APPEARS){
+                scene_switch(&game, DEALER_ROOM);
+            }
 
-        // render_lidar(Helsie, Helsie->number_of_vertex, camera.x, camera.y, camera.z);
+            render_dialogue_box(SCREEN_WIDTH, SCREEN_HEIGHT, &dialogue);
+            update_dialogue(&dialogue, currentTime);
+            render_dialogue_name(&dialogue, game.textureAssets.mainFont);
+            render_dialogue_text(&dialogue, game.textureAssets.mainFont);
+            render_ui_texture(dialogue.speaker, screen);
 
-        // render_lidar_fast(Helsie->number_of_vertex);
+        }else{
+            if(deltaTime > 0.1f) deltaTime = 0.1f;
+            while(SDL_PollEvent(&event)){
+                handle_mouse_input(&event, &game.player.camera);
+            }
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        }
 
+        handle_wasd_input(&event, &game.player.camera, &game.isRunning, deltaTime);
 
-        // glPushMatrix();
-        // render_model_without_texture(&masodikFolyoso);
-        render_model(&Helsie);
-        render_ui_texture(spaceToShoutUIElement, SCREEN_WIDTH, SCREEN_HEIGHT, true);
-        // glPopMatrix();
-
-        SDL_GL_SwapWindow(window);
+        SDL_GL_SwapWindow(game.window);
     }
 
-    // free(palya);
-    SDL_GL_DeleteContext(glContext);
-    SDL_DestroyWindow(window);
+    SDL_GL_DeleteContext(game.glContext);
+    SDL_DestroyWindow(game.window);
     SDL_Quit();
-
     return 0;
 }

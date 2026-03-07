@@ -28,7 +28,17 @@ add_executable(SnailsPace main.c include/obj_loader.h src/obj_loader.c
         src/graphics.c
         include/camera.h
         src/camera.c
-        include/player.h)
+        include/player.h
+        include/game_manager.h
+        src/game_manager.c
+        include/ui_manager.h
+        src/ui_manager.c
+        src/dialogue_data.c
+        include/dialogue_data.h
+        include/visual_novel.h
+        src/visual_novel.c
+        src/game_types.c
+)
 
 #összekapcsolás
 target_link_libraries(SnailsPace mingw32 SDL2main SDL2 SDL2_image SDL2_ttf SDL2_mixer opengl32 advapi32)

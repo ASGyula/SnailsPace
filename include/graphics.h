@@ -31,8 +31,7 @@ void render_model_without_texture(const Model* model);
 
 void render_bat_vision(const Model* model, const Uint32 currentTime);
 
-void render_ui_texture(UIElement element, int screenWidth, int screenHeight, bool isShowingFog);
-
 void add_sound_wave(float x, float y, float z, float speed, float max_dist, float width, char source);
+
 
 #endif //SNAILSPACE_GRAPHICS_H
