@@ -37,23 +37,25 @@ void initialize_camera(Camera* camera){
     camera->mouseSpeed = 0.1f;
     camera->moveSpeed = 1.0f;
     camera->isInvertedMouseY = true;
-
+    camera->isEnabledMovement = false;
+    camera->isEnabledRotation = true;
 
     SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 
+void handle_mouse_input(SDL_Event* event, Camera* camera){
+    if(camera->isEnabledRotation){
+        if(event->type == SDL_MOUSEMOTION){
+            camera->yaw += event->motion.xrel * camera->mouseSpeed;
+            if(camera->isInvertedMouseY) {
+                camera->pitch -= event->motion.yrel * camera->mouseSpeed;
+            }else{
+                camera->pitch += event->motion.yrel * camera->mouseSpeed;
+            }
 
-void handle_camera_input(SDL_Event* event, Camera* camera){
-    if(event->type == SDL_MOUSEMOTION){
-        camera->yaw += event->motion.xrel * camera->mouseSpeed;
-        if(camera->isInvertedMouseY) {
-            camera->pitch -= event->motion.yrel * camera->mouseSpeed;
-        }else{
-            camera->pitch += event->motion.yrel * camera->mouseSpeed;
+            if(camera->pitch > 89.0f)camera->pitch=89.0f;
+            if(camera->pitch < -89.0f)camera->pitch=-89.0f;
         }
-
-        if(camera->pitch > 89.0f)camera->pitch=89.0f;
-        if(camera->pitch < -89.0f)camera->pitch=-89.0f;
     }
 }
 
@@ -66,45 +68,47 @@ void handle_wasd_input(SDL_Event* event, Camera* camera, bool* isRunning, float 
     float moveSpeed = camera->moveSpeed * deltaTime * BASE_MOVEMENT_SPEED;
     static Uint32 nextStepWave = 0;
 
-    if(state[SDL_SCANCODE_W]){
-        camera->x += sinf(rad_yaw) * moveSpeed;
-        camera->z -= cosf(rad_yaw) * moveSpeed;
-        if(SDL_GetTicks() > nextStepWave){
-            add_sound_wave(camera->x, camera->y, camera->z, STEPS_SPEED, STEPS_DISTANCE, STEPS_SENS, STEPS_SOURCE);
-            nextStepWave = SDL_GetTicks() + STEPS_COOLDOWN;
+    if(camera->isEnabledMovement){
+        if(state[SDL_SCANCODE_W]){
+            camera->x += sinf(rad_yaw) * moveSpeed;
+            camera->z -= cosf(rad_yaw) * moveSpeed;
+            if(SDL_GetTicks() > nextStepWave){
+                add_sound_wave(camera->x, camera->y, camera->z, STEPS_SPEED, STEPS_DISTANCE, STEPS_SENS, STEPS_SOURCE);
+                nextStepWave = SDL_GetTicks() + STEPS_COOLDOWN;
+            }
         }
-    }
-    if(state[SDL_SCANCODE_A]){
-        camera->x -= cosf(rad_yaw) * moveSpeed;
-        camera->z -= sinf(rad_yaw) * moveSpeed;
-        if(SDL_GetTicks() > nextStepWave){
-            add_sound_wave(camera->x, camera->y, camera->z, STEPS_SPEED, STEPS_DISTANCE, STEPS_SENS, STEPS_SOURCE);
-            nextStepWave = SDL_GetTicks() + STEPS_COOLDOWN;
+        if(state[SDL_SCANCODE_A]){
+            camera->x -= cosf(rad_yaw) * moveSpeed;
+            camera->z -= sinf(rad_yaw) * moveSpeed;
+            if(SDL_GetTicks() > nextStepWave){
+                add_sound_wave(camera->x, camera->y, camera->z, STEPS_SPEED, STEPS_DISTANCE, STEPS_SENS, STEPS_SOURCE);
+                nextStepWave = SDL_GetTicks() + STEPS_COOLDOWN;
+            }
         }
-    }
-    if(state[SDL_SCANCODE_S]){
-        camera->x -= sinf(rad_yaw) * moveSpeed;
-        camera->z += cosf(rad_yaw) * moveSpeed;
-        if(SDL_GetTicks() > nextStepWave){
-            add_sound_wave(camera->x, camera->y, camera->z, STEPS_SPEED, STEPS_DISTANCE, STEPS_SENS, STEPS_SOURCE);
-            nextStepWave = SDL_GetTicks() + STEPS_COOLDOWN;
+        if(state[SDL_SCANCODE_S]){
+            camera->x -= sinf(rad_yaw) * moveSpeed;
+            camera->z += cosf(rad_yaw) * moveSpeed;
+            if(SDL_GetTicks() > nextStepWave){
+                add_sound_wave(camera->x, camera->y, camera->z, STEPS_SPEED, STEPS_DISTANCE, STEPS_SENS, STEPS_SOURCE);
+                nextStepWave = SDL_GetTicks() + STEPS_COOLDOWN;
+            }
         }
-    }
-    if(state[SDL_SCANCODE_D]){
-        camera->x += cosf(rad_yaw) * moveSpeed;
-        camera->z += sinf(rad_yaw) * moveSpeed;
-        if(SDL_GetTicks() > nextStepWave){
-            add_sound_wave(camera->x, camera->y, camera->z, STEPS_SPEED, STEPS_DISTANCE, STEPS_SENS, STEPS_SOURCE);
-            nextStepWave = SDL_GetTicks() + STEPS_COOLDOWN;
+        if(state[SDL_SCANCODE_D]){
+            camera->x += cosf(rad_yaw) * moveSpeed;
+            camera->z += sinf(rad_yaw) * moveSpeed;
+            if(SDL_GetTicks() > nextStepWave){
+                add_sound_wave(camera->x, camera->y, camera->z, STEPS_SPEED, STEPS_DISTANCE, STEPS_SENS, STEPS_SOURCE);
+                nextStepWave = SDL_GetTicks() + STEPS_COOLDOWN;
+            }
         }
-    }
 
-    if(state[SDL_SCANCODE_SPACE]){
-        static Uint32 lastShout = 0;
-        if(SDL_GetTicks() - lastShout > SHOUT_COOLDOWN){
-            Mix_PlayChannel(-1, shoutSound, 0);
-            add_sound_wave(camera->x, camera->y, camera->z, SHOUT_SPEED, SHOUT_DISTANCE, SHOUT_SENS, SHOUT_SOURCE);
-            lastShout = SDL_GetTicks();
+        if(state[SDL_SCANCODE_SPACE]){
+            static Uint32 lastShout = 0;
+            if(SDL_GetTicks() - lastShout > SHOUT_COOLDOWN){
+                Mix_PlayChannel(-1, shoutSound, 0);
+                add_sound_wave(camera->x, camera->y, camera->z, SHOUT_SPEED, SHOUT_DISTANCE, SHOUT_SENS, SHOUT_SOURCE);
+                lastShout = SDL_GetTicks();
+            }
         }
     }
 
@@ -114,7 +118,7 @@ void handle_wasd_input(SDL_Event* event, Camera* camera, bool* isRunning, float 
 }
 
 
-void update_camera(Camera* camera){
+void update_camera_view(Camera* camera){
     glLoadIdentity();
     glRotatef(camera->pitch, 1.0f, 0.0f, 0.0f);
     glRotatef(camera->yaw, 0.0f, 1.0f, 0.0f);
