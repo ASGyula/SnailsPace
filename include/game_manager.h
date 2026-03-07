@@ -8,7 +8,10 @@
 #include "game_types.h"
 #include <SDL_ttf.h>
 
+#include "obj_loader.h"
 #include "visual_novel.h"
+
+
 
 typedef struct{
     bool isRunning;
@@ -18,6 +21,7 @@ typedef struct{
     SDL_Window* window;
     SDL_GLContext* glContext;
     GameScene scene;
+    GameObjects gameObjects;
     TextureAssets textureAssets;
     VisualNovelState visualNovelState;
 } Game;

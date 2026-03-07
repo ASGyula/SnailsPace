@@ -36,6 +36,13 @@ Game init_game(const int screen_width, const int screen_height, const char* play
     }
 
     {
+        load_textured_obj("External/Helsie/HelsieMidnightbyRedEyes.obj", &game.gameObjects.Helsie);
+        game.gameObjects.Helsie.textureID = load_texture("External/Helsie/T_MysticFang_Body_D.png");
+        load_textured_obj("External/VibaPop/TheDealer.obj", &game.gameObjects.Dealer);
+        game.gameObjects.Dealer.textureID = load_texture("External/Vibapop/TheDealerTexture.png");
+    }
+
+    {
         game.textureAssets.Helsie_Happy.textureID = load_texture("External/Gemini/Helsie_Happy.png");
         game.textureAssets.Helsie_Happy.w = 400;
         game.textureAssets.Helsie_Happy.h = 400;
@@ -141,6 +148,9 @@ void scene_switch(Game* game, GameScene game_scene){
             break;
         case DEALER_ROOM:
             printf("DEALER_ROOM\n");
+            glEnable(GL_DEPTH_TEST);
+            glMatrixMode(GL_MODELVIEW);
+            glLoadIdentity();
             break;
         case BAT_VISION:
             printf("BAT_VISION\n");
