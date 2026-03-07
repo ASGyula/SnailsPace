@@ -124,6 +124,15 @@ void render_dialogue_box(int screenWidth, int screenHeight, Dialogue* dialogue){
     glVertex2i(screenWidth, screenHeight - 220);
     glEnd();
 
+    glColor3f(1.0f, 1.0f, 1.0f);
+    if(dialogue->isFinished && (SDL_GetTicks() / 500) % 2){
+        glBegin(GL_TRIANGLES);
+        glVertex2i(screenWidth/2-10, screenHeight - 70);
+        glVertex2i(screenWidth/2 + 10, screenHeight - 70);
+        glVertex2i(screenWidth/2, screenHeight - 60);
+        glEnd();
+    }
+
     glDisable(GL_BLEND);
     glEnable(GL_TEXTURE_2D);
 
