@@ -101,7 +101,7 @@ void handle_wasd_input(SDL_Event* event, Camera* camera, bool* isRunning, float 
         if(state[SDL_SCANCODE_SPACE]){
             static Uint32 lastShout = 0;
             if(SDL_GetTicks() - lastShout > SHOUT_COOLDOWN){
-                playSound(sounds.SoutSound);
+                playSound(sounds.ShoutSound);
                 add_sound_wave(camera->x, camera->y, camera->z, SHOUT_SPEED, SHOUT_DISTANCE, SHOUT_SENS, SHOUT_SOURCE);
                 lastShout = SDL_GetTicks();
             }

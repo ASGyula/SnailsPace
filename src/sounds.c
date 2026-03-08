@@ -6,5 +6,7 @@
 #include "sounds.h"
 
 void playSound(Mix_Chunk* sound){
-    Mix_PlayChannel(-1, sound, 0);
+    if(sound != NULL){
+        Mix_PlayChannel(-1, sound, 0);
+    }
 }
