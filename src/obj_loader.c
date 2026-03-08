@@ -60,11 +60,12 @@ bool load_textured_obj(const char* name, Model* model){
         return false;
     }
 
-    int v_count = 0, vt_count = 0, total_indices = 0;
+    int v_count = 0, vt_count = 0, total_indices = 0, vn_count=0;
     char line[1024];
     while(fgets(line, sizeof(line), file)){
         if(line[0] == 'v' && line[1] == ' ') v_count++;
         else if(line[0] == 'v' && line[1] == 't') vt_count++;
+        else if(line[0] == 'v' && line[1] == 'n') vn_count++;
         else if(line[0] == 'f'){
             int spaces = 0;
             for(int i=0; line[i] != '\0'; i++) if(line[i] == ' ') spaces++;
@@ -76,6 +77,7 @@ bool load_textured_obj(const char* name, Model* model){
 
     float (*temp_v)[3] = malloc(sizeof(float[3]) * (v_count + 1));
     float (*temp_vt)[2] = (vt_count > 0) ? malloc(sizeof(float[2]) * (vt_count + 1)) : NULL;
+    float (*temp_vn)[3] = malloc(sizeof(float[3]) * (vn_count + 1));
 
     if(!temp_v || (vt_count > 0 && !temp_vt)){
         printf("[HIBA] Memoriafoglalasi hiba az ideiglenes tomboknel!\n");
@@ -85,7 +87,7 @@ bool load_textured_obj(const char* name, Model* model){
     }
 
     rewind(file);
-    int cv = 1, cvt = 1;
+    int cv = 1, cvt = 1, cvn=1;
     while(fgets(line, sizeof(line), file)){
         if(line[0] == 'v' && line[1] == ' ') {
             sscanf(line, "v %f %f %f", &temp_v[cv][0], &temp_v[cv][1], &temp_v[cv][2]);
@@ -93,6 +95,9 @@ bool load_textured_obj(const char* name, Model* model){
         }else if(line[0] == 'v' && line[1] == 't'){
             sscanf(line, "vt %f %f", &temp_vt[cvt][0], &temp_vt[cvt][1]);
             cvt++;
+        }else if(line[0] == 'v' && line[1] == 'n') {
+            sscanf(line, "vn %f %f %f", &temp_vn[cvn][0], &temp_vn[cvn][1], &temp_vn[cvn][2]);
+            cvn++;
         }
     }
 
@@ -126,6 +131,12 @@ bool load_textured_obj(const char* name, Model* model){
                 if(temp_vt && vt[idx] > 0 && vt[idx] <= vt_count){
                     model->vertices[current_v].u = temp_vt[vt[idx]][0];
                     model->vertices[current_v].v = 1.0f - temp_vt[vt[idx]][1]; // Invertáljuk a V-t az OpenGL miatt!
+                }
+
+                if (n[idx] > 0 && n[idx] <= vn_count) {
+                    model->vertices[current_v].nx = temp_vn[n[idx]][0];
+                    model->vertices[current_v].ny = temp_vn[n[idx]][1];
+                    model->vertices[current_v].nz = temp_vn[n[idx]][2];
                 }
                 current_v++;
             }

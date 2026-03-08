@@ -6,6 +6,8 @@
 #define SNAILSPACE_CAMERA_H
 #include <SDL_events.h>
 
+#include "sounds.h"
+
 typedef struct{
     float x, y, z;
     float pitch, yaw;
@@ -21,6 +23,6 @@ typedef struct{
 void initialize_camera(Camera* camera);
 void update_camera_view(Camera* camera);
 void handle_mouse_input(SDL_Event* event, Camera* camera);
-void handle_wasd_input(SDL_Event* event, Camera* camera, bool* isRunning, float deltaTime);
+void handle_wasd_input(SDL_Event* event, Camera* camera, bool* isRunning, float deltaTime, Sounds sounds);
 
 #endif //SNAILSPACE_CAMERA_H

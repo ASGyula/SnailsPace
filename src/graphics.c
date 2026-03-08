@@ -198,11 +198,14 @@ void prepare_lidar_data(Vertex* vertices){
 
 void render_model(const Model* model){
     glEnable(GL_TEXTURE_2D);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glBindTexture(GL_TEXTURE_2D, model->textureID);
     glColor3f(1.0f, 1.0f, 1.0f);
 
     glBegin(GL_TRIANGLES);
-    for(int i = 0; i < model->number_of_vertex; i++) {
+    for(int i = 0; i < model->number_of_vertex; i++){
+        if(model->vertices[i].nx == 0 && model->vertices[i].ny == 0 && model->vertices[i].nz == 0)glNormal3f(0.0f, 0.0f, 1.0f);
+        else glNormal3f(model->vertices[i].nx, model->vertices[i].ny, model->vertices[i].nz);
         glTexCoord2f(model->vertices[i].u, model->vertices[i].v);
         glVertex3f(model->vertices[i].x, model->vertices[i].y, model->vertices[i].z);
     }
