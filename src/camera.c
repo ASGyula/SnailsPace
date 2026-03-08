@@ -24,11 +24,7 @@
 #define STEPS_SOURCE 'm'
 #define STEPS_SENS 2.0f
 
-static Mix_Chunk* shoutSound;
-
 void initialize_camera(Camera* camera){
-    shoutSound = Mix_LoadWAV("assets/External/YouTube/Shout.wav");
-
     camera->x = 0.0f;
     camera->y = 1.6f;
     camera->z = 5.0f;
@@ -59,7 +55,7 @@ void handle_mouse_input(SDL_Event* event, Camera* camera){
     }
 }
 
-void handle_wasd_input(SDL_Event* event, Camera* camera, bool* isRunning, float deltaTime){
+void handle_wasd_input(SDL_Event* event, Camera* camera, bool* isRunning, float deltaTime, Sounds sounds){
     if(event->type == SDL_QUIT)*isRunning = false;
 
     const Uint8* state = SDL_GetKeyboardState(NULL);
@@ -105,7 +101,7 @@ void handle_wasd_input(SDL_Event* event, Camera* camera, bool* isRunning, float 
         if(state[SDL_SCANCODE_SPACE]){
             static Uint32 lastShout = 0;
             if(SDL_GetTicks() - lastShout > SHOUT_COOLDOWN){
-                Mix_PlayChannel(-1, shoutSound, 0);
+                playSound(sounds.SoutSound);
                 add_sound_wave(camera->x, camera->y, camera->z, SHOUT_SPEED, SHOUT_DISTANCE, SHOUT_SENS, SHOUT_SOURCE);
                 lastShout = SDL_GetTicks();
             }

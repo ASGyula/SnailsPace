@@ -10,8 +10,7 @@
 
 #include "obj_loader.h"
 #include "visual_novel.h"
-
-
+#include "sounds.h"
 
 typedef struct{
     bool isRunning;
@@ -21,6 +20,7 @@ typedef struct{
     SDL_Window* window;
     SDL_GLContext* glContext;
     GameScene scene;
+    Sounds sounds;
     GameObjects gameObjects;
     TextureAssets textureAssets;
     VisualNovelState visualNovelState;

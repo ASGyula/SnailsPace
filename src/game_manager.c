@@ -36,11 +36,15 @@ Game init_game(const int screen_width, const int screen_height, const char* play
     }
 
     {
+        game.sounds.Overture = Mix_LoadWAV("../assets/External/Gemini/Overture.wav");
+        game.sounds.SoutSound = Mix_LoadWAV("../assets/External/Gemini/Sout.wav");
+    }
+    {
         load_textured_obj("External/Helsie/HelsieMidnightbyRedEyes.obj", &game.gameObjects.Helsie);
         game.gameObjects.Helsie.textureID = load_texture("External/Helsie/T_MysticFang_Body_D.png");
 
         load_textured_obj("External/VibaPop/TheDealer.obj", &game.gameObjects.Dealer.model);
-        game.gameObjects.Dealer.model.textureID = load_texture("External/Vibapop/TheDealerTexture.png");
+        game.gameObjects.Dealer.model.textureID = load_texture("External/Vibapop/TheDealerTextureB.png");
         game.gameObjects.Dealer.x = 0;
         game.gameObjects.Dealer.y = 0.0f;
         game.gameObjects.Dealer.z = -2.0f;
@@ -156,12 +160,13 @@ void scene_switch(Game* game, GameScene game_scene){
             change_camera_input_handler(game, false, false);
             break;
         case DEALER_ROOM:
-            glEnable(GL_FOG);
             printf("DEALER_ROOM\n");
             glEnable(GL_DEPTH_TEST);
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
+            playSound(game->sounds.Overture);
             enableFog(2.0f, 10.0f, 0.4f);
+            SDL_SetWindowBrightness(game->window, 0.4f);
             break;
         case BAT_VISION:
             printf("BAT_VISION\n");

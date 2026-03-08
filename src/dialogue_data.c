@@ -92,14 +92,42 @@ static const DialogueTemplate ALL_DIALOGUES[] = {
     },
     [DLG_GYULASZ_ASKING_ABOUT_OFFER] = {
         "$PLAYER_NAME$",
-        "Bármit! Add a tollat!",
+        "Bármit!",
         {0.1f, 0.0f, 0.1f, 0.9f},
         {255, 255, 255, 255}, {53, 180, 84, 255},
         390, 600, 390, 540
     },
+    [DLG_DEALERS_MAKE_A_DEAL] = {
+        "TITOKZATOS ALAK",
+        "Rendben, %s. Írd alá!",
+        {0.0f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {255, 204, 0, 255},
+        50, 600, 50, 540
+    },
+    [DLG_GYULASZ_READING_THE_OFFER] = {
+        "$PLAYER_NAME$",
+        "Ez.. ez üres.",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_GYULASZ_READING_THE_OFFER2] = {
+        "$PLAYER_NAME$",
+        "Mit tettél Helsievel?",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_DEALER_MAKE_A_DEAL2] = {
+        "TITOKZATOS ALAK",
+        "Mit szeretni jobban, hogy Helsie biztonságban legyen, vagy hogy örök homályba vesszen?",
+        {0.0f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {255, 204, 0, 255},
+        50, 600, 50, 540
+    },
     [DLG_MONSTER_APPEARS] = {
-        "[Az Immortal Snake aurája]",
-        "*Egy nedves, cuppogó mászás zaja töri meg a csendet*",
+        "TITOKZATOS ALAK",
+        "ÍRD ALÁ!",
         {0.2f, 0.0f, 0.0f, 0.95f},
         {200, 0, 0, 255}, {100, 0, 0, 255},
         50, 600, 50, 540
@@ -198,8 +226,24 @@ void handle_mouse_input_visual_novel(SDL_Event* event, VisualNovelState* visual_
                     increase_visual_novel_state(visual_novel_state, 10);
                     break;
                 case DLG_GYULASZ_ASKING_ABOUT_OFFER:
-                    newDialog = create_dialogue_from_id(DLG_MONSTER_APPEARS, visual_novel_state->playerName, &texture_assets->Snail);
+                    newDialog = create_dialogue_from_id(DLG_DEALERS_MAKE_A_DEAL, visual_novel_state->playerName, &texture_assets->Dealer);
                     increase_visual_novel_state(visual_novel_state, 11);
+                    break;
+                case DLG_DEALERS_MAKE_A_DEAL:
+                    newDialog = create_dialogue_from_id(DLG_GYULASZ_READING_THE_OFFER, visual_novel_state->playerName, &texture_assets->Gyulasz_Hand_Shake);
+                    increase_visual_novel_state(visual_novel_state, 12);
+                    break;
+                case DLG_GYULASZ_READING_THE_OFFER:
+                    newDialog = create_dialogue_from_id(DLG_GYULASZ_READING_THE_OFFER2, visual_novel_state->playerName, &texture_assets->Gyulasz_Determined);
+                    increase_visual_novel_state(visual_novel_state, 13);
+                    break;
+                case DLG_GYULASZ_READING_THE_OFFER2:
+                    newDialog = create_dialogue_from_id(DLG_DEALER_MAKE_A_DEAL2, visual_novel_state->playerName, &texture_assets->Dealer);
+                    increase_visual_novel_state(visual_novel_state, 14);
+                    break;
+                case DLG_DEALER_MAKE_A_DEAL2:
+                    newDialog = create_dialogue_from_id(DLG_MONSTER_APPEARS, visual_novel_state->playerName, &texture_assets->Dealer);
+                    increase_visual_novel_state(visual_novel_state, 15);
                     break;
                 default:
                     break;

@@ -80,20 +80,23 @@ int main(int argc, char *argv[]){
                 break;
             case DEALER_ROOM:
                 while(SDL_PollEvent(&event)){
-                    handle_mouse_input(&event, &game.player.camera);
+                    handle_mouse_input_visual_novel(&event, &game.visualNovelState, &dialogue, &game.textureAssets);
                 }
                 setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);
-
                 update_camera_view(&game.player.camera);
                 update_moveable_model_position(&game.gameObjects.Dealer, deltaTime);
                 render_moveable_model(&game.gameObjects.Dealer);
+                render_dialogue_box(SCREEN_WIDTH, SCREEN_HEIGHT, &dialogue);
+                update_dialogue(&dialogue, currentTime);
+                render_dialogue_text(&dialogue, game.textureAssets.mainFont);
+
                 break;
             default:
                 break;
         }
 
 
-        handle_wasd_input(&event, &game.player.camera, &game.isRunning, deltaTime);
+        handle_wasd_input(&event, &game.player.camera, &game.isRunning, deltaTime, game.sounds);
 
         SDL_GL_SwapWindow(game.window);
     }

@@ -14,6 +14,7 @@ typedef struct{
 typedef struct{
     float x, y, z;
     float u, v;
+    float nx, ny, nz;
     GLboolean edgeFlag;
 } ModelVertex;
 
