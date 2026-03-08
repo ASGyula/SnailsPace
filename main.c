@@ -85,7 +85,8 @@ int main(int argc, char *argv[]){
                 setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);
 
                 update_camera_view(&game.player.camera);
-                render_model(&game.gameObjects.Dealer);
+                update_moveable_model_position(&game.gameObjects.Dealer, deltaTime);
+                render_moveable_model(&game.gameObjects.Dealer);
                 break;
             default:
                 break;

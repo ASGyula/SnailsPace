@@ -25,84 +25,84 @@ static const DialogueTemplate ALL_DIALOGUES[] = {
         "Helsie? Ez nem vicces. Gyere elő!",
         {0.1f, 0.0f, 0.1f, 0.9f},
         {255, 255, 255, 255}, {53, 180, 84, 255},
-        390, 600, 390, 550
+        390, 600, 390, 540
     },
     [DLG_GYULASZ_CALM_HIMSELF_DOWN] = {
         "$PLAYER_NAME$",
         "Nyugi %s! Csak tiszta fejjel találod meg őt.",
         {0.1f, 0.0f, 0.1f, 0.9f},
         {255, 255, 255, 255}, {53, 180, 84, 255},
-        390, 600, 390, 550
+        390, 600, 390, 540
     },
     [DLG_DEALER_GREETING] = {
         "TITOKZATOS ALAK",
         "Azt hitted, egyedül vagy a ködben, %s? Én tudom, miért jöttél... vagy inkább... Kiért. De a válasz nincs ingyen.",
         {0.0f, 0.0f, 0.1f, 0.9f},
         {255, 255, 255, 255}, {255, 204, 0, 255},
-        50, 600, 50, 550
+        50, 600, 50, 540
     },
     [DLG_PLAYER_SEARCHING_HELSIE] = {
         "$PLAYER_NAME$",
         "Nem érdekelnek a játékaid. Hol van Helsie? Mit tettél vele?",
         {0.1f, 0.0f, 0.1f, 0.9f},
         {255, 255, 255, 255}, {53, 180, 84, 255},
-        390, 600, 390, 550
+        390, 600, 390, 540
     },
     [DLG_HELSIE_GREETING] = {
         "[Helsie suttogása]",
         "%s... se....gíí...ts!",
         {1.0f, 1.0f, 1.0f, 0.9f},
         {90, 37, 255, 101}, {90, 37, 101, 255},
-        380, 600, 380, 550
+        380, 600, 380, 540
     },
     [DLG_GYULASZ_GREETING_HELSIE] = {
         "$PLAYER_NAME$",
         "Hallom őt! Helsie! Itt vagy?",
         {0.1f, 0.0f, 0.1f, 0.9f},
         {255, 255, 255, 255}, {53, 180, 84, 255},
-        390, 600, 390, 550
+        390, 600, 390, 540
     },
     [DLG_DEALER_KNOWS_HELSIE] = {
         "TITOKZATOS ALAK",
         "Helsie már messze jár. De adhatok valamit, amivel utoléred. Egy szempárt a sötétségben.",
         {0.0f, 0.0f, 0.1f, 0.9f},
         {255, 255, 255, 255}, {255, 204, 0, 255},
-        50, 600, 50, 550
+        50, 600, 50, 540
     },
     [DLG_GYULASZ_EYES_SPARKING] = {
         "$PLAYER_NAME$",
         "Bármit megteszek. Csak mondd el, hogy hol találom!",
         {0.1f, 0.0f, 0.1f, 0.9f},
         {255, 255, 255, 255}, {53, 180, 84, 255},
-        390, 600, 390, 550
+        390, 600, 390, 540
     },
     [DLG_DEALER_MAKE_AN_OFFER] = {
         "TITOKZATOS ALAK",
         "%s... Óvatosan a szavakkal. Megkapod a látást....",
         {0.0f, 0.0f, 0.1f, 0.9f},
         {255, 255, 255, 255}, {255, 204, 0, 255},
-        50, 600, 50, 550
+        50, 600, 50, 540
     },
     [DLG_DEALER_MAKE_AN_OFFER2] = {
         "[TITOKZATOS ALAK SUTTOGÁSA]",
         "...cserébe az örökös üldözésért.",
         {0.0f, 0.0f, 0.1f, 1.0f},
         {255, 255, 255, 100}, {255, 204, 0, 100},
-        50, 600, 50, 550
+        50, 600, 50, 540
     },
     [DLG_GYULASZ_ASKING_ABOUT_OFFER] = {
         "$PLAYER_NAME$",
         "Bármit! Add a tollat!",
         {0.1f, 0.0f, 0.1f, 0.9f},
         {255, 255, 255, 255}, {53, 180, 84, 255},
-        390, 600, 390, 550
+        390, 600, 390, 540
     },
     [DLG_MONSTER_APPEARS] = {
         "[Az Immortal Snake aurája]",
         "*Egy nedves, cuppogó mászás zaja töri meg a csendet*",
         {0.2f, 0.0f, 0.0f, 0.95f},
         {200, 0, 0, 255}, {100, 0, 0, 255},
-        50, 600, 50, 550
+        50, 600, 50, 540
     }
 };
 

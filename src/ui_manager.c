@@ -25,10 +25,10 @@ static GLuint create_text_texture(TTF_Font* font, const char* text, SDL_Color co
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     int mode = GL_RGBA;
-    if (s->format->BytesPerPixel == 4) {
+    if(s->format->BytesPerPixel == 4){
         if (s->format->Rmask == 0x000000ff) mode = GL_RGBA;
         else mode = GL_BGRA;
-    } else if (s->format->BytesPerPixel == 3) {
+    }else if(s->format->BytesPerPixel == 3){
         if (s->format->Rmask == 0x000000ff) mode = GL_RGB;
         else mode = GL_BGR;
     }

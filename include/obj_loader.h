@@ -24,8 +24,16 @@ typedef struct{
 } Model;
 
 typedef struct{
+    Model model;
+    float x, y, z;
+    float targetX, targetY, targetZ;
+    float animSpeed;
+    bool isMoving;
+} MoveableModel;
+
+typedef struct{
     Model Helsie;
-    Model Dealer;
+    MoveableModel Dealer;
 } GameObjects;
 
 void load_obj(const char* filename, Vertex** vertices);
