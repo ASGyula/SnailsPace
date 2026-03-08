@@ -37,7 +37,7 @@ Game init_game(const int screen_width, const int screen_height, const char* play
 
     {
         game.sounds.Overture = Mix_LoadWAV("../assets/External/Gemini/Overture.wav");
-        game.sounds.SoutSound = Mix_LoadWAV("../assets/External/Gemini/Sout.wav");
+        game.sounds.ShoutSound = Mix_LoadWAV("../assets/External/YouTube/Shout.wav");
     }
     {
         load_textured_obj("External/Helsie/HelsieMidnightbyRedEyes.obj", &game.gameObjects.Helsie);
@@ -53,6 +53,10 @@ Game init_game(const int screen_width, const int screen_height, const char* play
         game.gameObjects.Dealer.targetZ = 0.0f;
         game.gameObjects.Dealer.animSpeed = 2.0f;
         game.gameObjects.Dealer.isMoving = true;
+
+        load_textured_obj("Blender/masodik_folyoso.obj", &game.gameObjects.BatVisionMap);
+        game.gameObjects.BatVisionMap.textureID = load_texture("External/Helsie/T_MysticFang_Body_D.png");
+        load_obj("elso_folyoso.obj", &game.gameObjects.LidarMap);
     }
 
     {
@@ -165,14 +169,23 @@ void scene_switch(Game* game, GameScene game_scene){
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
             playSound(game->sounds.Overture);
+            // SDL_StartTextInput();
             enableFog(2.0f, 10.0f, 0.4f);
             SDL_SetWindowBrightness(game->window, 0.4f);
             break;
+        case PRE_BAT_VISION:
+            printf("PRE_BAT_VISION\n");
+            disableFog();
+            SDL_SetWindowBrightness(game->window, 1.0f);
+            break;
         case BAT_VISION:
             printf("BAT_VISION\n");
+            change_camera_input_handler(game, true, true);
             break;
         case LIDAR:
             printf("LIDAR\n");
+            prepare_lidar_data(game->gameObjects.LidarMap);
+            SDL_SetWindowBrightness(game->window, 1.0f);
             break;
         case LAST_ROOM:
             printf("LAST_ROOM\n");

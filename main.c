@@ -58,15 +58,28 @@ int main(int argc, char *argv[]){
         Uint32 currentTime = SDL_GetTicks();
         float deltaTime = (currentTime-game.lastTime)/1000.0f;
         game.lastTime = currentTime;
+        while(SDL_PollEvent(&event)){
+            if(event.type == SDL_QUIT) game.isRunning = false;
+            switch(game.scene){
+                case VN_INTRO:
+                case DEALER_ROOM:
+                case PRE_BAT_VISION:
+                    handle_mouse_input_visual_novel(&event, &game.visualNovelState, &dialogue, &game.textureAssets);
+                    break;
+                case BAT_VISION:
+                    // handle_wasd_input(&event, &game.player.camera, &game.isRunning, deltaTime, game.sounds);
+                case LIDAR:
+                    handle_mouse_input(&event, &game.player.camera);
+                    break;
+                case LAST_ROOM:
+                    break;
+            }
+        }
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         switch(game.scene){
             case VN_INTRO:
-                while(SDL_PollEvent(&event)){
-                    handle_mouse_input_visual_novel(&event, &game.visualNovelState, &dialogue, &game.textureAssets);
-                }
-
                 if(game.visualNovelState.currentDialogID == DLG_MONSTER_APPEARS){
                     setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);
                     scene_switch(&game, DEALER_ROOM);
@@ -79,9 +92,6 @@ int main(int argc, char *argv[]){
                 render_ui_texture(dialogue.speaker, screen);
                 break;
             case DEALER_ROOM:
-                while(SDL_PollEvent(&event)){
-                    handle_mouse_input_visual_novel(&event, &game.visualNovelState, &dialogue, &game.textureAssets);
-                }
                 setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);
                 update_camera_view(&game.player.camera);
                 update_moveable_model_position(&game.gameObjects.Dealer, deltaTime);
@@ -90,11 +100,42 @@ int main(int argc, char *argv[]){
                 update_dialogue(&dialogue, currentTime);
                 render_dialogue_text(&dialogue, game.textureAssets.mainFont);
 
+                if(game.visualNovelState.currentDialogID == DLG_SCENE_SWITCH_BAT_VISION){
+                    scene_switch(&game, PRE_BAT_VISION);
+                }else if(game.visualNovelState.currentDialogID == DLG_GYULASZ_SIGN_THE_CONTRACT || game.visualNovelState.currentDialogID == DLG_GYULASZ_SIGN_THE_CONTRACT2){
+                    render_dialogue_name(&dialogue, game.textureAssets.mainFont);
+                }
+                break;
+            case PRE_BAT_VISION:
+                if(game.visualNovelState.currentDialogID == DLG_HELSIE_TELL_ABOUT_MONSTRUMS){
+                    scene_switch(&game, BAT_VISION);
+                }
+
+                update_camera_view(&game.player.camera);
+
+                render_bat_vision(&game.gameObjects.BatVisionMap, currentTime);
+
+                render_dialogue_box(SCREEN_WIDTH, SCREEN_HEIGHT, &dialogue);
+                update_dialogue(&dialogue, currentTime);
+                render_dialogue_name(&dialogue, game.textureAssets.mainFont);
+                render_dialogue_text(&dialogue, game.textureAssets.mainFont);
+                render_ui_texture(dialogue.speaker, screen);
+                break;
+            case BAT_VISION:
+                update_camera_view(&game.player.camera);
+                check_player_collision(&game.player.camera, &game.gameObjects.BatVisionMap, 0.5f);
+                render_bat_vision(&game.gameObjects.BatVisionMap, currentTime);
+                break;
+            case LIDAR:
+                update_camera_view(&game.player.camera);
+                render_lidar(game.gameObjects.LidarMap, &game.player.camera);
+                break;
+            case LAST_ROOM:
+
                 break;
             default:
                 break;
         }
-
 
         handle_wasd_input(&event, &game.player.camera, &game.isRunning, deltaTime, game.sounds);
 

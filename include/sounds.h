@@ -9,7 +9,7 @@
 
 typedef struct{
     Mix_Chunk* Overture;
-    Mix_Chunk* SoutSound;
+    Mix_Chunk* ShoutSound;
 } Sounds;
 
 void playSound(Mix_Chunk *sound);

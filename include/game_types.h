@@ -13,6 +13,7 @@ typedef struct{
 typedef enum{
     VN_INTRO,
     DEALER_ROOM,
+    PRE_BAT_VISION,
     BAT_VISION,
     LIDAR,
     LAST_ROOM
