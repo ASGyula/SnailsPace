@@ -39,4 +39,6 @@ void update_moveable_model_position(MoveableModel* objectum, float deltaTime);
 
 void render_moveable_model(MoveableModel* object);
 
+void update_snail_ai(MoveableModel* monster, Camera* player, float deltaTime);
+
 #endif //SNAILSPACE_GRAPHICS_H

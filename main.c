@@ -107,7 +107,7 @@ int main(int argc, char *argv[]){
                 }
                 break;
             case PRE_BAT_VISION:
-                if(game.visualNovelState.currentDialogID == DLG_HELSIE_TELL_ABOUT_MONSTRUMS){
+                if(game.visualNovelState.currentDialogID == DLG_GYULASZ_SEE_NOTHING4){
                     scene_switch(&game, BAT_VISION);
                 }
 
@@ -123,8 +123,8 @@ int main(int argc, char *argv[]){
                 break;
             case BAT_VISION:
                 update_camera_view(&game.player.camera);
-                check_player_collision(&game.player.camera, &game.gameObjects.BatVisionMap, 0.5f);
                 render_bat_vision(&game.gameObjects.BatVisionMap, currentTime);
+                check_player_collision(&game.player.camera, &game.gameObjects.BatVisionMap, 0.5f);
                 break;
             case LIDAR:
                 update_camera_view(&game.player.camera);
