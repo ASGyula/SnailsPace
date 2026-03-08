@@ -415,3 +415,15 @@ void render_moveable_model(MoveableModel* object){
     render_model(&object->model);
     glPopMatrix();
 }
+
+void update_snail_ai(MoveableModel* monster, Camera* player, float deltaTime){
+    float dx = player->x - monster->x;
+    float dy = player->y - monster->y;
+    float dz = player->z - monster->z;
+    float dist = sqrtf(dx*dx + dy*dy + dz*dz);
+
+    if(dist > 0.5f){
+        monster->x += (dx / dist) * monster->animSpeed * deltaTime;
+        monster->z += (dz / dist) * monster->animSpeed * deltaTime;
+    }
+}

@@ -100,14 +100,14 @@ static const DialogueTemplate ALL_DIALOGUES[] = {
     },
     [DLG_DEALERS_MAKE_A_DEAL] = {
         "TITOKZATOS ALAK",
-        "Rendben, %s. Írd alá!",
+        "Rendben, %s. Kezet rá!",
         {0.0f, 0.0f, 0.1f, 0.9f},
         {255, 255, 255, 255}, {255, 204, 0, 255},
         50, 600, 50, 540
     },
     [DLG_GYULASZ_READING_THE_OFFER] = {
         "$PLAYER_NAME$",
-        "Ez.. ez üres.",
+        "*a kezét nyújtja*",
         {0.1f, 0.0f, 0.1f, 0.9f},
         {255, 255, 255, 255}, {53, 180, 84, 255},
         390, 600, 390, 540
@@ -191,14 +191,14 @@ static const DialogueTemplate ALL_DIALOGUES[] = {
     },
     [DLG_IN_THE_BAT_VISION_SNAIL4] = {
         "Immortal Snail",
-        "Tudom hol vagy.",
+        "Tudom hol vagy. És jövök érted.",
         {0.2f, 0.0f, 0.0f, 0.95f},
         {200, 0, 0, 255}, {100, 0, 0, 255},
         50, 600, 50, 540
     },
     [DLG_IN_THE_BAT_VISION_SNAIL5] = {
         "Immortal Snail",
-        "Kezdődjön tehát az alku.",
+        "Ahogy az alkuban állt.",
         {0.2f, 0.0f, 0.0f, 0.95f},
         {200, 0, 0, 255}, {100, 0, 0, 255},
         50, 600, 50, 540
@@ -220,6 +220,13 @@ static const DialogueTemplate ALL_DIALOGUES[] = {
     [DLG_GYULASZ_SEE_NOTHING3] = {
         "$PLAYER_NAME$",
         "Talán a hanggokkal látok?",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_GYULASZ_SEE_NOTHING4] = {
+        "$PLAYER_NAME$",
+        "...",
         {0.1f, 0.0f, 0.1f, 0.9f},
         {255, 255, 255, 255}, {53, 180, 84, 255},
         390, 600, 390, 540
@@ -428,22 +435,26 @@ void handle_mouse_input_visual_novel(SDL_Event* event, VisualNovelState* visual_
                     add_sound_wave(0.0f, 1.8f, 5.0f, 10.0f, 20.0f, 5.0f, 'v');
                     break;
                 case DLG_GYULASZ_SEE_NOTHING3:
-                    newDialog = create_dialogue_from_id(DLG_HELSIE_TELL_ABOUT_MONSTRUMS, visual_novel_state->playerName, &texture_assets->Helsie_Scared);
+                    newDialog = create_dialogue_from_id(DLG_GYULASZ_SEE_NOTHING4, visual_novel_state->playerName, &texture_assets->Helsie_Scared);
                     increase_visual_novel_state(visual_novel_state, 29);
+                    break;
+                case DLG_GYULASZ_SEE_NOTHING4:
+                    newDialog = create_dialogue_from_id(DLG_HELSIE_TELL_ABOUT_MONSTRUMS, visual_novel_state->playerName, &texture_assets->Helsie_Scared);
+                    increase_visual_novel_state(visual_novel_state, 30);
                     break;
                 case DLG_HELSIE_TELL_ABOUT_MONSTRUMS:
                     newDialog = create_dialogue_from_id(DLG_HELSIE_TELL_ABOUT_MONSTRUMS2, visual_novel_state->playerName, &texture_assets->Helsie_Scared);
-                    increase_visual_novel_state(visual_novel_state, 30);
+                    increase_visual_novel_state(visual_novel_state, 31);
                     add_sound_wave(0.0f, 1.8f, 5.0f, 3.0f, 4.0f, 4.0f, 'v');
                     break;
                 case DLG_HELSIE_TELL_ABOUT_MONSTRUMS2:
                     newDialog = create_dialogue_from_id(DLG_HELSIE_TELL_ABOUT_MONSTRUMS3, visual_novel_state->playerName, &texture_assets->Helsie_Scared);
-                    increase_visual_novel_state(visual_novel_state, 31);
+                    increase_visual_novel_state(visual_novel_state, 32);
                     add_sound_wave(0.0f, 1.8f, 5.0f, 3.0f, 4.0f, 4.0f, 'v');
                     break;
                 case DLG_HELSIE_TELL_ABOUT_MONSTRUMS3:
                     newDialog = create_dialogue_from_id(DLG_GYULASZ_REPLY_TO_MONSTRUMS, visual_novel_state->playerName, &texture_assets->Gyulasz_Suprised);
-                    increase_visual_novel_state(visual_novel_state, 32);
+                    increase_visual_novel_state(visual_novel_state, 33);
                     add_sound_wave(0.0f, 1.8f, 5.0f, 3.0f, 4.0f, 4.0f, 'v');
                     break;
                 default:
