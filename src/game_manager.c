@@ -54,9 +54,10 @@ Game init_game(const int screen_width, const int screen_height, const char* play
         game.gameObjects.Dealer.animSpeed = 2.0f;
         game.gameObjects.Dealer.isMoving = true;
 
-        load_textured_obj("External/volvor/The_Japanese_school_corridor/model.obj", &game.gameObjects.BatVisionMap);
+        load_textured_obj("External/volvor/The_Japanese_School_Corridor/model.obj", &game.gameObjects.BatVisionMap);
+        // load_textured_obj("External/ETBENO/house-corridor-interior/model2.obj", &game.gameObjects.BatVisionMap);
         game.gameObjects.BatVisionMap.textureID = load_texture("External/Helsie/T_MysticFang_Body_D.png");
-        load_obj("elso_folyoso.obj", &game.gameObjects.LidarMap);
+        load_obj("External/volvor/The_Japanese_School_Classroom/model.obj", &game.gameObjects.LidarMap);
     }
 
     {
