@@ -8,7 +8,11 @@
 #include <string.h>
 #define ASSETS_PREFIX "../assets/"
 
-void load_obj(const char* filename, Vertex** vertices){
+void load_obj(const char* name, Vertex** vertices){
+    char filename[256];
+    snprintf(filename, sizeof(filename), "%s%s", ASSETS_PREFIX, name);
+    printf("[INFO] Texurazott obj betoltese: %s \n", name);
+
     printf("[INFO] %s beolvasasa elkezdodott\n", filename);
 
     FILE* file = fopen(filename, "r");

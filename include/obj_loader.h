@@ -34,6 +34,8 @@ typedef struct{
 
 typedef struct{
     Model Helsie;
+    Model BatVisionMap;
+    Vertex* LidarMap;
     MoveableModel Dealer;
 } GameObjects;
 

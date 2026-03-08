@@ -8,6 +8,7 @@
 #include <SDL2/SDL_image.h>
 #include <math.h>
 #include <SDL_mixer.h>
+#include <SDL_ttf.h>
 #include <stdio.h>
 #include <stdbool.h>
 
@@ -50,7 +51,6 @@ void add_sound_wave(float x, float y, float z, float speed, float max_dist, floa
 }
 
 PointData* gpu_data = NULL;
-
 
 void setup_projection(const int width, const int height){
     glViewport(0, 0, width, height);
@@ -248,15 +248,26 @@ void disableFog(){
 }
 
 void render_bat_vision(const Model* model, const Uint32 currentTime){
+    if(!model || !model->vertices){
+        printf("[HIBA] render_bat_vision: nem talalhato modell");
+        return;
+    }
+    glDisable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_COLOR_MATERIAL);
+    glColor3f(1.0f, 1.0f, 1.0f);
+
     if(!is_wave_running && queue_count > 0){
         Uint32 requestTime = wave_queue[0].start_time;
         Uint32 waitTime = currentTime - requestTime;
 
-        if(waitTime > (active_wave.speed * active_wave.max_distance) * 1000.0f){
+        // if(waitTime > (wave_queue[0].speed * wave_queue[0].max_distance) * 1000.0f){
+        if(waitTime > 600){
             for(int i = 0; i < queue_count - 1; i++){
                 wave_queue[i] = wave_queue[i + 1];
-                queue_count--;
             }
+            queue_count--;
+            return;
         }
 
         active_wave = wave_queue[0];

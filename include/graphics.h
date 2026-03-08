@@ -5,7 +5,6 @@
 #ifndef SNAILSPACE_GRAPHICS_H
 #define SNAILSPACE_GRAPHICS_H
 #include <SDL_opengl.h>
-#include <stddef.h>
 
 #include "camera.h"
 #include "obj_loader.h"
@@ -19,7 +18,7 @@ typedef struct{
 void setup_projection(int width, int height);
 
 void render_lidar(const Vertex* vertices, const Camera* camera);
-void render_lidar_eco(const Vertex* vertices, const Camera* camera, const Uint32 currentTime);
+void render_lidar_eco(const Vertex* vertices, const Camera* camera, Uint32 currentTime);
 
 void prepare_lidar_data(Vertex* vertices);
 void render_lidar_fast(int number_of_vertices);
@@ -32,7 +31,7 @@ void render_model_without_texture(const Model* model);
 void enableFog(float start, float end, float alpha);
 void disableFog();
 
-void render_bat_vision(const Model* model, const Uint32 currentTime);
+void render_bat_vision(const Model* model, Uint32 currentTime);
 
 void add_sound_wave(float x, float y, float z, float speed, float max_dist, float width, char source);
 

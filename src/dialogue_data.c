@@ -5,6 +5,7 @@
 #include "dialogue_data.h"
 
 #include "game_manager.h"
+#include "graphics.h"
 #include "visual_novel.h"
 
 typedef struct{
@@ -128,9 +129,128 @@ static const DialogueTemplate ALL_DIALOGUES[] = {
     [DLG_MONSTER_APPEARS] = {
         "TITOKZATOS ALAK",
         "ÍRD ALÁ!",
+        {0.5f, 0.0f, 0.0f, 0.95f},
+        {200, 0, 0, 255}, {100, 0, 0, 255},
+        50, 600, 50, 540
+    },
+    [DLG_GYULASZ_SIGN_THE_CONTRACT] = {
+        "SZERZŐDÉS",
+        "%s",
+        {0.87f, 0.78f, 0.65f, 0.5f},
+        {255, 255, 255, 255}, {224, 199, 168, 255},
+        50, 600, 50, 540
+    },
+    [DLG_GYULASZ_SIGN_THE_CONTRACT2] = {
+        "$PLAYER_NAME$",
+        "Megtalállak Helsie!",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        50, 600, 50, 540
+    },
+    [DLG_SCENE_SWITCH_BAT_VISION]={
+        "[Helsie suttogása]",
+        "%s NE!",
+        {1.0f, 1.0f, 1.0f, 0.9f},
+        {90, 37, 255, 101}, {90, 37, 101, 255},
+        380, 600, 380, 540
+    },
+    [DLG_IN_THE_BAT_VISION]={
+        "[Helsie suttogása]",
+        "Hová kerültél? Hol vagy most?",
+        {1.0f, 1.0f, 1.0f, 0.9f},
+        {90, 37, 255, 101}, {90, 37, 101, 255},
+        380, 600, 380, 540
+    },
+    [DLG_IN_THE_BAT_VISION2] = {
+        "$PLAYER_NAME$",
+        "Helsie?! Merre vagy?",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_IN_THE_BAT_VISION_SNAIL] = {
+        "Immortal Snail",
+        "Nem hall téged.",
         {0.2f, 0.0f, 0.0f, 0.95f},
         {200, 0, 0, 255}, {100, 0, 0, 255},
         50, 600, 50, 540
+    },
+    [DLG_IN_THE_BAT_VISION_SNAIL2] = {
+        "Immortal Snail",
+        "De én igen.",
+        {0.2f, 0.0f, 0.0f, 0.95f},
+        {200, 0, 0, 255}, {100, 0, 0, 255},
+        50, 600, 50, 540
+    },
+    [DLG_IN_THE_BAT_VISION_SNAIL3] = {
+        "Immortal Snail",
+        "És látlak is.",
+        {0.2f, 0.0f, 0.0f, 0.95f},
+        {200, 0, 0, 255}, {100, 0, 0, 255},
+        50, 600, 50, 540
+    },
+    [DLG_IN_THE_BAT_VISION_SNAIL4] = {
+        "Immortal Snail",
+        "Tudom hol vagy.",
+        {0.2f, 0.0f, 0.0f, 0.95f},
+        {200, 0, 0, 255}, {100, 0, 0, 255},
+        50, 600, 50, 540
+    },
+    [DLG_IN_THE_BAT_VISION_SNAIL5] = {
+        "Immortal Snail",
+        "Kezdődjön tehát az alku.",
+        {0.2f, 0.0f, 0.0f, 0.95f},
+        {200, 0, 0, 255}, {100, 0, 0, 255},
+        50, 600, 50, 540
+    },
+    [DLG_GYULASZ_SEE_NOTHING] = {
+        "$PLAYER_NAME$",
+        "Nem látok semmit.",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_GYULASZ_SEE_NOTHING2] = {
+        "$PLAYER_NAME$",
+        "Vagyis csak...",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_GYULASZ_SEE_NOTHING3] = {
+        "$PLAYER_NAME$",
+        "Talán a hanggokkal látok?",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_HELSIE_TELL_ABOUT_MONSTRUMS]={
+        "[Helsie suttogása]",
+        "Jól vagy %s? Aggódok érted. Nincs sok időnk.",
+        {1.0f, 1.0f, 1.0f, 0.9f},
+        {90, 37, 255, 101}, {90, 37, 101, 255},
+        380, 600, 380, 540
+    },
+    [DLG_HELSIE_TELL_ABOUT_MONSTRUMS2]={
+        "[Helsie suttogása]",
+        "Azt hiszem, hogy tudom hol vagy.",
+        {1.0f, 1.0f, 1.0f, 0.9f},
+        {90, 37, 255, 101}, {90, 37, 101, 255},
+        380, 600, 380, 540
+    },
+    [DLG_HELSIE_TELL_ABOUT_MONSTRUMS3]={
+        "[Helsie suttogása]",
+        "Keress Monstrum energiaitalt és i...",
+        {1.0f, 1.0f, 1.0f, 0.9f},
+        {90, 37, 255, 101}, {90, 37, 101, 255},
+        380, 600, 380, 540
+    },
+    [DLG_GYULASZ_REPLY_TO_MONSTRUMS] = {
+        "$PLAYER_NAME$",
+        "Helsie...",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
     }
 };
 
@@ -244,6 +364,87 @@ void handle_mouse_input_visual_novel(SDL_Event* event, VisualNovelState* visual_
                 case DLG_DEALER_MAKE_A_DEAL2:
                     newDialog = create_dialogue_from_id(DLG_MONSTER_APPEARS, visual_novel_state->playerName, &texture_assets->Dealer);
                     increase_visual_novel_state(visual_novel_state, 15);
+                    break;
+                case DLG_MONSTER_APPEARS:
+                    newDialog = create_dialogue_from_id(DLG_GYULASZ_SIGN_THE_CONTRACT, visual_novel_state->playerName, &texture_assets->Gyulasz_Brave);
+                    increase_visual_novel_state(visual_novel_state, 16);
+                    break;
+                case DLG_GYULASZ_SIGN_THE_CONTRACT:
+                    newDialog = create_dialogue_from_id(DLG_GYULASZ_SIGN_THE_CONTRACT2, visual_novel_state->playerName, &texture_assets->Gyulasz_Determined);
+                    increase_visual_novel_state(visual_novel_state, 17);
+                    break;
+                case DLG_GYULASZ_SIGN_THE_CONTRACT2:
+                    newDialog = create_dialogue_from_id(DLG_SCENE_SWITCH_BAT_VISION, visual_novel_state->playerName, &texture_assets->Helsie_Scared);
+                    increase_visual_novel_state(visual_novel_state, 18);
+                    break;
+                case DLG_SCENE_SWITCH_BAT_VISION:
+                    newDialog = create_dialogue_from_id(DLG_IN_THE_BAT_VISION, visual_novel_state->playerName, &texture_assets->Helsie_Scared);
+                    increase_visual_novel_state(visual_novel_state, 19);
+                    add_sound_wave(0.0f, 1.8f, 5.0f, 3.0f, 4.0f, 4.0f, 'v');
+                    break;
+                case DLG_IN_THE_BAT_VISION:
+                    newDialog = create_dialogue_from_id(DLG_IN_THE_BAT_VISION2, visual_novel_state->playerName, &texture_assets->Gyulasz_Scared);
+                    increase_visual_novel_state(visual_novel_state, 20);
+                    add_sound_wave(0.0f, 1.8f, 5.0f, 3.0f, 4.0f, 4.0f, 'v');
+                    break;
+                case DLG_IN_THE_BAT_VISION2:
+                    newDialog = create_dialogue_from_id(DLG_IN_THE_BAT_VISION_SNAIL, visual_novel_state->playerName, &texture_assets->Snail);
+                    increase_visual_novel_state(visual_novel_state, 21);
+                    add_sound_wave(0.0f, 0.3f, 5.0f, 10.0f, 4.0f, 4.0f, 'v');
+                    break;
+                case DLG_IN_THE_BAT_VISION_SNAIL:
+                    newDialog = create_dialogue_from_id(DLG_IN_THE_BAT_VISION_SNAIL2, visual_novel_state->playerName, &texture_assets->Snail);
+                    increase_visual_novel_state(visual_novel_state, 22);
+                    add_sound_wave(0.0f, 0.3f, 5.0f, 10.0f, 10.0f, 14.0f, 'v');
+                    break;
+                case DLG_IN_THE_BAT_VISION_SNAIL2:
+                    newDialog = create_dialogue_from_id(DLG_IN_THE_BAT_VISION_SNAIL3, visual_novel_state->playerName, &texture_assets->Snail);
+                    increase_visual_novel_state(visual_novel_state, 23);
+                    add_sound_wave(0.0f, 0.3f, 5.0f, 10.0f, 10.0f, 14.0f, 'v');
+                    break;
+                case DLG_IN_THE_BAT_VISION_SNAIL3:
+                    newDialog = create_dialogue_from_id(DLG_IN_THE_BAT_VISION_SNAIL4, visual_novel_state->playerName, &texture_assets->Snail);
+                    increase_visual_novel_state(visual_novel_state, 24);
+                    add_sound_wave(0.0f, 0.3f, 5.0f, 10.0f, 10.0f, 14.0f, 'v');
+                    break;
+                case DLG_IN_THE_BAT_VISION_SNAIL4:
+                    newDialog = create_dialogue_from_id(DLG_IN_THE_BAT_VISION_SNAIL5, visual_novel_state->playerName, &texture_assets->Snail);
+                    increase_visual_novel_state(visual_novel_state, 25);
+                    add_sound_wave(0.0f, 0.3f, 5.0f, 10.0f, 4.0f, 4.0f, 'v');
+                    break;
+                case DLG_IN_THE_BAT_VISION_SNAIL5:
+                    newDialog = create_dialogue_from_id(DLG_GYULASZ_SEE_NOTHING, visual_novel_state->playerName, &texture_assets->Gyulasz_Thinking);
+                    increase_visual_novel_state(visual_novel_state, 26);
+                    add_sound_wave(0.0f, 0.3f, 5.0f, 10.0f, 4.0f, 4.0f, 'v');
+                    break;
+                case DLG_GYULASZ_SEE_NOTHING:
+                    newDialog = create_dialogue_from_id(DLG_GYULASZ_SEE_NOTHING2, visual_novel_state->playerName, &texture_assets->Gyulasz_Thinking);
+                    increase_visual_novel_state(visual_novel_state, 27);
+                    add_sound_wave(0.0f, 1.8f, 5.0f, 3.0f, 4.0f, 4.0f, 'v');
+                    break;
+                case DLG_GYULASZ_SEE_NOTHING2:
+                    newDialog = create_dialogue_from_id(DLG_GYULASZ_SEE_NOTHING3, visual_novel_state->playerName, &texture_assets->Gyulasz_Thinking);
+                    increase_visual_novel_state(visual_novel_state, 28);
+                    add_sound_wave(0.0f, 1.8f, 5.0f, 10.0f, 20.0f, 5.0f, 'v');
+                    break;
+                case DLG_GYULASZ_SEE_NOTHING3:
+                    newDialog = create_dialogue_from_id(DLG_HELSIE_TELL_ABOUT_MONSTRUMS, visual_novel_state->playerName, &texture_assets->Helsie_Scared);
+                    increase_visual_novel_state(visual_novel_state, 29);
+                    break;
+                case DLG_HELSIE_TELL_ABOUT_MONSTRUMS:
+                    newDialog = create_dialogue_from_id(DLG_HELSIE_TELL_ABOUT_MONSTRUMS2, visual_novel_state->playerName, &texture_assets->Helsie_Scared);
+                    increase_visual_novel_state(visual_novel_state, 30);
+                    add_sound_wave(0.0f, 1.8f, 5.0f, 3.0f, 4.0f, 4.0f, 'v');
+                    break;
+                case DLG_HELSIE_TELL_ABOUT_MONSTRUMS2:
+                    newDialog = create_dialogue_from_id(DLG_HELSIE_TELL_ABOUT_MONSTRUMS3, visual_novel_state->playerName, &texture_assets->Helsie_Scared);
+                    increase_visual_novel_state(visual_novel_state, 31);
+                    add_sound_wave(0.0f, 1.8f, 5.0f, 3.0f, 4.0f, 4.0f, 'v');
+                    break;
+                case DLG_HELSIE_TELL_ABOUT_MONSTRUMS3:
+                    newDialog = create_dialogue_from_id(DLG_GYULASZ_REPLY_TO_MONSTRUMS, visual_novel_state->playerName, &texture_assets->Gyulasz_Suprised);
+                    increase_visual_novel_state(visual_novel_state, 32);
+                    add_sound_wave(0.0f, 1.8f, 5.0f, 3.0f, 4.0f, 4.0f, 'v');
                     break;
                 default:
                     break;
