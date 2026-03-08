@@ -17,7 +17,7 @@
 
 #define QUEUE_SIZE 10
 
-#define ASSETS_PREFIX "assets/"
+#define ASSETS_PREFIX "../assets/"
 
 typedef struct{
     Uint32 start_time;
@@ -230,14 +230,21 @@ void render_model_without_texture(const Model* model){
     glEnable(GL_CULL_FACE);
 }
 
-void render_bat_vision(const Model* model, const Uint32 currentTime){
-    glDisable(GL_FOG);
-    float fogColor[] = {0.0f, 0.0f, 0.0f, 1.0f};
+void enableFog(float start, float end, float alpha){
+    glEnable(GL_FOG);
+
+    float fogColor[] = {0.0f, 0.0f, 0.0f, alpha};
     glFogfv(GL_FOG_COLOR, fogColor);
     glFogf(GL_FOG_MODE, GL_LINEAR);
-    glFogf(GL_FOG_START, 5.0f);
-    glFogf(GL_FOG_END, 10.0f);
+    glFogf(GL_FOG_START, start);
+    glFogf(GL_FOG_END, end);
+}
 
+void disableFog(){
+    glDisable(GL_FOG);
+}
+
+void render_bat_vision(const Model* model, const Uint32 currentTime){
     if(!is_wave_running && queue_count > 0){
         Uint32 requestTime = wave_queue[0].start_time;
         Uint32 waitTime = currentTime - requestTime;
@@ -343,7 +350,6 @@ void render_bat_vision(const Model* model, const Uint32 currentTime){
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
-
 GLuint load_texture(const char* name){
     printf("[INFO] Textura betoltese: %s\n", name);
     char filename[256];
@@ -365,4 +371,33 @@ GLuint load_texture(const char* name){
 
     SDL_FreeSurface(surface);
     return textureID;
+}
+
+void update_moveable_model_position(MoveableModel* objectum, float deltaTime){
+    if(!objectum->isMoving) return;
+
+    float dx = objectum->targetX - objectum->x;
+    float dy = objectum->targetY - objectum->y;
+    float dz = objectum->targetZ - objectum->z;
+    float distance = sqrtf(dx*dx + dy*dy + dz*dz);
+
+    if(distance < 0.01f){
+        objectum->x = objectum->targetX;
+        objectum->y = objectum->targetY;
+        objectum->z = objectum->targetZ;
+        objectum->isMoving = false;
+        return;
+    }
+
+    objectum->x += (dx/distance)*objectum->animSpeed*deltaTime;
+    objectum->y += (dy/distance)*objectum->animSpeed*deltaTime;
+    objectum->z += (dz/distance)*objectum->animSpeed*deltaTime;
+
+}
+
+void render_moveable_model(MoveableModel* object){
+    glPushMatrix();
+    glTranslatef(object->x, object->y, object->z);
+    render_model(&object->model);
+    glPopMatrix();
 }

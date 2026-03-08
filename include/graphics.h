@@ -29,9 +29,15 @@ GLuint load_texture(const char* filename);
 void render_model(const Model* model);
 void render_model_without_texture(const Model* model);
 
+void enableFog(float start, float end, float alpha);
+void disableFog();
+
 void render_bat_vision(const Model* model, const Uint32 currentTime);
 
 void add_sound_wave(float x, float y, float z, float speed, float max_dist, float width, char source);
 
+void update_moveable_model_position(MoveableModel* objectum, float deltaTime);
+
+void render_moveable_model(MoveableModel* object);
 
 #endif //SNAILSPACE_GRAPHICS_H
