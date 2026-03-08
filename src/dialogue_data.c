@@ -383,51 +383,52 @@ void handle_mouse_input_visual_novel(SDL_Event* event, VisualNovelState* visual_
                 case DLG_GYULASZ_SIGN_THE_CONTRACT2:
                     newDialog = create_dialogue_from_id(DLG_SCENE_SWITCH_BAT_VISION, visual_novel_state->playerName, &texture_assets->Helsie_Scared);
                     increase_visual_novel_state(visual_novel_state, 18);
+                    add_sound_wave(0.0f, 1.8f, 5.0f, 10.0f, 15.0f, 5.0f, 'v');
                     break;
                 case DLG_SCENE_SWITCH_BAT_VISION:
                     newDialog = create_dialogue_from_id(DLG_IN_THE_BAT_VISION, visual_novel_state->playerName, &texture_assets->Helsie_Scared);
                     increase_visual_novel_state(visual_novel_state, 19);
-                    add_sound_wave(0.0f, 1.8f, 5.0f, 3.0f, 4.0f, 4.0f, 'v');
+                    add_sound_wave(0.0f, 1.8f, 5.0f, 10.0f, 15.0f, 5.0f, 'v');
                     break;
                 case DLG_IN_THE_BAT_VISION:
                     newDialog = create_dialogue_from_id(DLG_IN_THE_BAT_VISION2, visual_novel_state->playerName, &texture_assets->Gyulasz_Scared);
                     increase_visual_novel_state(visual_novel_state, 20);
-                    add_sound_wave(0.0f, 1.8f, 5.0f, 3.0f, 4.0f, 4.0f, 'v');
+                    add_sound_wave(0.0f, 1.8f, 5.0f, 10.0f, 20.0f, 5.0f, 'v');
                     break;
                 case DLG_IN_THE_BAT_VISION2:
                     newDialog = create_dialogue_from_id(DLG_IN_THE_BAT_VISION_SNAIL, visual_novel_state->playerName, &texture_assets->Snail);
                     increase_visual_novel_state(visual_novel_state, 21);
-                    add_sound_wave(0.0f, 0.3f, 5.0f, 10.0f, 4.0f, 4.0f, 'v');
+                    add_sound_wave(0.0f, 1.8f, 5.0f, 10.0f, 10.0f, 4.0f, 'v');
                     break;
                 case DLG_IN_THE_BAT_VISION_SNAIL:
                     newDialog = create_dialogue_from_id(DLG_IN_THE_BAT_VISION_SNAIL2, visual_novel_state->playerName, &texture_assets->Snail);
                     increase_visual_novel_state(visual_novel_state, 22);
-                    add_sound_wave(0.0f, 0.3f, 5.0f, 10.0f, 10.0f, 14.0f, 'v');
+                    add_sound_wave(0.0f, 1.8f, 5.0f, 10.0f, 10.0f, 4.0f, 'v');
                     break;
                 case DLG_IN_THE_BAT_VISION_SNAIL2:
                     newDialog = create_dialogue_from_id(DLG_IN_THE_BAT_VISION_SNAIL3, visual_novel_state->playerName, &texture_assets->Snail);
                     increase_visual_novel_state(visual_novel_state, 23);
-                    add_sound_wave(0.0f, 0.3f, 5.0f, 10.0f, 10.0f, 14.0f, 'v');
+                    add_sound_wave(0.0f, 1.8f, 5.0f, 10.0f, 10.0f, 4.0f, 'v');
                     break;
                 case DLG_IN_THE_BAT_VISION_SNAIL3:
                     newDialog = create_dialogue_from_id(DLG_IN_THE_BAT_VISION_SNAIL4, visual_novel_state->playerName, &texture_assets->Snail);
                     increase_visual_novel_state(visual_novel_state, 24);
-                    add_sound_wave(0.0f, 0.3f, 5.0f, 10.0f, 10.0f, 14.0f, 'v');
+                    add_sound_wave(0.0f, 1.8f, 5.0f, 10.0f, 10.0f, 4.0f, 'v');
                     break;
                 case DLG_IN_THE_BAT_VISION_SNAIL4:
                     newDialog = create_dialogue_from_id(DLG_IN_THE_BAT_VISION_SNAIL5, visual_novel_state->playerName, &texture_assets->Snail);
                     increase_visual_novel_state(visual_novel_state, 25);
-                    add_sound_wave(0.0f, 0.3f, 5.0f, 10.0f, 4.0f, 4.0f, 'v');
+                    add_sound_wave(0.0f, 1.8f, 5.0f, 10.0f, 10.0f, 4.0f, 'v');
                     break;
                 case DLG_IN_THE_BAT_VISION_SNAIL5:
                     newDialog = create_dialogue_from_id(DLG_GYULASZ_SEE_NOTHING, visual_novel_state->playerName, &texture_assets->Gyulasz_Thinking);
                     increase_visual_novel_state(visual_novel_state, 26);
-                    add_sound_wave(0.0f, 0.3f, 5.0f, 10.0f, 4.0f, 4.0f, 'v');
+                    add_sound_wave(0.0f, 1.8f, 5.0f, 10.0f, 20.0f, 5.0f, 'v');
                     break;
                 case DLG_GYULASZ_SEE_NOTHING:
                     newDialog = create_dialogue_from_id(DLG_GYULASZ_SEE_NOTHING2, visual_novel_state->playerName, &texture_assets->Gyulasz_Thinking);
                     increase_visual_novel_state(visual_novel_state, 27);
-                    add_sound_wave(0.0f, 1.8f, 5.0f, 3.0f, 4.0f, 4.0f, 'v');
+                    add_sound_wave(0.0f, 1.8f, 5.0f, 10.0f, 20.0f, 5.0f, 'v');
                     break;
                 case DLG_GYULASZ_SEE_NOTHING2:
                     newDialog = create_dialogue_from_id(DLG_GYULASZ_SEE_NOTHING3, visual_novel_state->playerName, &texture_assets->Gyulasz_Thinking);
@@ -435,7 +436,7 @@ void handle_mouse_input_visual_novel(SDL_Event* event, VisualNovelState* visual_
                     add_sound_wave(0.0f, 1.8f, 5.0f, 10.0f, 20.0f, 5.0f, 'v');
                     break;
                 case DLG_GYULASZ_SEE_NOTHING3:
-                    newDialog = create_dialogue_from_id(DLG_GYULASZ_SEE_NOTHING4, visual_novel_state->playerName, &texture_assets->Helsie_Scared);
+                    newDialog = create_dialogue_from_id(DLG_GYULASZ_SEE_NOTHING4, visual_novel_state->playerName, &texture_assets->Gyulasz_Thinking);
                     increase_visual_novel_state(visual_novel_state, 29);
                     break;
                 case DLG_GYULASZ_SEE_NOTHING4:
