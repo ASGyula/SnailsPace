@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define ASSETS_PREFIX "assets/"
+#define ASSETS_PREFIX "../assets/"
 
 void load_obj(const char* filename, Vertex** vertices){
     printf("[INFO] %s beolvasasa elkezdodott\n", filename);
