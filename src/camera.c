@@ -23,6 +23,12 @@
 #define STEPS_SPEED 20
 #define STEPS_SOURCE 'm'
 #define STEPS_SENS 2.0f
+#define VAPE_DISTANCE 10.0f
+#define VAPE_COOLDOWN 1000
+#define VAPE_SPEED 15
+#define VAPE_SOURCE 'm'
+#define VAPE_SENS 1.0f
+#define DECREASE_VAPE_SMOKE_AMOUNT_SEC 3
 
 void initialize_camera(Camera* camera){
     camera->x = 0.0f;
@@ -36,6 +42,8 @@ void initialize_camera(Camera* camera){
     camera->isEnabledMovement = false;
     camera->isEnabledRotation = true;
 
+    camera->vape.isVaping = false;
+    camera->vape.smokeAmount = 0.0f;
     SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 
@@ -106,6 +114,20 @@ void handle_wasd_input(SDL_Event* event, Camera* camera, bool* isRunning, float 
                 lastShout = SDL_GetTicks();
             }
         }
+
+        if(state[SDL_SCANCODE_V]){
+            camera->vape.isVaping = true;
+            playSound(sounds.VapeFincsiVape);
+            add_sound_wave(camera->x, camera->y, camera->z, VAPE_SPEED, VAPE_DISTANCE, VAPE_SENS, VAPE_SOURCE);
+        }else{
+            if(camera->vape.isVaping){
+                camera->vape.endedTime = SDL_GetTicks();
+                PointData point_data = {camera->x, camera->y, camera->z};
+                spawn_smoke(point_data, camera);
+            }
+            camera->vape.isVaping = false;
+            disable_vape_light();
+        }
     }
 
     if(state[SDL_SCANCODE_ESCAPE]){
@@ -119,4 +141,27 @@ void update_camera_view(Camera* camera){
     glRotatef(camera->pitch, 1.0f, 0.0f, 0.0f);
     glRotatef(camera->yaw, 0.0f, 1.0f, 0.0f);
     glTranslatef(-camera->x, -camera->y, -camera->z);
+}
+
+void update_vaping(Camera* camera, float deltaTime){
+    if(camera->vape.isVaping){
+        enable_vape_light(&camera->vape);
+        camera->vape.usedLiquid+=0.05f*deltaTime;
+        camera->vape.smokeAmount += 0.25f * deltaTime;
+        if(camera->vape.smokeAmount >= 1.0f)camera->vape.smokeAmount = 1.0f;
+    }else{
+        Uint32 currentTime = SDL_GetTicks();
+        if((camera->vape.endedTime+DECREASE_VAPE_SMOKE_AMOUNT_SEC*1000) < currentTime){
+            camera->vape.smokeAmount -= 0.11f * deltaTime;
+            if(camera->vape.smokeAmount <= 0.0f)camera->vape.smokeAmount = 0.0f;
+        }
+    }
+
+    if(camera->vape.smokeAmount <= 0.0f){
+        disableFog();
+    }else{
+        float fogDensity = 0.01f + (camera->vape.smokeAmount * 0.1f);
+        glFogf(GL_FOG_DENSITY, fogDensity);
+        enableFog(1-(camera->vape.smokeAmount), 15.0f - (camera->vape.smokeAmount * 10.0f), camera->vape.smokeAmount);
+    }
 }

@@ -14,6 +14,12 @@ typedef struct{
     float r, g, b;
 } PointData;
 
+typedef struct{
+    PointData point_data;
+    float vx, vy, vz;
+    float life;
+    float size;
+} Particle;
 
 void setup_projection(int width, int height);
 
@@ -39,6 +45,13 @@ void update_moveable_model_position(MoveableModel* objectum, float deltaTime);
 
 void render_moveable_model(MoveableModel* object);
 
+void render_vape_in_hand(MoveableModel* object, Camera* camera);
+
 void update_snail_ai(MoveableModel* monster, Camera* player, float deltaTime);
+
+void enable_vape_light(Vape* vape);
+void disable_vape_light();
+void spawn_smoke(PointData point_data, Camera* camera);
+void update_and_render_smoke(float deltaTime);
 
 #endif //SNAILSPACE_GRAPHICS_H

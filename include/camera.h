@@ -6,7 +6,15 @@
 #define SNAILSPACE_CAMERA_H
 #include <SDL_events.h>
 
+#include "obj_loader.h"
 #include "sounds.h"
+
+typedef struct{
+    float usedLiquid;
+    float smokeAmount;
+    bool isVaping;
+    Uint32 endedTime;
+} Vape;
 
 typedef struct{
     float x, y, z;
@@ -18,11 +26,13 @@ typedef struct{
     int screenHeight;
     bool isEnabledMovement;
     bool isEnabledRotation;
+    Vape vape;
 } Camera;
 
 void initialize_camera(Camera* camera);
 void update_camera_view(Camera* camera);
 void handle_mouse_input(SDL_Event* event, Camera* camera);
 void handle_wasd_input(SDL_Event* event, Camera* camera, bool* isRunning, float deltaTime, Sounds sounds);
+void update_vaping(Camera* camera, float deltaTime);
 
 #endif //SNAILSPACE_CAMERA_H

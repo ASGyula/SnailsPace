@@ -134,7 +134,7 @@ bool load_textured_obj(const char* name, Model* model){
                 }
                 if(temp_vt && vt[idx] > 0 && vt[idx] <= vt_count){
                     model->vertices[current_v].u = temp_vt[vt[idx]][0];
-                    model->vertices[current_v].v = 1.0f - temp_vt[vt[idx]][1]; // Invertáljuk a V-t az OpenGL miatt!
+                    model->vertices[current_v].v = 1.0f - temp_vt[vt[idx]][1];
                 }
 
                 if (n[idx] > 0 && n[idx] <= vn_count) {

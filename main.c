@@ -125,6 +125,10 @@ int main(int argc, char *argv[]){
                 update_camera_view(&game.player.camera);
                 render_bat_vision(&game.gameObjects.BatVisionMap, currentTime);
                 check_player_collision(&game.player.camera, &game.gameObjects.BatVisionMap, 0.5f);
+                update_vaping(&game.player.camera, deltaTime);
+                render_vape_in_hand(&game.gameObjects.Vapelt3, &game.player.camera);
+                update_and_render_smoke(deltaTime);
+                // render_moveable_model(&game.gameObjects.Vapelt3);
                 break;
             case LIDAR:
                 update_camera_view(&game.player.camera);
