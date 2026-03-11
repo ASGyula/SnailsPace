@@ -19,6 +19,8 @@
 #define QUEUE_SIZE 10
 
 #define ASSETS_PREFIX "../assets/"
+#define MAX_PARTICLES 100
+Particle smoke_particles[MAX_PARTICLES];
 
 typedef struct{
     Uint32 start_time;
@@ -416,6 +418,51 @@ void render_moveable_model(MoveableModel* object){
     glPopMatrix();
 }
 
+
+void render_vape_in_hand(MoveableModel* object, Camera* camera){
+    glPushMatrix();
+    glLoadIdentity();
+
+    if(camera->vape.isVaping){
+        glTranslatef(0.0f, -0.2f, -0.4f);
+        glRotatef(65.0f, 1.0f, 0.0f, 0.0f);
+        glRotatef(10.0f, 0.0f, 1.0f, 0.0f);
+    }else{
+        glTranslatef(0.3f, -0.4f, -0.7f);
+    }
+
+    glRotatef(-10.0f, 0.0f, 1.0f, 0.0f);
+    render_model(&object->model);
+    glPopMatrix();
+}
+
+void enable_vape_light(Vape* vape){
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT1);
+
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+
+    float lightColor[] = {1.0f, 0.3f, 0.0f, vape->smokeAmount};
+    float lightPos[] = {0.0f, -0.2f, 0.0f, 1.0f};
+
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, lightColor);
+    glLightfv(GL_LIGHT1, GL_POSITION, lightPos);
+
+    float direction[] = {0.0f, 0.0f, -1.0f};
+    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, direction);
+    glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, (90.0f*vape->smokeAmount));
+    glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 1.0f);
+
+    glPopMatrix();
+}
+
+void disable_vape_light(){
+    glDisable(GL_LIGHTING);
+    glDisable(GL_LIGHT1);
+}
+
 void update_snail_ai(MoveableModel* monster, Camera* player, float deltaTime){
     float dx = player->x - monster->x;
     float dy = player->y - monster->y;
@@ -425,5 +472,52 @@ void update_snail_ai(MoveableModel* monster, Camera* player, float deltaTime){
     if(dist > 0.5f){
         monster->x += (dx / dist) * monster->animSpeed * deltaTime;
         monster->z += (dz / dist) * monster->animSpeed * deltaTime;
+    }
+}
+
+void spawn_smoke(PointData point_data, Camera* camera){
+    float rad_yaw = camera->yaw * (M_PI / 180.0f);
+    float rad_pitch = camera->pitch * (M_PI / 180.0f);
+
+    float directionX = sinf(rad_yaw) * cosf(rad_pitch);
+    float directionY = -sinf(rad_pitch);
+    float directionZ = -cosf(rad_yaw) * cosf(rad_pitch);
+    for(int i = 0; i < MAX_PARTICLES; i++){
+        smoke_particles[i].point_data.x = point_data.x;
+        smoke_particles[i].point_data.y = point_data.y-0.1f;
+        smoke_particles[i].point_data.z = point_data.z-0.4f;
+
+        float speed = ((rand() % 100) / 200.0f) + 0.1f;
+        float spread = ((rand() % 100) / 1000.0f) - 0.05f;
+        smoke_particles[i].vx = directionX * speed + spread;
+        smoke_particles[i].vy = directionY * speed + 0.05f;
+        smoke_particles[i].vz = directionZ * speed + spread;
+
+        smoke_particles[i].life = 1.0f;
+        smoke_particles[i].size = 1.0f + (rand()%50);
+    }
+}
+
+void update_and_render_smoke(float deltaTime){
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_LIGHTING);
+
+    for(int i = 0; i<MAX_PARTICLES; i++){
+        if(smoke_particles[i].life > 0.0f){
+            smoke_particles[i].point_data.x += smoke_particles[i].vx * deltaTime;
+            smoke_particles[i].point_data.y += smoke_particles[i].vy * deltaTime;
+            smoke_particles[i].point_data.z += smoke_particles[i].vz * deltaTime;
+
+            smoke_particles[i].life -= 0.1f * deltaTime;
+            smoke_particles[i].size -= 0.1f * deltaTime;
+
+            glColor4f(0.8f, 0.8f, 0.8f, smoke_particles[i].life);
+            glPointSize(smoke_particles[i].size);
+            glBegin(GL_POINTS);
+            glVertex3f(smoke_particles[i].point_data.x, smoke_particles[i].point_data.y, smoke_particles[i].point_data.z);
+            glEnd();
+        }
     }
 }

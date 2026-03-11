@@ -38,6 +38,7 @@ Game init_game(const int screen_width, const int screen_height, const char* play
     {
         game.sounds.Overture = Mix_LoadWAV("../assets/External/Gemini/Overture.wav");
         game.sounds.ShoutSound = Mix_LoadWAV("../assets/External/YouTube/Shout.wav");
+        game.sounds.VapeFincsiVape = Mix_LoadWAV("../assets/asgyu/VapeNyamiFincsaVape.wav");
     }
     {
         load_textured_obj("External/Helsie/HelsieMidnightbyRedEyes.obj", &game.gameObjects.Helsie);
@@ -55,9 +56,13 @@ Game init_game(const int screen_width, const int screen_height, const char* play
         game.gameObjects.Dealer.isMoving = true;
 
         load_textured_obj("External/volvor/The_Japanese_School_Corridor/model.obj", &game.gameObjects.BatVisionMap);
+        // load_textured_obj("External/Candyshoppa/san-andreas-full-la-map/model.obj", &game.gameObjects.BatVisionMap);
         // load_textured_obj("External/ETBENO/house-corridor-interior/model2.obj", &game.gameObjects.BatVisionMap);
         game.gameObjects.BatVisionMap.textureID = load_texture("External/Helsie/T_MysticFang_Body_D.png");
         load_obj("External/volvor/The_Japanese_School_Classroom/model.obj", &game.gameObjects.LidarMap);
+
+        load_textured_obj("External/Figusorasu/lostvape-centaurus-mod-low-poly/model.obj", &game.gameObjects.Vapelt3.model);
+        game.gameObjects.Vapelt3.model.textureID = load_texture("External/Gemini/SpaceToShout.png");
     }
 
     {

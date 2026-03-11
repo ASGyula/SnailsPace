@@ -27,6 +27,7 @@ typedef struct{
 typedef struct{
     Model model;
     float x, y, z;
+    float yaw, pitch, roll;
     float targetX, targetY, targetZ;
     float animSpeed;
     bool isMoving;
@@ -37,6 +38,7 @@ typedef struct{
     Model BatVisionMap;
     Vertex* LidarMap;
     MoveableModel Dealer;
+    MoveableModel Vapelt3;
 } GameObjects;
 
 void load_obj(const char* filename, Vertex** vertices);
