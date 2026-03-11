@@ -10,6 +10,7 @@
 typedef struct{
     Mix_Chunk* Overture;
     Mix_Chunk* ShoutSound;
+    Mix_Chunk* VapeFincsiVape;
 } Sounds;
 
 void playSound(Mix_Chunk *sound);
