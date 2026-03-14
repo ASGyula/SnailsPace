@@ -483,9 +483,9 @@ void spawn_smoke(PointData point_data, Camera* camera){
     float directionY = -sinf(rad_pitch);
     float directionZ = -cosf(rad_yaw) * cosf(rad_pitch);
     for(int i = 0; i < MAX_PARTICLES; i++){
-        smoke_particles[i].point_data.x = point_data.x;
-        smoke_particles[i].point_data.y = point_data.y-0.1f;
-        smoke_particles[i].point_data.z = point_data.z-0.4f;
+        smoke_particles[i].point_data.x = point_data.x+directionX;
+        smoke_particles[i].point_data.y = point_data.y+directionY-0.2f;
+        smoke_particles[i].point_data.z = point_data.z+directionZ;
 
         float speed = ((rand() % 100) / 200.0f) + 0.1f;
         float spread = ((rand() % 100) / 1000.0f) - 0.05f;
@@ -494,7 +494,7 @@ void spawn_smoke(PointData point_data, Camera* camera){
         smoke_particles[i].vz = directionZ * speed + spread;
 
         smoke_particles[i].life = 1.0f;
-        smoke_particles[i].size = 1.0f + (rand()%50);
+        smoke_particles[i].size = 1.0f + (rand()%100);
     }
 }
 
