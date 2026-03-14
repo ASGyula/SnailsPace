@@ -18,10 +18,13 @@ Game init_game(const int screen_width, const int screen_height, const char* play
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
     game.isRunning = true;
-    game.isLoading = false;
+    game.isLoading = true;
+    game.auraLightBrightness = 1.0f;
 
     game.player.camera.screenWidth = screen_width;
     game.player.camera.screenHeight = screen_height;
+    game.player.camera.lastShout = 0;
+    game.player.camera.nextShout = 0;
     initialize_camera(&game.player.camera);
 
     game.visualNovelState.currentDialogID = 0;
@@ -73,8 +76,38 @@ Game init_game(const int screen_width, const int screen_height, const char* play
 
         load_textured_obj("External/Figusorasu/lostvape-centaurus-mod-low-poly/model.obj", &game.gameObjects.Vapelt3.model);
         game.gameObjects.Vapelt3.model.textureID = load_texture("External/Gemini/SpaceToShout.png");
-    }
 
+        load_textured_obj("External/Kleyton3D/lata-de-monster/model.obj", &game.gameObjects.PunchPacificMonster.model);
+        game.gameObjects.PunchPacificMonster.model.textureID = load_texture("External/Kleyton3D/lata-de-monster/initialShadingGroup_baseColor.png");
+        game.gameObjects.PunchPacificMonster.r = 0.0f;
+        game.gameObjects.PunchPacificMonster.g = 1.0f;
+        game.gameObjects.PunchPacificMonster.b = 0.0f;
+        game.gameObjects.PunchPacificMonster.a = 1.0f;
+        game.gameObjects.PunchPacificMonster.radius = 1.0f;
+        game.gameObjects.PunchPacificMonster.x = 0.0f;
+        game.gameObjects.PunchPacificMonster.y = 0.0f;
+        game.gameObjects.PunchPacificMonster.z = 0.0f;
+        game.gameObjects.PunchPacificMonster.triggerZone.x = 0;
+        game.gameObjects.PunchPacificMonster.triggerZone.z = 0;
+        game.gameObjects.PunchPacificMonster.triggerZone.isActivated = false;
+        game.gameObjects.PunchPacificMonster.triggerZone.type = TRIGGER_DIALOGUE;
+
+
+        load_textured_obj("External/rudolfs/snail/model.obj", &game.gameObjects.ImmortalSnail.model);
+        game.gameObjects.ImmortalSnail.model.textureID = load_texture("External/rudolfs/snail/snail_dif.png");
+        game.gameObjects.ImmortalSnail.triggerZone.x = 0;
+        game.gameObjects.ImmortalSnail.triggerZone.z = 0;
+        game.gameObjects.ImmortalSnail.triggerZone.isActivated = false;
+        game.gameObjects.ImmortalSnail.triggerZone.type = TRIGGER_DIALOGUE;
+        game.gameObjects.ImmortalSnail.x = 0;
+        game.gameObjects.ImmortalSnail.y = 0.0f;
+        game.gameObjects.ImmortalSnail.z = 20.0f;
+        game.gameObjects.ImmortalSnail.targetX = 0;
+        game.gameObjects.ImmortalSnail.targetY = 0.0f;
+        game.gameObjects.ImmortalSnail.targetZ = 0.0f;
+        game.gameObjects.ImmortalSnail.animSpeed = 0.2f;
+        game.gameObjects.ImmortalSnail.isMoving = false;
+    }
     {
         game.textureAssets.Helsie_Happy.textureID = load_texture("External/Gemini/Helsie_Happy.png");
         game.textureAssets.Helsie_Happy.w = 400;
@@ -159,9 +192,30 @@ Game init_game(const int screen_width, const int screen_height, const char* play
         game.textureAssets.Snail.x = screen_width-game.textureAssets.Snail.w;
         game.textureAssets.Snail.y = screen_height - game.textureAssets.Snail.h;
         game.textureAssets.Snail.isShowing = true;
+
+        game.textureAssets.SpaceButton.textureID = load_texture("External/littleicon/space.png");
+        game.textureAssets.SpaceButton.w = 80;
+        game.textureAssets.SpaceButton.h = 80;
+        game.textureAssets.SpaceButton.x = (screen_width - game.textureAssets.SpaceButton.w)/2;
+        game.textureAssets.SpaceButton.y = screen_height - game.textureAssets.SpaceButton.h - 21;
+        game.textureAssets.SpaceButton.isShowing = true;
+
+        game.textureAssets.ESCButton.textureID = load_texture("External/littleicon/escape-sign.png");
+        game.textureAssets.ESCButton.w = 64;
+        game.textureAssets.ESCButton.h = 64;
+        game.textureAssets.ESCButton.x = 0;
+        game.textureAssets.ESCButton.y = 0;
+        game.textureAssets.ESCButton.isShowing = true;
+
+        game.textureAssets.VButton.textureID = load_texture("External/littleicon/letter-v.png");
+        game.textureAssets.VButton.w = 64;
+        game.textureAssets.VButton.h = 64;
+        game.textureAssets.VButton.x = (screen_width - game.textureAssets.VButton.w)-30;
+        game.textureAssets.VButton.y = screen_height - game.textureAssets.VButton.h - 30;
+        game.textureAssets.VButton.isShowing = true;
     }
 
-    scene_switch(&game, VN_INTRO);
+    scene_switch(&game, BAT_VISION);
 
     return game;
 }
@@ -196,6 +250,7 @@ void scene_switch(Game* game, GameScene game_scene){
             break;
         case BAT_VISION:
             printf("BAT_VISION\n");
+            game->visualNovelState.isShowingUI = false;
             change_camera_input_handler(game, true, true);
             break;
         case LIDAR:
@@ -214,4 +269,8 @@ void scene_switch(Game* game, GameScene game_scene){
 
 GameScene get_current_game_scene(Game* game){
     return game->scene;
+}
+
+void change_snail_ai(Game* game, bool value){
+    game->gameObjects.ImmortalSnail.isMoving = value;
 }

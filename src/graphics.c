@@ -521,3 +521,66 @@ void update_and_render_smoke(float deltaTime){
         }
     }
 }
+
+void render_light_aura_model(LightAuraModel* model){
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT2);
+    glDisable(GL_FOG);
+    glMatrixMode(GL_MODELVIEW);
+
+    float lightColor[] = {model->r, model->g, model->b, model->a};
+    float lightPos[] = {model->x, model->y+0.5f, model->z, 1.0f};
+
+    float emissionColor[] = { 0.0f, 0.4f, 0.0f, 1.0f };
+    glMaterialfv(GL_FRONT, GL_EMISSION, emissionColor);
+
+    glLightfv(GL_LIGHT2, GL_DIFFUSE, lightColor);
+    glLightfv(GL_LIGHT2, GL_POSITION, lightPos);
+
+    glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, 180.0f);
+
+    glLightf(GL_LIGHT2, GL_CONSTANT_ATTENUATION, 1.0f);
+    glLightf(GL_LIGHT2, GL_LINEAR_ATTENUATION, 0.5f / model->radius);
+    glLightf(GL_LIGHT2, GL_QUADRATIC_ATTENUATION, 0.1f / (model->radius * model->radius));
+
+    glPushMatrix();
+    glTranslatef(model->x, model->y, model->z);
+    glRotatef(model->yaw, 0.0f, 1.0f, 0.0f);
+
+    render_model(&model->model);
+
+    float noEmission[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+    glMaterialfv(GL_FRONT, GL_EMISSION, noEmission);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(model->x, model->y, model->z);
+    glRotatef(model->yaw, 0.0f, 1.0f, 0.0f);
+    render_model(&model->model);
+    glPopMatrix();
+
+    glPopMatrix();
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // Alpha blending bekapcsolása [cite: 2026-01-23]
+    glEnable(GL_DEPTH_TEST);
+
+    glPushMatrix();
+    glTranslatef(model->x, model->y, model->z);
+
+    glColor4f(model->r, model->g, model->b, 0.3f);
+
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex3f(0.f, 0.f, 0.f);
+    for(int i = 0; i <= 360; i += 10){
+        float angle = i * M_PI / 180.0f;
+        glVertex3f(cosf(angle) * (model->radius*0.15), sinf(angle) * (model->radius*0.15) + 0.15, 0);
+    }
+    glEnd();
+
+    glPopMatrix();
+
+    glDisable(GL_LIGHTING);
+    glDisable(GL_BLEND);
+}
+

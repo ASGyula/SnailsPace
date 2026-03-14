@@ -15,6 +15,7 @@
 typedef struct{
     bool isRunning;
     bool isLoading;
+    float auraLightBrightness;
     Player player;
     Uint32 lastTime;
     SDL_Window* window;
@@ -35,5 +36,6 @@ GameScene get_current_game_scene(Game* game);
 
 void change_camera_input_handler(Game* game, bool is_enabled_movement, bool is_enabled_rotation);
 
+void change_snail_ai(Game* game, bool value);
 
 #endif //SNAILSPACE_GAME_MANAGER_H
