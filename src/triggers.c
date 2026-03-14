@@ -8,7 +8,7 @@
 
 #include "game_manager.h"
 
-void check_trigger_zones(Game* game, MoveableModel* snail){
+void check_trigger_zones(Game* game){
     if(!game->triggerZones.BatVisionHelsieTakeAHint.isActivated){
         float dx = game->player.camera.x - game->triggerZones.BatVisionHelsieTakeAHint.x;
         float dz = game->player.camera.z - game->triggerZones.BatVisionHelsieTakeAHint.z;
@@ -20,6 +20,7 @@ void check_trigger_zones(Game* game, MoveableModel* snail){
             if(game->triggerZones.BatVisionHelsieTakeAHint.type == TRIGGER_DIALOGUE){
                 game->visualNovelState.isShowingUI = true;
                 increase_visual_novel_state(&game->visualNovelState, 30);
+                change_snail_ai(game, true);
             }
         }
     }

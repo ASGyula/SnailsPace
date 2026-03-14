@@ -95,7 +95,7 @@ int main(int argc, char *argv[]){
                 update_dialogue(&dialogue, currentTime);
                 render_dialogue_name(&dialogue, game.textureAssets.mainFont);
                 render_dialogue_text(&dialogue, game.textureAssets.mainFont);
-                render_ui_texture(dialogue.speaker, screen);
+                render_ui_texture(&dialogue.speaker);
                 break;
             case DEALER_ROOM:
                 setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -125,7 +125,7 @@ int main(int argc, char *argv[]){
                 update_dialogue(&dialogue, currentTime);
                 render_dialogue_name(&dialogue, game.textureAssets.mainFont);
                 render_dialogue_text(&dialogue, game.textureAssets.mainFont);
-                render_ui_texture(dialogue.speaker, screen);
+                render_ui_texture(&dialogue.speaker);
                 break;
             case BAT_VISION:
                 update_camera_view(&game.player.camera);
@@ -135,7 +135,22 @@ int main(int argc, char *argv[]){
                 render_vape_in_hand(&game.gameObjects.Vapelt3, &game.player.camera);
                 update_and_render_smoke(deltaTime);
 
-                check_trigger_zones(&game, nullptr);
+                render_light_aura_model(&game.gameObjects.PunchPacificMonster);
+
+                if(game.player.camera.nextShout < currentTime){
+                    render_ui_texture(&game.textureAssets.SpaceButton);
+                }
+
+                if(!game.player.camera.vape.isVaping){
+                    render_ui_texture(&game.textureAssets.VButton);
+                }
+
+                check_trigger_zones(&game);
+
+                if(game.gameObjects.ImmortalSnail.isMoving){
+                    render_moveable_model(&game.gameObjects.ImmortalSnail);
+                    update_snail_ai(&game.gameObjects.ImmortalSnail, &game.player.camera, deltaTime);
+                }
 
                 if(game.visualNovelState.currentDialogID == DLG_GYULASZ_SEE_NOTHING4){
                     dialogue = create_dialogue_from_id(DLG_HELSIE_TELL_ABOUT_MONSTRUMS, winName, &game.textureAssets.Helsie_Scared);
@@ -148,7 +163,7 @@ int main(int argc, char *argv[]){
                         update_dialogue(&dialogue, currentTime);
                         render_dialogue_name(&dialogue, game.textureAssets.mainFont);
                         render_dialogue_text(&dialogue, game.textureAssets.mainFont);
-                        render_ui_texture(dialogue.speaker, screen);
+                        render_ui_texture(&dialogue.speaker);
                     }else{
                         change_camera_input_handler(&game, true, true);
                     }
@@ -167,6 +182,7 @@ int main(int argc, char *argv[]){
         }
 
         handle_wasd_input(&event, &game.player.camera, &game.isRunning, deltaTime, game.sounds);
+        render_ui_texture(&game.textureAssets.ESCButton);
 
         SDL_GL_SwapWindow(game.window);
     }

@@ -26,6 +26,9 @@ typedef struct{
     int screenHeight;
     bool isEnabledMovement;
     bool isEnabledRotation;
+
+    Uint32 lastShout;
+    Uint32 nextShout;
     Vape vape;
 } Camera;
 

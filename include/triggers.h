@@ -6,6 +6,6 @@
 #define SNAILSPACE_TRIGGERS_H
 #include "game_manager.h"
 
-void check_trigger_zones(Game* game, MoveableModel* model);
+void check_trigger_zones(Game* game);
 
 #endif //SNAILSPACE_TRIGGERS_H
