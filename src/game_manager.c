@@ -6,6 +6,7 @@
 #include <SDL_timer.h>
 #include <stdio.h>
 
+#include "dialogue_data.h"
 #include "graphics.h"
 #include "ui_manager.h"
 
@@ -36,13 +37,21 @@ Game init_game(const int screen_width, const int screen_height, const char* play
     }
 
     {
+        game.triggerZones.BatVisionHelsieTakeAHint.x = 0;
+        game.triggerZones.BatVisionHelsieTakeAHint.z = -20;
+        game.triggerZones.BatVisionHelsieTakeAHint.radius = 2;
+        game.triggerZones.BatVisionHelsieTakeAHint.type = TRIGGER_DIALOGUE;
+        game.triggerZones.BatVisionHelsieTakeAHint.isActivated = false;
+    }
+
+    {
         game.sounds.Overture = Mix_LoadWAV("../assets/External/Gemini/Overture.wav");
         game.sounds.ShoutSound = Mix_LoadWAV("../assets/External/YouTube/Shout.wav");
         game.sounds.VapeFincsiVape = Mix_LoadWAV("../assets/asgyu/VapeNyamiFincsaVape.wav");
     }
     {
-        load_textured_obj("External/Helsie/HelsieMidnightbyRedEyes.obj", &game.gameObjects.Helsie);
-        game.gameObjects.Helsie.textureID = load_texture("External/Helsie/T_MysticFang_Body_D.png");
+        load_textured_obj("External/RedEyes/HelsieMidnightbyRedEyes.obj", &game.gameObjects.Helsie);
+        game.gameObjects.Helsie.textureID = load_texture("External/RedEyes/T_MysticFang_Body_D.png");
 
         load_textured_obj("External/VibaPop/TheDealer.obj", &game.gameObjects.Dealer.model);
         game.gameObjects.Dealer.model.textureID = load_texture("External/Vibapop/TheDealerTextureB.png");
@@ -55,10 +64,11 @@ Game init_game(const int screen_width, const int screen_height, const char* play
         game.gameObjects.Dealer.animSpeed = 2.0f;
         game.gameObjects.Dealer.isMoving = true;
 
-        load_textured_obj("External/volvor/The_Japanese_School_Corridor/model.obj", &game.gameObjects.BatVisionMap);
+        // load_textured_obj("External/volvor/The_Japanese_School_Corridor/model.obj", &game.gameObjects.BatVisionMap);
+        load_textured_obj("External/bat_vision_map/map.obj", &game.gameObjects.BatVisionMap);
         // load_textured_obj("External/Candyshoppa/san-andreas-full-la-map/model.obj", &game.gameObjects.BatVisionMap);
         // load_textured_obj("External/ETBENO/house-corridor-interior/model2.obj", &game.gameObjects.BatVisionMap);
-        game.gameObjects.BatVisionMap.textureID = load_texture("External/Helsie/T_MysticFang_Body_D.png");
+        game.gameObjects.BatVisionMap.textureID = load_texture("External/RedEyes/HelsieMidnight/T_MysticFang_Body_D.png");
         load_obj("External/volvor/The_Japanese_School_Classroom/model.obj", &game.gameObjects.LidarMap);
 
         load_textured_obj("External/Figusorasu/lostvape-centaurus-mod-low-poly/model.obj", &game.gameObjects.Vapelt3.model);

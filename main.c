@@ -11,6 +11,7 @@
 #include "game_manager.h"
 #include "graphics.h"
 #include "player.h"
+#include "triggers.h"
 #include "ui_manager.h"
 #ifdef _WIN32
     #include <windows.h>
@@ -67,7 +68,12 @@ int main(int argc, char *argv[]){
                     handle_mouse_input_visual_novel(&event, &game.visualNovelState, &dialogue, &game.textureAssets);
                     break;
                 case BAT_VISION:
-                    // handle_wasd_input(&event, &game.player.camera, &game.isRunning, deltaTime, game.sounds);
+                    if(game.visualNovelState.isShowingUI){
+                        handle_mouse_input_visual_novel(&event, &game.visualNovelState, &dialogue, &game.textureAssets);
+                    }else{
+                        handle_mouse_input(&event, &game.player.camera);
+                    }
+                    break;
                 case LIDAR:
                     handle_mouse_input(&event, &game.player.camera);
                     break;
@@ -128,6 +134,25 @@ int main(int argc, char *argv[]){
                 update_vaping(&game.player.camera, deltaTime);
                 render_vape_in_hand(&game.gameObjects.Vapelt3, &game.player.camera);
                 update_and_render_smoke(deltaTime);
+
+                check_trigger_zones(&game, nullptr);
+
+                if(game.visualNovelState.currentDialogID == DLG_GYULASZ_SEE_NOTHING4){
+                    dialogue = create_dialogue_from_id(DLG_HELSIE_TELL_ABOUT_MONSTRUMS, winName, &game.textureAssets.Helsie_Scared);
+                }
+
+                if(game.triggerZones.BatVisionHelsieTakeAHint.isActivated){
+                    if(game.visualNovelState.isShowingUI){
+                        change_camera_input_handler(&game, false, false);
+                        render_dialogue_box(SCREEN_WIDTH, SCREEN_HEIGHT, &dialogue);
+                        update_dialogue(&dialogue, currentTime);
+                        render_dialogue_name(&dialogue, game.textureAssets.mainFont);
+                        render_dialogue_text(&dialogue, game.textureAssets.mainFont);
+                        render_ui_texture(dialogue.speaker, screen);
+                    }else{
+                        change_camera_input_handler(&game, true, true);
+                    }
+                }
                 // render_moveable_model(&game.gameObjects.Vapelt3);
                 break;
             case LIDAR:
