@@ -3,5 +3,3 @@
 //
 
 #include "game_types.h"
-
-#include <stdio.h>

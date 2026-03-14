@@ -8,6 +8,7 @@
 typedef struct{
     int currentDialogID;
     char* playerName;
+    bool isShowingUI;
 } VisualNovelState;
 
 typedef enum{
@@ -18,6 +19,22 @@ typedef enum{
     LIDAR,
     LAST_ROOM
 } GameScene;
+
+typedef enum {
+    TRIGGER_DIALOGUE,
+    TRIGGER_SPAWN_MONSTER
+} TriggerType;
+
+typedef struct{
+    float x, z;
+    float radius;
+    TriggerType type;
+    bool isActivated;
+} TriggerZone;
+
+typedef struct{
+    TriggerZone BatVisionHelsieTakeAHint;
+} GameTriggerZones;
 
 #endif //SNAILSPACE_GAME_TYPES_H
 

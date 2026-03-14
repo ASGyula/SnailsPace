@@ -24,6 +24,7 @@ typedef struct{
     GameObjects gameObjects;
     TextureAssets textureAssets;
     VisualNovelState visualNovelState;
+    GameTriggerZones triggerZones;
 } Game;
 
 Game init_game(int screen_width, int screen_height, const char* player_name);
@@ -31,6 +32,8 @@ Game init_game(int screen_width, int screen_height, const char* player_name);
 void scene_switch(Game* game, GameScene game_scene);
 
 GameScene get_current_game_scene(Game* game);
+
+void change_camera_input_handler(Game* game, bool is_enabled_movement, bool is_enabled_rotation);
 
 
 #endif //SNAILSPACE_GAME_MANAGER_H

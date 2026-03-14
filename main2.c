@@ -38,10 +38,10 @@ int main2(int argc, char *argv[]){
     // load_obj("assets/External/MiSide/level_4_Miside.obj", &palya);
     // load_textured_obj("assets/External/MiSide/level_4_Miside.obj", &masodikFolyoso);
     // load_textured_obj("assets/Blender/masodik_szoba/masodik_szoba.obj", &palya);
-    load_textured_obj("assets/External/Helsie/HelsieMidnightbyRedEyes.obj", &Helsie);
+    load_textured_obj("assets/External/RedEyes/HelsieMidnightbyRedEyes.obj", &Helsie);
 
 
-    Helsie.textureID = load_texture("assets/External/Helsie/T_MysticFang_Body_D.png");
+    Helsie.textureID = load_texture("assets/External/RedEyes/T_MysticFang_Body_D.png");
     spaceToShoutUIElement.textureID = load_texture("assets/External/Gemini/SpaceToShout.png");
 
     // prepare_lidar_data(palya);
@@ -66,14 +66,14 @@ int main2(int argc, char *argv[]){
 
         update_camera_view(&game.player.camera);
         render_bat_vision(&masodikFolyoso, currentTime);
-        // render_bat_vision(&Helsie, currentTime);
+        // render_bat_vision(&RedEyes, currentTime);
         // render_lidar(palya, &camera);
         // render_lidar_eco(palya, &camera, currentTime);
         // render_lidar_fast(palya->number_of_vertex);
 
-        // render_lidar(Helsie, Helsie->number_of_vertex, camera.x, camera.y, camera.z);
+        // render_lidar(RedEyes, RedEyes->number_of_vertex, camera.x, camera.y, camera.z);
 
-        // render_lidar_fast(Helsie->number_of_vertex);
+        // render_lidar_fast(RedEyes->number_of_vertex);
 
 
         // glPushMatrix();
