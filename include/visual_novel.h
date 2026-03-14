@@ -21,6 +21,9 @@ typedef struct{
     UIElement Dealer;
     UIElement Snail;
     TTF_Font* mainFont;
+    UIElement ESCButton;
+    UIElement SpaceButton;
+    UIElement VButton;
 } TextureAssets;
 
 static char* PLAYER_NAME;

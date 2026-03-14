@@ -6,6 +6,8 @@
 #define SNAILSPACE_OBJ_LOADER_H
 #include <SDL_opengl.h>
 
+#include "game_types.h"
+
 typedef struct{
     float x, y, z;
     int number_of_vertex;
@@ -26,19 +28,31 @@ typedef struct{
 
 typedef struct{
     Model model;
+    float x, y, z, a;
+    float yaw, pitch, roll;
+    float r, g, b;
+    float radius;
+    TriggerZone triggerZone;
+} LightAuraModel;
+
+typedef struct{
+    Model model;
     float x, y, z;
     float yaw, pitch, roll;
     float targetX, targetY, targetZ;
     float animSpeed;
     bool isMoving;
+    TriggerZone triggerZone;
 } MoveableModel;
 
-typedef struct{
+typedef struct {
     Model Helsie;
     Model BatVisionMap;
     Vertex* LidarMap;
     MoveableModel Dealer;
     MoveableModel Vapelt3;
+    LightAuraModel PunchPacificMonster;
+    MoveableModel ImmortalSnail;
 } GameObjects;
 
 void load_obj(const char* filename, Vertex** vertices);

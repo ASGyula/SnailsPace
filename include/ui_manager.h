@@ -54,13 +54,13 @@ typedef struct{
     int screenHeight;
 } Screen;
 
-void render_ui_texture(UIElement element, Screen screen);
+void render_ui_texture(UIElement* element);
 
 void render_dialogue_box(int screenWidth, int screenHeight, Dialogue* dialogue);
 
-void render_dialogue_text(Dialogue* d, TTF_Font* font);
+void render_dialogue_text(Dialogue* dialogue, TTF_Font* font);
 
-void render_dialogue_name(Dialogue* d, TTF_Font* font);
+void render_dialogue_name(Dialogue* dialogue, TTF_Font* font);
 
 void update_dialogue(Dialogue* d, Uint32 currentTime);
 

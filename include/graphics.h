@@ -54,4 +54,6 @@ void disable_vape_light();
 void spawn_smoke(PointData point_data, Camera* camera);
 void update_and_render_smoke(float deltaTime);
 
+void render_light_aura_model(LightAuraModel* model);
+
 #endif //SNAILSPACE_GRAPHICS_H

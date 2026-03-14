@@ -89,9 +89,9 @@ static void draw_texture_2d(GLuint textureID, int x, int y, int w, int h) {
     glEnable(GL_DEPTH_TEST);
 }
 
-void render_ui_texture(UIElement element, Screen screen){
-    if(!element.isShowing) return;
-    draw_texture_2d(element.textureID, element.x, element.y, element.w, element.h);
+void render_ui_texture(UIElement* element){
+    if(!element->isShowing) return;
+    draw_texture_2d(element->textureID, element->x, element->y, element->w, element->h);
 }
 
 void render_dialogue_box(int screenWidth, int screenHeight, Dialogue* dialogue){

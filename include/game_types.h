@@ -20,7 +20,7 @@ typedef enum{
     LAST_ROOM
 } GameScene;
 
-typedef enum {
+typedef enum{
     TRIGGER_DIALOGUE,
     TRIGGER_SPAWN_MONSTER
 } TriggerType;
