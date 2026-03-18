@@ -17,7 +17,8 @@ typedef enum{
     PRE_BAT_VISION,
     BAT_VISION,
     LIDAR,
-    LAST_ROOM
+    LAST_ROOM,
+    DEAD_ROOM
 } GameScene;
 
 typedef enum{

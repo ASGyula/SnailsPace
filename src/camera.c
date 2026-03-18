@@ -51,7 +51,7 @@ void handle_mouse_input(SDL_Event* event, Camera* camera){
     if(camera->isEnabledRotation){
         if(event->type == SDL_MOUSEMOTION){
             camera->yaw += event->motion.xrel * camera->mouseSpeed;
-            if(camera->isInvertedMouseY) {
+            if(camera->isInvertedMouseY){
                 camera->pitch -= event->motion.yrel * camera->mouseSpeed;
             }else{
                 camera->pitch += event->motion.yrel * camera->mouseSpeed;
@@ -130,6 +130,29 @@ void handle_wasd_input(SDL_Event* event, Camera* camera, bool* isRunning, float 
             disable_vape_light();
         }
     }
+
+    static bool kp_minus_pressed = false;
+    if(state[SDL_SCANCODE_KP_MINUS]){
+        if(!kp_minus_pressed){
+            float newBrightnessValue = fmaxf(0.0f, camera->auraLightBrightness - 0.1f);
+            camera->auraLightBrightness = newBrightnessValue;
+            kp_minus_pressed = true;
+        }
+    }else{
+        kp_minus_pressed = false;
+    }
+
+    static bool kp_plus_pressed = false;
+    if(state[SDL_SCANCODE_KP_PLUS]){
+        if(!kp_plus_pressed){
+            float newBrightnessValue = fminf(1.0f, camera->auraLightBrightness + 0.1f);
+            camera->auraLightBrightness = newBrightnessValue;
+            kp_plus_pressed = true;
+        }
+    }else{
+        kp_plus_pressed = false;
+    }
+
 
     if(state[SDL_SCANCODE_ESCAPE]){
         *isRunning = false;

@@ -30,6 +30,7 @@ typedef struct{
     Uint32 lastShout;
     Uint32 nextShout;
     Vape vape;
+    float auraLightBrightness;
 } Camera;
 
 void initialize_camera(Camera* camera);
