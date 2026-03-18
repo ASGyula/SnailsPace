@@ -11,7 +11,8 @@
 #include "ui_manager.h"
 
 Game init_game(const int screen_width, const int screen_height, const char* player_name){
-    Game game;
+    Game game = {0};
+
     SDL_Window* window = SDL_CreateWindow("Snail's Pace", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screen_width, screen_height, SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN);
     game.window = window;
     game.glContext = SDL_GL_CreateContext(window);
@@ -28,7 +29,7 @@ Game init_game(const int screen_width, const int screen_height, const char* play
     initialize_camera(&game.player.camera);
 
     game.visualNovelState.currentDialogID = 0;
-    game.visualNovelState.playerName = player_name;
+    game.visualNovelState.playerName = (char*)player_name;
 
     game.lastTime = SDL_GetTicks();
 
@@ -41,7 +42,7 @@ Game init_game(const int screen_width, const int screen_height, const char* play
 
     {
         game.triggerZones.BatVisionHelsieTakeAHint.x = 0;
-        game.triggerZones.BatVisionHelsieTakeAHint.z = -20;
+        game.triggerZones.BatVisionHelsieTakeAHint.z = -2;
         game.triggerZones.BatVisionHelsieTakeAHint.radius = 2;
         game.triggerZones.BatVisionHelsieTakeAHint.type = TRIGGER_DIALOGUE;
         game.triggerZones.BatVisionHelsieTakeAHint.isActivated = false;
@@ -215,6 +216,7 @@ Game init_game(const int screen_width, const int screen_height, const char* play
         game.textureAssets.VButton.isShowing = true;
     }
 
+    game.scene = VN_INTRO;
     scene_switch(&game, BAT_VISION);
 
     return game;
@@ -227,8 +229,13 @@ void change_camera_input_handler(Game* game, bool is_enabled_movement, bool is_e
 
 void scene_switch(Game* game, GameScene game_scene){
     printf("[INFO] Uj jelenet: ");
-    game->lastCheckpoint = game->scene?game->scene:game_scene;
+
+    if(game->scene != DEAD_ROOM && game->scene != VN_INTRO){
+        game->lastCheckpoint = game->scene;
+    }
+
     game->scene = game_scene;
+
     switch(game_scene){
         case VN_INTRO:
             printf("VN_INTRO\n");
@@ -251,6 +258,11 @@ void scene_switch(Game* game, GameScene game_scene){
             break;
         case BAT_VISION:
             printf("BAT_VISION\n");
+            game->gameObjects.ImmortalSnail.isMoving = false;
+            game->triggerZones.BatVisionHelsieTakeAHint.isActivated = false;
+            game->gameObjects.ImmortalSnail.x = 0;
+            game->gameObjects.ImmortalSnail.y = 0;
+            game->gameObjects.ImmortalSnail.z = 20.0f;
             game->visualNovelState.isShowingUI = false;
             change_camera_input_handler(game, true, true);
             break;
@@ -262,16 +274,21 @@ void scene_switch(Game* game, GameScene game_scene){
         case LAST_ROOM:
             printf("LAST_ROOM\n");
             break;
+        case DEAD_ROOM:
+            printf("DEAD_ROOM\n");
+            initialize_camera(&game->player.camera);
+            break;
         default:
             printf("default\n");
             break;
     }
 }
 
-GameScene get_current_game_scene(Game* game){
-    return game->scene;
+void load_last_checkpoint(Game* game){
+    printf("[INFO] Elozo Ellenorzopont betoltese: %d\n", game->lastCheckpoint);
+    scene_switch(game, game->lastCheckpoint);
 }
 
-void change_snail_ai(Game* game, bool value){
-    game->gameObjects.ImmortalSnail.isMoving = value;
+GameScene get_current_game_scene(Game* game){
+    return game->scene;
 }

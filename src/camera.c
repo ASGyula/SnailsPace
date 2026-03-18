@@ -63,7 +63,7 @@ void handle_mouse_input(SDL_Event* event, Camera* camera){
     }
 }
 
-void handle_wasd_input(SDL_Event* event, Camera* camera, bool* isRunning, float deltaTime, Sounds sounds){
+void handle_wasd_input(SDL_Event* event, Camera* camera, bool* isRunning, float deltaTime, Sounds sounds, GameScene gameScene){
     if(event->type == SDL_QUIT)*isRunning = false;
 
     const Uint8* state = SDL_GetKeyboardState(NULL);
@@ -72,11 +72,13 @@ void handle_wasd_input(SDL_Event* event, Camera* camera, bool* isRunning, float 
     float moveSpeed = camera->moveSpeed * deltaTime * BASE_MOVEMENT_SPEED;
     static Uint32 nextStepWave = 0;
 
+    bool isEnabledSoundWave = gameScene == BAT_VISION || gameScene == DEALER_ROOM;
+
     if(camera->isEnabledMovement){
         if(state[SDL_SCANCODE_W]){
             camera->x += sinf(rad_yaw) * moveSpeed;
             camera->z -= cosf(rad_yaw) * moveSpeed;
-            if(SDL_GetTicks() > nextStepWave){
+            if(SDL_GetTicks() > nextStepWave && isEnabledSoundWave){
                 add_sound_wave(camera->x, camera->y, camera->z, STEPS_SPEED, STEPS_DISTANCE, STEPS_SENS, STEPS_SOURCE);
                 nextStepWave = SDL_GetTicks() + STEPS_COOLDOWN;
             }
@@ -84,7 +86,7 @@ void handle_wasd_input(SDL_Event* event, Camera* camera, bool* isRunning, float 
         if(state[SDL_SCANCODE_A]){
             camera->x -= cosf(rad_yaw) * moveSpeed;
             camera->z -= sinf(rad_yaw) * moveSpeed;
-            if(SDL_GetTicks() > nextStepWave){
+            if(SDL_GetTicks() > nextStepWave && isEnabledSoundWave){
                 add_sound_wave(camera->x, camera->y, camera->z, STEPS_SPEED, STEPS_DISTANCE, STEPS_SENS, STEPS_SOURCE);
                 nextStepWave = SDL_GetTicks() + STEPS_COOLDOWN;
             }
@@ -92,7 +94,7 @@ void handle_wasd_input(SDL_Event* event, Camera* camera, bool* isRunning, float 
         if(state[SDL_SCANCODE_S]){
             camera->x -= sinf(rad_yaw) * moveSpeed;
             camera->z += cosf(rad_yaw) * moveSpeed;
-            if(SDL_GetTicks() > nextStepWave){
+            if(SDL_GetTicks() > nextStepWave && isEnabledSoundWave){
                 add_sound_wave(camera->x, camera->y, camera->z, STEPS_SPEED, STEPS_DISTANCE, STEPS_SENS, STEPS_SOURCE);
                 nextStepWave = SDL_GetTicks() + STEPS_COOLDOWN;
             }
@@ -100,14 +102,14 @@ void handle_wasd_input(SDL_Event* event, Camera* camera, bool* isRunning, float 
         if(state[SDL_SCANCODE_D]){
             camera->x += cosf(rad_yaw) * moveSpeed;
             camera->z += sinf(rad_yaw) * moveSpeed;
-            if(SDL_GetTicks() > nextStepWave){
+            if(SDL_GetTicks() > nextStepWave && isEnabledSoundWave){
                 add_sound_wave(camera->x, camera->y, camera->z, STEPS_SPEED, STEPS_DISTANCE, STEPS_SENS, STEPS_SOURCE);
                 nextStepWave = SDL_GetTicks() + STEPS_COOLDOWN;
             }
         }
 
         if(state[SDL_SCANCODE_SPACE]){
-            if(SDL_GetTicks() - camera->lastShout > SHOUT_COOLDOWN){
+            if(SDL_GetTicks() - camera->lastShout > SHOUT_COOLDOWN  && isEnabledSoundWave){
                 printf("%f %f\n", camera->x, camera->z);
                 playSound(sounds.ShoutSound);
                 add_sound_wave(camera->x, camera->y, camera->z, SHOUT_SPEED, SHOUT_DISTANCE, SHOUT_SENS, SHOUT_SOURCE);
@@ -116,7 +118,7 @@ void handle_wasd_input(SDL_Event* event, Camera* camera, bool* isRunning, float 
             }
         }
 
-        if(state[SDL_SCANCODE_V]){
+        if(state[SDL_SCANCODE_V] && isEnabledSoundWave){
             camera->vape.isVaping = true;
             playSound(sounds.VapeFincsiVape);
             add_sound_wave(camera->x, camera->y, camera->z, VAPE_SPEED, VAPE_DISTANCE, VAPE_SENS, VAPE_SOURCE);
