@@ -28,6 +28,6 @@ typedef struct{
 
 static char* PLAYER_NAME;
 
-inline void increase_visual_novel_state(VisualNovelState *visual_novel_state, int id);
+void increase_visual_novel_state(VisualNovelState *visual_novel_state, int id);
 
 #endif //SNAILSPACE_TEXTURE_ASSETS_H

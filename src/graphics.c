@@ -463,18 +463,6 @@ void disable_vape_light(){
     glDisable(GL_LIGHT1);
 }
 
-void update_snail_ai(MoveableModel* monster, Camera* player, float deltaTime){
-    float dx = player->x - monster->x;
-    float dy = player->y - monster->y;
-    float dz = player->z - monster->z;
-    float dist = sqrtf(dx*dx + dy*dy + dz*dz);
-
-    if(dist > 0.5f){
-        monster->x += (dx / dist) * monster->animSpeed * deltaTime;
-        monster->z += (dz / dist) * monster->animSpeed * deltaTime;
-    }
-}
-
 void spawn_smoke(PointData point_data, Camera* camera){
     float rad_yaw = camera->yaw * (M_PI / 180.0f);
     float rad_pitch = camera->pitch * (M_PI / 180.0f);
@@ -572,18 +560,43 @@ void render_light_aura_model(Camera* camera, LightAuraModel* model){
 
     glColor4f(model->r, model->g, model->b, brightness*0.3f);
 
-    if(brightness > 0.0f){
-        glBegin(GL_TRIANGLE_FAN);
-        glVertex4f(0.f, 0.f, 0.f, brightness);
-        for(int i = 0; i <= 360; i += 10){
-            float angle = i * M_PI / 180.0f;
-            glVertex3f(cosf(angle) * (model->radius*0.15), sinf(angle) * (model->radius*0.15) + 0.15, 0);
-        }
-        glEnd();
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex3f(0.f, 0.f, 0.f);
+    for(int i = 0; i <= 360; i += 10){
+        float angle = i * M_PI / 180.0f;
+        glVertex3f(cosf(angle) * (model->radius*0.15), sinf(angle) * (model->radius*0.15) + 0.15, 0);
     }
+    glEnd();
 
     glPopMatrix();
 
     glDisable(GL_LIGHTING);
     glDisable(GL_BLEND);
+}
+
+void render_game_over_scene(Model* model, Uint32 currentTime, float lightIntensity) {
+    glEnable(GL_DEPTH_TEST);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    enableFog(0.1f, 10.0f, 0.8f);
+    float fogDensity = 0.2f + (sinf(currentTime / 500.0f) * 0.1f);
+    glFogf(GL_FOG_DENSITY, fogDensity);
+
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    float lightPulse = 0.5f + (sinf(currentTime / 100.0f) * 0.5f);
+    float lightColor[] = {lightPulse, 0.0f, 0.0f, 1.0f};
+    float lightPos[] = {0.0f, 2.0f, 0.0f, 1.0f};
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor);
+    glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+
+    glPushMatrix();
+    float scale = 1.0f + (sinf(currentTime / 1000.0f) * 0.1f);
+    glScalef(scale, scale, scale);
+    glRotatef(currentTime / 100.0f, 0.0f, 1.0f, 0.0f);
+
+    render_model_without_texture(model);
+    glPopMatrix();
+
+    update_and_render_smoke(0.01f);
 }
