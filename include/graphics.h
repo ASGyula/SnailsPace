@@ -47,13 +47,13 @@ void render_moveable_model(MoveableModel* object);
 
 void render_vape_in_hand(MoveableModel* object, Camera* camera);
 
-void update_snail_ai(MoveableModel* monster, Camera* player, float deltaTime);
-
 void enable_vape_light(Vape* vape);
 void disable_vape_light();
 void spawn_smoke(PointData point_data, Camera* camera);
 void update_and_render_smoke(float deltaTime);
 
 void render_light_aura_model(Camera* camera, LightAuraModel* model);
+
+void render_game_over_scene(Model* model, Uint32 currentTime, float lightIntensity);
 
 #endif //SNAILSPACE_GRAPHICS_H

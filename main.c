@@ -6,6 +6,7 @@
 #include <SDL_mixer.h>
 #include <stdio.h>
 
+#include "ai.h"
 #include "camera.h"
 #include "dialogue_data.h"
 #include "game_manager.h"
@@ -79,6 +80,14 @@ int main(int argc, char *argv[]){
                     break;
                 case LAST_ROOM:
                     break;
+                case DEAD_ROOM:
+                    if(event.type == SDL_KEYDOWN){
+                        if(event.key.keysym.sym == SDLK_r || event.key.keysym.sym == SDLK_SPACE || event.key.keysym.sym == SDLK_RETURN){
+                            load_last_checkpoint(&game);
+                        }
+                    }
+                    handle_mouse_input_visual_novel(&event, &game.visualNovelState, &dialogue, &game.textureAssets);
+                    break;
             }
         }
 
@@ -149,7 +158,7 @@ int main(int argc, char *argv[]){
 
                 if(game.gameObjects.ImmortalSnail.isMoving){
                     render_moveable_model(&game.gameObjects.ImmortalSnail);
-                    update_snail_ai(&game.gameObjects.ImmortalSnail, &game.player.camera, deltaTime);
+                    update_snail_ai(&game, deltaTime);
                 }
 
                 if(game.visualNovelState.currentDialogID == DLG_GYULASZ_SEE_NOTHING4){
@@ -177,11 +186,17 @@ int main(int argc, char *argv[]){
             case LAST_ROOM:
 
                 break;
+            case DEAD_ROOM:
+                setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);
+                update_camera_view(&game.player.camera);
+
+                render_game_over_scene(&game.gameObjects.Dealer.model, currentTime, game.player.camera.auraLightBrightness);
+                break;
             default:
                 break;
         }
 
-        handle_wasd_input(&event, &game.player.camera, &game.isRunning, deltaTime, game.sounds);
+        handle_wasd_input(&event, &game.player.camera, &game.isRunning, deltaTime, game.sounds, game.scene);
         render_ui_texture(&game.textureAssets.ESCButton);
 
         SDL_GL_SwapWindow(game.window);
