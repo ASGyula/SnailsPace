@@ -522,16 +522,18 @@ void update_and_render_smoke(float deltaTime){
     }
 }
 
-void render_light_aura_model(LightAuraModel* model){
+void render_light_aura_model(Camera* camera, LightAuraModel* model){
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT2);
     glDisable(GL_FOG);
     glMatrixMode(GL_MODELVIEW);
 
-    float lightColor[] = {model->r, model->g, model->b, model->a};
+    float brightness = camera->auraLightBrightness;
+
+    float lightColor[] = {model->r * brightness, model->g * brightness, model->b * brightness, 1.0f};
     float lightPos[] = {model->x, model->y+0.5f, model->z, 1.0f};
 
-    float emissionColor[] = { 0.0f, 0.4f, 0.0f, 1.0f };
+    float emissionColor[] = {0.0f, 0.4f * brightness, 0.0f, 1.0f};
     glMaterialfv(GL_FRONT, GL_EMISSION, emissionColor);
 
     glLightfv(GL_LIGHT2, GL_DIFFUSE, lightColor);
@@ -549,7 +551,7 @@ void render_light_aura_model(LightAuraModel* model){
 
     render_model(&model->model);
 
-    float noEmission[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+    float noEmission[] = {0.0f, 0.0f, 0.0f, 1.0f};
     glMaterialfv(GL_FRONT, GL_EMISSION, noEmission);
     glPopMatrix();
 
@@ -562,25 +564,26 @@ void render_light_aura_model(LightAuraModel* model){
     glPopMatrix();
 
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // Alpha blending bekapcsolása [cite: 2026-01-23]
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_DEPTH_TEST);
 
     glPushMatrix();
     glTranslatef(model->x, model->y, model->z);
 
-    glColor4f(model->r, model->g, model->b, 0.3f);
+    glColor4f(model->r, model->g, model->b, brightness*0.3f);
 
-    glBegin(GL_TRIANGLE_FAN);
-    glVertex3f(0.f, 0.f, 0.f);
-    for(int i = 0; i <= 360; i += 10){
-        float angle = i * M_PI / 180.0f;
-        glVertex3f(cosf(angle) * (model->radius*0.15), sinf(angle) * (model->radius*0.15) + 0.15, 0);
+    if(brightness > 0.0f){
+        glBegin(GL_TRIANGLE_FAN);
+        glVertex4f(0.f, 0.f, 0.f, brightness);
+        for(int i = 0; i <= 360; i += 10){
+            float angle = i * M_PI / 180.0f;
+            glVertex3f(cosf(angle) * (model->radius*0.15), sinf(angle) * (model->radius*0.15) + 0.15, 0);
+        }
+        glEnd();
     }
-    glEnd();
 
     glPopMatrix();
 
     glDisable(GL_LIGHTING);
     glDisable(GL_BLEND);
 }
-
