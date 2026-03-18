@@ -135,7 +135,7 @@ int main(int argc, char *argv[]){
                 render_vape_in_hand(&game.gameObjects.Vapelt3, &game.player.camera);
                 update_and_render_smoke(deltaTime);
 
-                render_light_aura_model(&game.gameObjects.PunchPacificMonster);
+                render_light_aura_model(&game.player.camera, &game.gameObjects.PunchPacificMonster);
 
                 if(game.player.camera.nextShout < currentTime){
                     render_ui_texture(&game.textureAssets.SpaceButton);

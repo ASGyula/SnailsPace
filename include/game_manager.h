@@ -15,11 +15,11 @@
 typedef struct{
     bool isRunning;
     bool isLoading;
-    float auraLightBrightness;
     Player player;
     Uint32 lastTime;
     SDL_Window* window;
     SDL_GLContext* glContext;
+    GameScene lastCheckpoint;
     GameScene scene;
     Sounds sounds;
     GameObjects gameObjects;

@@ -19,7 +19,7 @@ Game init_game(const int screen_width, const int screen_height, const char* play
 
     game.isRunning = true;
     game.isLoading = true;
-    game.auraLightBrightness = 1.0f;
+    game.player.camera.auraLightBrightness = 1.0f;
 
     game.player.camera.screenWidth = screen_width;
     game.player.camera.screenHeight = screen_height;
@@ -227,6 +227,7 @@ void change_camera_input_handler(Game* game, bool is_enabled_movement, bool is_e
 
 void scene_switch(Game* game, GameScene game_scene){
     printf("[INFO] Uj jelenet: ");
+    game->lastCheckpoint = game->scene?game->scene:game_scene;
     game->scene = game_scene;
     switch(game_scene){
         case VN_INTRO:
