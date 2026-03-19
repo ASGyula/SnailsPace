@@ -106,7 +106,7 @@ Game init_game(const int screen_width, const int screen_height, const char* play
         game.gameObjects.ImmortalSnail.targetX = 0;
         game.gameObjects.ImmortalSnail.targetY = 0.0f;
         game.gameObjects.ImmortalSnail.targetZ = 0.0f;
-        game.gameObjects.ImmortalSnail.animSpeed = 0.2f;
+        game.gameObjects.ImmortalSnail.animSpeed = 2.0f;
         game.gameObjects.ImmortalSnail.isMoving = false;
     }
     {

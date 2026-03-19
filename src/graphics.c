@@ -319,7 +319,7 @@ void render_bat_vision(const Model* model, const Uint32 currentTime){
             if(i + 2 >= model->number_of_vertex) break;
             bool is_quad_part1 = false;
             bool is_quad_part2 = false;
-            if(i % 6 == 0 && i + 5 < model->number_of_vertex){
+            if(i + 5 < model->number_of_vertex){
                 if(model->vertices[i].x == model->vertices[i + 3].x &&
                     model->vertices[i].y == model->vertices[i + 3].y &&
                     model->vertices[i].z == model->vertices[i + 3].z &&
@@ -328,7 +328,8 @@ void render_bat_vision(const Model* model, const Uint32 currentTime){
                     model->vertices[i + 2].z == model->vertices[i + 4].z){
                         is_quad_part1 = true;
                 }
-            }else if(i % 6 == 3 && i - 3 >= 0){
+            }
+            if(!is_quad_part1 && i - 3 >= 0){
                 if(model->vertices[i - 3].x == model->vertices[i].x &&
                     model->vertices[i - 3].y == model->vertices[i].y &&
                     model->vertices[i - 3].z == model->vertices[i].z &&
@@ -336,7 +337,7 @@ void render_bat_vision(const Model* model, const Uint32 currentTime){
                     model->vertices[i - 1].y == model->vertices[i + 1].y &&
                     model->vertices[i - 1].z == model->vertices[i + 1].z){
                         is_quad_part2 = true;
-                    }
+                }
             }
 
             if(is_quad_part1){

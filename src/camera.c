@@ -186,6 +186,7 @@ void update_vaping(Camera* camera, float deltaTime){
     if(camera->vape.smokeAmount <= 0.0f){
         disableFog();
     }else{
+        printf("%.2f\n", camera->vape.smokeAmount);
         float fogDensity = 0.01f + (camera->vape.smokeAmount * 0.1f);
         glFogf(GL_FOG_DENSITY, fogDensity);
         enableFog(1-(camera->vape.smokeAmount), 15.0f - (camera->vape.smokeAmount * 10.0f), camera->vape.smokeAmount);
