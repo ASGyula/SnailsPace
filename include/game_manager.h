@@ -22,6 +22,7 @@ typedef struct{
     GameScene lastCheckpoint;
     GameScene scene;
     Sounds sounds;
+    Screen screen;
     GameObjects gameObjects;
     TextureAssets textureAssets;
     VisualNovelState visualNovelState;

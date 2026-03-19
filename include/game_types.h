@@ -4,11 +4,13 @@
 
 #ifndef SNAILSPACE_GAME_TYPES_H
 #define SNAILSPACE_GAME_TYPES_H
+#include "ui_manager.h"
 
 typedef struct{
     int currentDialogID;
     char* playerName;
     bool isShowingUI;
+    Dialogue dialogue;
 } VisualNovelState;
 
 typedef enum{

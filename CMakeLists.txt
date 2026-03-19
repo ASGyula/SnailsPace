@@ -45,6 +45,8 @@ add_executable(SnailsPace main.c include/obj_loader.h src/obj_loader.c
         src/triggers.c
         include/ai.h
         src/ai.c
+        include/world_builder.h
+        src/world_builder.c
 )
 
 #összekapcsolás
