@@ -138,9 +138,9 @@ int main(int argc, char *argv[]){
                 break;
             case BAT_VISION:
                 update_camera_view(&game.player.camera);
+                update_vaping(&game.player.camera, deltaTime);
                 render_bat_vision(&game.gameObjects.BatVisionMap, currentTime);
                 check_player_collision(&game.player.camera, &game.gameObjects.BatVisionMap, 0.5f);
-                update_vaping(&game.player.camera, deltaTime);
                 render_vape_in_hand(&game.gameObjects.Vapelt3, &game.player.camera);
                 update_and_render_smoke(deltaTime);
 
