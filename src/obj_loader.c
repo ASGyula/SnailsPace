@@ -137,7 +137,7 @@ bool load_textured_obj(const char* name, Model* model){
                     model->vertices[current_v].v = 1.0f - temp_vt[vt[idx]][1];
                 }
 
-                if (n[idx] > 0 && n[idx] <= vn_count) {
+                if(n[idx] > 0 && n[idx] <= vn_count){
                     model->vertices[current_v].nx = temp_vn[n[idx]][0];
                     model->vertices[current_v].ny = temp_vn[n[idx]][1];
                     model->vertices[current_v].nz = temp_vn[n[idx]][2];
