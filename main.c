@@ -53,12 +53,11 @@ int main(int argc, char *argv[]){
         .screenHeight = SCREEN_HEIGHT
     };
 
-    Dialogue dialogue = create_dialogue_from_id(DLG_INTRO, winName, &game.textureAssets.Gyulasz_Scared);
 
     SDL_Event event;
     while(game.isRunning){
         Uint32 currentTime = SDL_GetTicks();
-        float deltaTime = (currentTime-game.lastTime)/1000.0f;
+        const float deltaTime = (currentTime - game.lastTime) / 1000.0f;
         game.lastTime = currentTime;
         while(SDL_PollEvent(&event)){
             if(event.type == SDL_QUIT) game.isRunning = false;
@@ -66,11 +65,11 @@ int main(int argc, char *argv[]){
                 case VN_INTRO:
                 case DEALER_ROOM:
                 case PRE_BAT_VISION:
-                    handle_mouse_input_visual_novel(&event, &game.visualNovelState, &dialogue, &game.textureAssets);
+                    handle_mouse_input_visual_novel(&event, &game.visualNovelState, &game.visualNovelState.dialogue, &game.textureAssets);
                     break;
                 case BAT_VISION:
                     if(game.visualNovelState.isShowingUI){
-                        handle_mouse_input_visual_novel(&event, &game.visualNovelState, &dialogue, &game.textureAssets);
+                        handle_mouse_input_visual_novel(&event, &game.visualNovelState, &game.visualNovelState.dialogue, &game.textureAssets);
                     }else{
                         handle_mouse_input(&event, &game.player.camera);
                     }
@@ -86,7 +85,6 @@ int main(int argc, char *argv[]){
                             load_last_checkpoint(&game);
                         }
                     }
-                    handle_mouse_input_visual_novel(&event, &game.visualNovelState, &dialogue, &game.textureAssets);
                     break;
             }
         }
@@ -100,25 +98,25 @@ int main(int argc, char *argv[]){
                     scene_switch(&game, DEALER_ROOM);
                 }
 
-                render_dialogue_box(SCREEN_WIDTH, SCREEN_HEIGHT, &dialogue);
-                update_dialogue(&dialogue, currentTime);
-                render_dialogue_name(&dialogue, game.textureAssets.mainFont);
-                render_dialogue_text(&dialogue, game.textureAssets.mainFont);
-                render_ui_texture(&dialogue.speaker);
+                render_dialogue_box(SCREEN_WIDTH, SCREEN_HEIGHT, &game.visualNovelState.dialogue);
+                update_dialogue(&game.visualNovelState.dialogue, currentTime);
+                render_dialogue_name(&game.visualNovelState.dialogue, game.textureAssets.mainFont);
+                render_dialogue_text(&game.visualNovelState.dialogue, game.textureAssets.mainFont);
+                render_ui_texture(&game.visualNovelState.dialogue.speaker);
                 break;
             case DEALER_ROOM:
                 setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);
                 update_camera_view(&game.player.camera);
                 update_moveable_model_position(&game.gameObjects.Dealer, deltaTime);
                 render_moveable_model(&game.gameObjects.Dealer);
-                render_dialogue_box(SCREEN_WIDTH, SCREEN_HEIGHT, &dialogue);
-                update_dialogue(&dialogue, currentTime);
-                render_dialogue_text(&dialogue, game.textureAssets.mainFont);
+                render_dialogue_box(SCREEN_WIDTH, SCREEN_HEIGHT, &game.visualNovelState.dialogue);
+                update_dialogue(&game.visualNovelState.dialogue, currentTime);
+                render_dialogue_text(&game.visualNovelState.dialogue, game.textureAssets.mainFont);
 
                 if(game.visualNovelState.currentDialogID == DLG_SCENE_SWITCH_BAT_VISION){
                     scene_switch(&game, PRE_BAT_VISION);
                 }else if(game.visualNovelState.currentDialogID == DLG_GYULASZ_SIGN_THE_CONTRACT || game.visualNovelState.currentDialogID == DLG_GYULASZ_SIGN_THE_CONTRACT2){
-                    render_dialogue_name(&dialogue, game.textureAssets.mainFont);
+                    render_dialogue_name(&game.visualNovelState.dialogue, game.textureAssets.mainFont);
                 }
                 break;
             case PRE_BAT_VISION:
@@ -130,11 +128,11 @@ int main(int argc, char *argv[]){
 
                 render_bat_vision(&game.gameObjects.BatVisionMap, currentTime);
 
-                render_dialogue_box(SCREEN_WIDTH, SCREEN_HEIGHT, &dialogue);
-                update_dialogue(&dialogue, currentTime);
-                render_dialogue_name(&dialogue, game.textureAssets.mainFont);
-                render_dialogue_text(&dialogue, game.textureAssets.mainFont);
-                render_ui_texture(&dialogue.speaker);
+                render_dialogue_box(SCREEN_WIDTH, SCREEN_HEIGHT, &game.visualNovelState.dialogue);
+                update_dialogue(&game.visualNovelState.dialogue, currentTime);
+                render_dialogue_name(&game.visualNovelState.dialogue, game.textureAssets.mainFont);
+                render_dialogue_text(&game.visualNovelState.dialogue, game.textureAssets.mainFont);
+                render_ui_texture(&game.visualNovelState.dialogue.speaker);
                 break;
             case BAT_VISION:
                 update_camera_view(&game.player.camera);
@@ -161,23 +159,18 @@ int main(int argc, char *argv[]){
                     update_snail_ai(&game, deltaTime);
                 }
 
-                if(game.visualNovelState.currentDialogID == DLG_GYULASZ_SEE_NOTHING4){
-                    dialogue = create_dialogue_from_id(DLG_HELSIE_TELL_ABOUT_MONSTRUMS, winName, &game.textureAssets.Helsie_Scared);
-                }
-
                 if(game.triggerZones.BatVisionHelsieTakeAHint.isActivated){
                     if(game.visualNovelState.isShowingUI){
                         change_camera_input_handler(&game, false, false);
-                        render_dialogue_box(SCREEN_WIDTH, SCREEN_HEIGHT, &dialogue);
-                        update_dialogue(&dialogue, currentTime);
-                        render_dialogue_name(&dialogue, game.textureAssets.mainFont);
-                        render_dialogue_text(&dialogue, game.textureAssets.mainFont);
-                        render_ui_texture(&dialogue.speaker);
+                        render_dialogue_box(SCREEN_WIDTH, SCREEN_HEIGHT, &game.visualNovelState.dialogue);
+                        update_dialogue(&game.visualNovelState.dialogue, currentTime);
+                        render_dialogue_name(&game.visualNovelState.dialogue, game.textureAssets.mainFont);
+                        render_dialogue_text(&game.visualNovelState.dialogue, game.textureAssets.mainFont);
+                        render_ui_texture(&game.visualNovelState.dialogue.speaker);
                     }else{
                         change_camera_input_handler(&game, true, true);
                     }
                 }
-                // render_moveable_model(&game.gameObjects.Vapelt3);
                 break;
             case LIDAR:
                 update_camera_view(&game.player.camera);

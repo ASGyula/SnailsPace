@@ -6,6 +6,7 @@
 
 #include <math.h>
 
+#include "ai.h"
 #include "game_manager.h"
 
 void check_trigger_zones(Game* game){

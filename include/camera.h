@@ -34,6 +34,7 @@ typedef struct{
 } Camera;
 
 void initialize_camera(Camera* camera);
+void set_camera_position_default(Camera* camera);
 void update_camera_view(Camera* camera);
 void handle_mouse_input(SDL_Event* event, Camera* camera);
 void handle_wasd_input(SDL_Event* event, Camera* camera, bool* isRunning, float deltaTime, Sounds sounds, GameScene gameScene);

@@ -8,6 +8,7 @@
 #include <SDL_timer.h>
 #include <SDL_ttf.h>
 #include <string.h>
+#include <math.h>
 
 #include "dialogue_data.h"
 
@@ -52,6 +53,10 @@ static void draw_texture_2d(GLuint textureID, int x, int y, int w, int h) {
     if (textureID == 0) return;
 
     glDisable(GL_DEPTH_TEST);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_FOG);
+    glDisable(GL_CULL_FACE);
+
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
@@ -66,6 +71,8 @@ static void draw_texture_2d(GLuint textureID, int x, int y, int w, int h) {
 
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, textureID);
+
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -86,6 +93,7 @@ static void draw_texture_2d(GLuint textureID, int x, int y, int w, int h) {
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
+
     glEnable(GL_DEPTH_TEST);
 }
 
@@ -96,6 +104,10 @@ void render_ui_texture(UIElement* element){
 
 void render_dialogue_box(int screenWidth, int screenHeight, Dialogue* dialogue){
     glDisable(GL_DEPTH_TEST);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_FOG);
+    glDisable(GL_CULL_FACE);
+
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
