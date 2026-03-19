@@ -104,9 +104,6 @@ void render_lidar(const Vertex* vertices, const Camera* camera){
             float randomX = ((rand()%10)/2000.0f)-0.005f;
             float randomY = ((rand()%10)/2000.0f)-0.005f;
             float randomZ = ((rand()%10)/2000.0f)-0.005f;
-            // float randomX = ((rand()%10)/20.0f)-0.005f;
-            // float randomY = ((rand()%10)/20.0f)-0.005f;
-            // float randomZ = ((rand()%10)/20.0f)-0.005f;
 
             glVertex3f(vertices[i].x + randomX, vertices[i].y + randomY, vertices[i].z + randomZ);
         }
@@ -263,7 +260,6 @@ void render_bat_vision(const Model* model, const Uint32 currentTime){
         Uint32 requestTime = wave_queue[0].start_time;
         Uint32 waitTime = currentTime - requestTime;
 
-        // if(waitTime > (wave_queue[0].speed * wave_queue[0].max_distance) * 1000.0f){
         if(waitTime > 600){
             for(int i = 0; i < queue_count - 1; i++){
                 wave_queue[i] = wave_queue[i + 1];
@@ -548,8 +544,6 @@ void render_light_aura_model(Camera* camera, LightAuraModel* model){
     glTranslatef(model->x, model->y, model->z);
     glRotatef(model->yaw, 0.0f, 1.0f, 0.0f);
     render_model(&model->model);
-    glPopMatrix();
-
     glPopMatrix();
 
     glEnable(GL_BLEND);

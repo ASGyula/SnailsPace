@@ -47,6 +47,19 @@ void initialize_camera(Camera* camera){
     SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 
+void set_camera_position_default(Camera* camera){
+    camera->x = 0.0f;
+    camera->y = 1.6f;
+    camera->z = 5.0f;
+    camera->yaw = 0.0f;
+    camera->pitch = 0.0f;
+    camera->mouseSpeed = 0.1f;
+    camera->moveSpeed = 1.0f;
+    camera->isInvertedMouseY = true;
+    camera->isEnabledMovement = false;
+    camera->isEnabledRotation = true;
+}
+
 void handle_mouse_input(SDL_Event* event, Camera* camera){
     if(camera->isEnabledRotation){
         if(event->type == SDL_MOUSEMOTION){
