@@ -7,6 +7,7 @@
 #include <SDL_opengl.h>
 #include <SDL_stdinc.h>
 #include <SDL_ttf.h>
+#include <stdbool.h>
 
 typedef struct{
     GLuint textureID;
@@ -53,6 +54,12 @@ typedef struct{
     int screenWidth;
     int screenHeight;
 } Screen;
+
+UIElement create_text_ui_element(TTF_Font* font, const char* text, SDL_Color color, int x, int y);
+
+void update_text_ui_element(UIElement* element, TTF_Font* font, const char* text, SDL_Color color);
+
+bool is_mouse_over_ui(UIElement* element, int mouseX, int mouseY);
 
 void render_ui_texture(UIElement* element);
 

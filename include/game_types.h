@@ -14,6 +14,7 @@ typedef struct{
 } VisualNovelState;
 
 typedef enum{
+    MAIN_MENU,
     VN_INTRO,
     DEALER_ROOM,
     PRE_BAT_VISION,
