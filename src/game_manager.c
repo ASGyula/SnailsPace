@@ -31,8 +31,9 @@ Game init_game(const int screen_width, const int screen_height, const char* play
 
     setup_projection(screen_width, screen_height);
 
-    game.scene = VN_INTRO;
-    scene_switch(&game, BAT_VISION);
+    game.scene = MAIN_MENU;
+    game.lastCheckpoint = VN_INTRO;
+    scene_switch(&game, MAIN_MENU);
     return game;
 }
 
@@ -44,7 +45,7 @@ void change_camera_input_handler(Game* game, bool is_enabled_movement, bool is_e
 void scene_switch(Game* game, GameScene game_scene){
     printf("[INFO] Uj jelenet: ");
 
-    if(game->scene != DEAD_ROOM && game->scene != VN_INTRO){
+    if(game->scene != DEAD_ROOM && game->scene != MAIN_MENU){
         game->lastCheckpoint = game->scene;
     }
 
@@ -60,4 +61,20 @@ void load_last_checkpoint(Game* game){
 
 GameScene get_current_game_scene(Game* game){
     return game->scene;
+}
+
+void handle_mouse_input_main_menu(SDL_Event* event, Game* game){
+    if(event->type == SDL_MOUSEBUTTONDOWN && event->button.button == SDL_BUTTON_LEFT){
+        int mouseX = event->button.x;
+        int mouseY = event->button.y;
+
+        if(is_mouse_over_ui(&game->mainMenuUI.startButton, mouseX, mouseY)){
+            scene_switch(game, VN_INTRO);
+        }else if(is_mouse_over_ui(&game->mainMenuUI.invertYButton, mouseX, mouseY)){
+            game->player.camera.isInvertedMouseY = !game->player.camera.isInvertedMouseY;
+            const char* invert_text = game->player.camera.isInvertedMouseY ? "Inverz Y-tengely: BEKAPCSOLVA" : "Inverz Y-tengely: KIKAPCSOLVA";
+            update_text_ui_element(&game->mainMenuUI.invertYButton, game->textureAssets.mainFont, invert_text, (SDL_Color){255, 255, 255, 255});
+            game->mainMenuUI.invertYButton.x = (game->screen.screenWidth / 2) - (game->mainMenuUI.invertYButton.w / 2);
+        }
+    }
 }
