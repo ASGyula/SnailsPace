@@ -18,6 +18,7 @@ void set_player_defaults(Game* game){
     game->player.camera.screenHeight = game->screen.screenHeight;
     game->player.camera.lastShout = 0;
     game->player.camera.nextShout = 0;
+    game->player.camera.isInvertedMouseY = true;
     initialize_camera(&game->player.camera);
 }
 
@@ -228,18 +229,50 @@ void paint_texture_assets(Game *game){
     game->textureAssets.VButton.isShowing = true;
 }
 
+void build_main_menu_ui(Game* game) {
+    if(!game->textureAssets.mainFont) return;
+
+    SDL_Color red = {255, 50, 50, 255};
+    SDL_Color white = {255, 255, 255, 255};
+    SDL_Color gray = {150, 150, 150, 255};
+
+    int cw = game->screen.screenWidth / 2;
+
+    game->mainMenuUI.title = create_text_ui_element(game->textureAssets.mainFont, "Snail's Pace", red, 0, 150);
+    game->mainMenuUI.title.x = cw - (game->mainMenuUI.title.w / 2);
+
+    const char* warning_text = "FIGYELEM! Ez a játék hirtelen ijesztéseket és erős hanghatásokat tartalmaz!";
+    game->mainMenuUI.warning = create_text_ui_element(game->textureAssets.mainFont, warning_text, gray, cw/4, game->screen.screenHeight-32);
+
+    game->mainMenuUI.startButton = create_text_ui_element(game->textureAssets.mainFont, "[INDÍTÁS]", white, 0, 500);
+    game->mainMenuUI.startButton.x = cw - (game->mainMenuUI.startButton.w / 2);
+
+    const char* invert_text = game->player.camera.isInvertedMouseY ? "Inverz Y-tengely: BEKAPCSOLVA" : "Inverz Y-tengely: KIKAPCSOLVA";
+    game->mainMenuUI.invertYButton = create_text_ui_element(game->textureAssets.mainFont, invert_text, white, 0, 600);
+    game->mainMenuUI.invertYButton.x = cw - (game->mainMenuUI.invertYButton.w / 2);
+}
+
 void world_initialization(Game* game, const char* player_name){
     set_player_defaults(game);
-    set_visual_novel_state(game, player_name);
     set_fonts_standards(game);
     build_up_trigger_zones(game);
     build_up_game_objects(game);
+    sounds_tuning_up(game);
     paint_texture_assets(game);
+    set_visual_novel_state(game, player_name);
+    build_main_menu_ui(game);
+}
+
+void build_scene_main_menu(Game* game){
+    printf("MAIN_MENU\n");
+    change_camera_input_handler(game, false, false);
+    SDL_SetRelativeMouseMode(SDL_FALSE);
 }
 
 void build_scene_vn_intro(Game* game){
     printf("VN_INTRO\n");
     change_camera_input_handler(game, false, false);
+    SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 
 void build_scene_dealer_room(Game* game){
@@ -256,13 +289,14 @@ void build_scene_dealer_room(Game* game){
 
 void build_scene_pre_bat_vision(Game* game){
     printf("PRE_BAT_VISION\n");
-    disableFog();
+    enableFog(2,10,0.4f);
     SDL_SetWindowBrightness(game->window, 1.0f);
     game->visualNovelState.currentDialogID = DLG_SCENE_SWITCH_BAT_VISION;
 }
 
 void build_scene_bat_vision(Game* game){
     printf("BAT_VISION\n");
+    glDisable(GL_LIGHT3);
     glEnable(GL_LIGHT2);
     set_camera_position_default(&game->player.camera);
     setup_projection(game->screen.screenWidth, game->screen.screenHeight);
@@ -273,7 +307,7 @@ void build_scene_bat_vision(Game* game){
     game->gameObjects.ImmortalSnail.z = 20.0f;
     game->visualNovelState.isShowingUI = false;
     glEnable(GL_TEXTURE_2D);
-    game->visualNovelState.dialogue = create_dialogue_from_id(DLG_HELSIE_TELL_ABOUT_MONSTRUMS, game->visualNovelState.playerName, &game->textureAssets.Helsie_Scared);
+    game->visualNovelState.dialogue = create_dialogue_from_id(DLG_GYULASZ_SEE_NOTHING4, game->visualNovelState.playerName, &game->textureAssets.Gyulasz_Scared);
     game->visualNovelState.dialogue.isFinished = false;
     game->visualNovelState.dialogue.isShowing = true;
     change_camera_input_handler(game, true, true);
@@ -298,6 +332,9 @@ void build_scene_dead_room(Game* game){
 
 void build_scene(Game* game, GameScene game_scene){
     switch(game_scene){
+        case MAIN_MENU:
+            build_scene_main_menu(game);
+            break;
         case VN_INTRO:
             build_scene_vn_intro(game);
             break;

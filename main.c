@@ -29,6 +29,9 @@
 #define SCREEN_WIDTH 1000
 #define SCREEN_HEIGHT 800
 
+SDL_Color yellow = {255, 255, 0, 255};
+SDL_Color white = {255, 255, 255, 255};
+
 int main(int argc, char *argv[]){
     if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) != 0){
         printf("[HIBA] SDL Init hiba: %s\n", SDL_GetError());
@@ -62,6 +65,9 @@ int main(int argc, char *argv[]){
         while(SDL_PollEvent(&event)){
             if(event.type == SDL_QUIT) game.isRunning = false;
             switch(game.scene){
+                case MAIN_MENU:
+                    handle_mouse_input_main_menu(&event, &game);
+                    break;
                 case VN_INTRO:
                 case DEALER_ROOM:
                 case PRE_BAT_VISION:
@@ -89,9 +95,34 @@ int main(int argc, char *argv[]){
             }
         }
 
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         switch(game.scene){
+            case MAIN_MENU:
+                render_ui_texture(&game.mainMenuUI.title);
+                render_ui_texture(&game.mainMenuUI.warning);
+
+                int mouseX, mouseY;
+                SDL_GetMouseState(&mouseX, &mouseY);
+
+                if(is_mouse_over_ui(&game.mainMenuUI.startButton, mouseX, mouseY)){
+                    update_text_ui_element(&game.mainMenuUI.startButton, game.textureAssets.mainFont, "[INDITÁS]", yellow);
+                }else{
+                    update_text_ui_element(&game.mainMenuUI.startButton, game.textureAssets.mainFont, "[INDITÁS]", white);
+                }
+
+                if(is_mouse_over_ui(&game.mainMenuUI.invertYButton, mouseX, mouseY)){
+                    const char* invert_text = game.player.camera.isInvertedMouseY ? "Inverz Y-tengely: BEKAPCSOLVA" : "Inverz Y-tengely: KIKAPCSOLVA";
+                    update_text_ui_element(&game.mainMenuUI.invertYButton, game.textureAssets.mainFont, invert_text, yellow);
+                }else{
+                    const char* invert_text = game.player.camera.isInvertedMouseY ? "Inverz Y-tengely: BEKAPCSOLVA" : "Inverz Y-tengely: KIKAPCSOLVA";
+                    update_text_ui_element(&game.mainMenuUI.invertYButton, game.textureAssets.mainFont, invert_text, white);
+                }
+
+                render_ui_texture(&game.mainMenuUI.startButton);
+                render_ui_texture(&game.mainMenuUI.invertYButton);
+                break;
             case VN_INTRO:
                 if(game.visualNovelState.currentDialogID == DLG_MONSTER_APPEARS){
                     setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -135,6 +166,7 @@ int main(int argc, char *argv[]){
                 render_ui_texture(&game.visualNovelState.dialogue.speaker);
                 break;
             case BAT_VISION:
+                setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);
                 update_camera_view(&game.player.camera);
                 update_vaping(&game.player.camera, deltaTime);
                 render_bat_vision(&game.gameObjects.BatVisionMap, currentTime);
@@ -173,6 +205,7 @@ int main(int argc, char *argv[]){
                 }
                 break;
             case LIDAR:
+                setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);
                 update_camera_view(&game.player.camera);
                 render_lidar(game.gameObjects.LidarMap, &game.player.camera);
                 break;
@@ -182,8 +215,9 @@ int main(int argc, char *argv[]){
             case DEAD_ROOM:
                 setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);
                 update_camera_view(&game.player.camera);
-
                 render_game_over_scene(&game.gameObjects.Dealer.model, currentTime, game.player.camera.auraLightBrightness);
+                render_ui_texture(&game.textureAssets.SpaceButton);
+
                 break;
             default:
                 break;

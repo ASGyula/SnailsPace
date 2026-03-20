@@ -38,7 +38,6 @@ void initialize_camera(Camera* camera){
     camera->pitch = 0.0f;
     camera->mouseSpeed = 0.1f;
     camera->moveSpeed = 1.0f;
-    camera->isInvertedMouseY = true;
     camera->isEnabledMovement = false;
     camera->isEnabledRotation = true;
 
@@ -55,7 +54,6 @@ void set_camera_position_default(Camera* camera){
     camera->pitch = 0.0f;
     camera->mouseSpeed = 0.1f;
     camera->moveSpeed = 1.0f;
-    camera->isInvertedMouseY = true;
     camera->isEnabledMovement = false;
     camera->isEnabledRotation = true;
 }
@@ -197,9 +195,8 @@ void update_vaping(Camera* camera, float deltaTime){
     }
 
     if(camera->vape.smokeAmount <= 0.0f){
-        disableFog();
+        enableFog(10,30,0.4f);
     }else{
-        printf("%.2f\n", camera->vape.smokeAmount);
         float fogDensity = 0.01f + (camera->vape.smokeAmount * 0.1f);
         glFogf(GL_FOG_DENSITY, fogDensity);
         enableFog(1-(camera->vape.smokeAmount), 15.0f - (camera->vape.smokeAmount * 10.0f), camera->vape.smokeAmount);

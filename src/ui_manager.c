@@ -13,7 +13,7 @@
 #include "dialogue_data.h"
 
 static GLuint create_text_texture(TTF_Font* font, const char* text, SDL_Color color, int* width, int* height) {
-    SDL_Surface* s = TTF_RenderUTF8_Blended_Wrapped(font, text, color, 500);
+    SDL_Surface* s = TTF_RenderUTF8_Blended_Wrapped(font, text, color, 800); // Szélesebb wrap a hosszú szövegeknek
     if (!s) return 0;
 
     GLuint textureID;
@@ -42,8 +42,8 @@ static GLuint create_text_texture(TTF_Font* font, const char* text, SDL_Color co
     glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
     glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
 
-    if (width) *width = s->w;
-    if (height) *height = s->h;
+    if(width) *width = s->w;
+    if(height) *height = s->h;
 
     SDL_FreeSurface(s);
     return textureID;
@@ -71,7 +71,6 @@ static void draw_texture_2d(GLuint textureID, int x, int y, int w, int h) {
 
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, textureID);
-
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
     glEnable(GL_BLEND);
@@ -93,8 +92,29 @@ static void draw_texture_2d(GLuint textureID, int x, int y, int w, int h) {
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
-
     glEnable(GL_DEPTH_TEST);
+}
+
+UIElement create_text_ui_element(TTF_Font* font, const char* text, SDL_Color color, int x, int y) {
+    UIElement elem = {0};
+    elem.x = x;
+    elem.y = y;
+    elem.isShowing = true;
+    elem.textureID = create_text_texture(font, text, color, &elem.w, &elem.h);
+    return elem;
+}
+
+void update_text_ui_element(UIElement* element, TTF_Font* font, const char* text, SDL_Color color) {
+    if (element->textureID != 0) {
+        glDeleteTextures(1, &element->textureID);
+    }
+    element->textureID = create_text_texture(font, text, color, &element->w, &element->h);
+}
+
+bool is_mouse_over_ui(UIElement* element, int mouseX, int mouseY) {
+    if (!element->isShowing) return false;
+    return (mouseX >= element->x && mouseX <= element->x + element->w &&
+            mouseY >= element->y && mouseY <= element->y + element->h);
 }
 
 void render_ui_texture(UIElement* element){

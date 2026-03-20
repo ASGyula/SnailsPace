@@ -452,7 +452,6 @@ void handle_mouse_input_visual_novel(SDL_Event* event, VisualNovelState* visual_
                     increase_visual_novel_state(visual_novel_state, 30);
                     break;
                 case DLG_HELSIE_TELL_ABOUT_MONSTRUMS:
-                    printf("Helsie");
                     newDialog = create_dialogue_from_id(DLG_HELSIE_TELL_ABOUT_MONSTRUMS2, visual_novel_state->playerName, &texture_assets->Helsie_Scared);
                     increase_visual_novel_state(visual_novel_state, 31);
                     add_sound_wave(0.0f, 1.8f, -20.0f, 3.0f, 4.0f, 4.0f, 'v');

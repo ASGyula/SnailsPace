@@ -13,6 +13,13 @@
 #include "sounds.h"
 
 typedef struct{
+    UIElement title;
+    UIElement warning;
+    UIElement startButton;
+    UIElement invertYButton;
+} MainMenuUI;
+
+typedef struct{
     bool isRunning;
     bool isLoading;
     Player player;
@@ -27,6 +34,7 @@ typedef struct{
     TextureAssets textureAssets;
     VisualNovelState visualNovelState;
     GameTriggerZones triggerZones;
+    MainMenuUI mainMenuUI;
 } Game;
 
 Game init_game(int screen_width, int screen_height, const char* player_name);
@@ -38,5 +46,7 @@ void load_last_checkpoint(Game* game);
 GameScene get_current_game_scene(Game* game);
 
 void change_camera_input_handler(Game* game, bool is_enabled_movement, bool is_enabled_rotation);
+
+void handle_mouse_input_main_menu(SDL_Event* event, Game* game);
 
 #endif //SNAILSPACE_GAME_MANAGER_H
