@@ -454,17 +454,17 @@ void handle_mouse_input_visual_novel(SDL_Event* event, VisualNovelState* visual_
                 case DLG_HELSIE_TELL_ABOUT_MONSTRUMS:
                     newDialog = create_dialogue_from_id(DLG_HELSIE_TELL_ABOUT_MONSTRUMS2, visual_novel_state->playerName, &texture_assets->Helsie_Scared);
                     increase_visual_novel_state(visual_novel_state, 31);
-                    add_sound_wave(0.0f, 1.8f, -20.0f, 3.0f, 4.0f, 4.0f, 'v');
+                    add_sound_wave(0.0f, 1.8f, -10.0f, 3.0f, 4.0f, 4.0f, 'v');
                     break;
                 case DLG_HELSIE_TELL_ABOUT_MONSTRUMS2:
                     newDialog = create_dialogue_from_id(DLG_HELSIE_TELL_ABOUT_MONSTRUMS3, visual_novel_state->playerName, &texture_assets->Helsie_Scared);
                     increase_visual_novel_state(visual_novel_state, 32);
-                    add_sound_wave(0.0f, 1.8f, -20.0f, 3.0f, 4.0f, 4.0f, 'v');
+                    add_sound_wave(0.0f, 1.8f, -10.0f, 3.0f, 4.0f, 4.0f, 'v');
                     break;
                 case DLG_HELSIE_TELL_ABOUT_MONSTRUMS3:
                     newDialog = create_dialogue_from_id(DLG_GYULASZ_REPLY_TO_MONSTRUMS, visual_novel_state->playerName, &texture_assets->Gyulasz_Suprised);
                     increase_visual_novel_state(visual_novel_state, 33);
-                    add_sound_wave(0.0f, 1.8f, -20.0f, 3.0f, 4.0f, 4.0f, 'v');
+                    add_sound_wave(0.0f, 1.8f, -10.0f, 3.0f, 4.0f, 4.0f, 'v');
                     break;
                 case DLG_GYULASZ_REPLY_TO_MONSTRUMS:
                     visual_novel_state->isShowingUI = false;

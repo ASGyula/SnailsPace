@@ -19,6 +19,7 @@ typedef enum{
     DEALER_ROOM,
     PRE_BAT_VISION,
     BAT_VISION,
+    PRE_LIDAR,
     LIDAR,
     LAST_ROOM,
     DEAD_ROOM
@@ -26,7 +27,8 @@ typedef enum{
 
 typedef enum{
     TRIGGER_DIALOGUE,
-    TRIGGER_SPAWN_MONSTER
+    TRIGGER_SPAWN_MONSTER,
+    TRIGGER_DRINK
 } TriggerType;
 
 typedef struct{
