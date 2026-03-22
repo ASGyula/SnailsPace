@@ -33,11 +33,28 @@ typedef struct{
     float auraLightBrightness;
 } Camera;
 
+#define BASE_MOVEMENT_SPEED 5.0f
+
+#define SHOUT_DISTANCE 30.0f
+#define SHOUT_COOLDOWN 1500
+#define SHOUT_SPEED 30
+#define SHOUT_SOURCE 's'
+#define SHOUT_SENS 20.0f
+#define STEPS_DISTANCE 20.0f
+#define STEPS_COOLDOWN 600
+#define STEPS_SPEED 20
+#define STEPS_SOURCE 'm'
+#define STEPS_SENS 2.0f
+#define VAPE_DISTANCE 10.0f
+#define VAPE_COOLDOWN 1000
+#define VAPE_SPEED 15
+#define VAPE_SOURCE 'm'
+#define VAPE_SENS 1.0f
+#define DECREASE_VAPE_SMOKE_AMOUNT_SEC 3
+
 void initialize_camera(Camera* camera);
 void set_camera_position_default(Camera* camera);
 void update_camera_view(Camera* camera);
-void handle_mouse_input(SDL_Event* event, Camera* camera);
-void handle_wasd_input(SDL_Event* event, Camera* camera, bool* isRunning, float deltaTime, Sounds sounds, GameScene gameScene);
 void update_vaping(Camera* camera, float deltaTime);
 
 #endif //SNAILSPACE_CAMERA_H

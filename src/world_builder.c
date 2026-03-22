@@ -50,11 +50,12 @@ void build_up_trigger_zones(Game* game){
 
     //BAT VISION HELSIE TAKE A HINT
     game->triggerZones.BatVisionHelsieTakeAHint.x = 0;
-    game->triggerZones.BatVisionHelsieTakeAHint.z = -2;
+    game->triggerZones.BatVisionHelsieTakeAHint.z = -10;
     game->triggerZones.BatVisionHelsieTakeAHint.radius = 2;
     game->triggerZones.BatVisionHelsieTakeAHint.type = TRIGGER_DIALOGUE;
     game->triggerZones.BatVisionHelsieTakeAHint.isActivated = false;
 }
+
 
 void build_up_game_objects(Game* game){
     printf("[INICIALIZALAS] building_up_trigger_zones\n");
@@ -94,13 +95,9 @@ void build_up_game_objects(Game* game){
     game->gameObjects.PunchPacificMonster.b = 0.0f;
     game->gameObjects.PunchPacificMonster.a = 1.0f;
     game->gameObjects.PunchPacificMonster.radius = 1.0f;
-    game->gameObjects.PunchPacificMonster.x = 0.0f;
-    game->gameObjects.PunchPacificMonster.y = 0.0f;
-    game->gameObjects.PunchPacificMonster.z = 0.0f;
-    game->gameObjects.PunchPacificMonster.triggerZone.x = 0;
-    game->gameObjects.PunchPacificMonster.triggerZone.z = 0;
+    game->gameObjects.PunchPacificMonster.triggerZone.radius = 1.0f;
     game->gameObjects.PunchPacificMonster.triggerZone.isActivated = false;
-    game->gameObjects.PunchPacificMonster.triggerZone.type = TRIGGER_DIALOGUE;
+    game->gameObjects.PunchPacificMonster.triggerZone.type = TRIGGER_DRINK;
 
     //IMMORTAL SNAIL
     load_textured_obj("External/rudolfs/snail/model.obj", &game->gameObjects.ImmortalSnail.model);
@@ -164,8 +161,7 @@ void paint_texture_assets(Game *game){
     game->textureAssets.Gyulasz_Thinking.y = game->screen.screenHeight - game->textureAssets.Gyulasz_Thinking.h;
     game->textureAssets.Gyulasz_Thinking.isShowing = true;
 
-    game->textureAssets.Gyulasz_Have_an_evil_idea.textureID = load_texture(
-        "External/Gemini/Gyulasz_Have_an_evil_idea.png");
+    game->textureAssets.Gyulasz_Have_an_evil_idea.textureID = load_texture("External/Gemini/Gyulasz_Have_an_evil_idea.png");
     game->textureAssets.Gyulasz_Have_an_evil_idea.w = 400;
     game->textureAssets.Gyulasz_Have_an_evil_idea.h = 450;
     game->textureAssets.Gyulasz_Have_an_evil_idea.x = 0;
@@ -192,6 +188,13 @@ void paint_texture_assets(Game *game){
     game->textureAssets.Gyulasz_Hand_Shake.x = 0;
     game->textureAssets.Gyulasz_Hand_Shake.y = game->screen.screenHeight - game->textureAssets.Gyulasz_Hand_Shake.h;
     game->textureAssets.Gyulasz_Hand_Shake.isShowing = true;
+
+    game->textureAssets.Clippy.textureID = load_texture("External/JokeBattlesWikia/Clippy.png");
+    game->textureAssets.Clippy.w = 200;
+    game->textureAssets.Clippy.h = 200;
+    game->textureAssets.Clippy.x = 5;
+    game->textureAssets.Clippy.y = (game->screen.screenHeight) - (game->textureAssets.Clippy.h);
+    game->textureAssets.Clippy.isShowing = true;
 
     game->textureAssets.Dealer.textureID = load_texture("External/Gemini/Dealer.png");
     game->textureAssets.Dealer.w = 400;
@@ -241,14 +244,14 @@ void build_main_menu_ui(Game* game) {
     game->mainMenuUI.title = create_text_ui_element(game->textureAssets.mainFont, "Snail's Pace", red, 0, 150);
     game->mainMenuUI.title.x = cw - (game->mainMenuUI.title.w / 2);
 
-    const char* warning_text = "FIGYELEM! Ez a játék hirtelen ijesztéseket és erős hanghatásokat tartalmaz!";
-    game->mainMenuUI.warning = create_text_ui_element(game->textureAssets.mainFont, warning_text, gray, cw/4, game->screen.screenHeight-32);
+    const char* warning_text = "Ez a játék hirtelen ijesztéseket és\nerős hanghatásokat tartalmazhat!";
+    game->mainMenuUI.warning = create_text_ui_element(game->textureAssets.mainFont, warning_text, gray, game->textureAssets.Clippy.w + 10, (game->screen.screenHeight-game->textureAssets.Clippy.h));
 
-    game->mainMenuUI.startButton = create_text_ui_element(game->textureAssets.mainFont, "[INDÍTÁS]", white, 0, 500);
+    game->mainMenuUI.startButton = create_text_ui_element(game->textureAssets.mainFont, "[INDÍTÁS]", white, 0, game->screen.screenHeight/2);
     game->mainMenuUI.startButton.x = cw - (game->mainMenuUI.startButton.w / 2);
 
     const char* invert_text = game->player.camera.isInvertedMouseY ? "Inverz Y-tengely: BEKAPCSOLVA" : "Inverz Y-tengely: KIKAPCSOLVA";
-    game->mainMenuUI.invertYButton = create_text_ui_element(game->textureAssets.mainFont, invert_text, white, 0, 600);
+    game->mainMenuUI.invertYButton = create_text_ui_element(game->textureAssets.mainFont, invert_text, white, 0, (game->screen.screenHeight/2)+50);
     game->mainMenuUI.invertYButton.x = cw - (game->mainMenuUI.invertYButton.w / 2);
 }
 
@@ -263,6 +266,35 @@ void world_initialization(Game* game, const char* player_name){
     build_main_menu_ui(game);
 }
 
+void randomize_monster_energy(Game* game, LightAuraModel* monster) {
+    printf("[INFO] randomizing_monster_energy: ");
+    Coordinates coordinates[] = {
+        {-2.947048, 0, -28.924328},
+        {-4.55217, 0, -34.335026},
+        {-7.032827, 0, -34.335030},
+        {-8.843879, 0, -29.709135},
+        {-5.227485, 0, -50.855663},
+        {-5.373802, 0, -55.148785},
+        {-7.416370, 0, -57.397461},
+        {-4.407894, 0, -75.032768},
+        {-8.049614, 0, -74.696838},
+        {-5.383556, 0, -80.012871},
+        {-2.822087, 0, -81.025581},
+        {0.075910, 0, -87.432220},
+    };
+    int randomIndex = rand() % (sizeof(coordinates) / sizeof(coordinates[0]));
+    const Coordinates randomCoordinate = coordinates[randomIndex];
+    monster->x = randomCoordinate.x;
+    monster->y = randomCoordinate.y;
+    monster->z = randomCoordinate.z;
+
+    monster->radius = 1.0f;
+    monster->triggerZone.isActivated = false;
+    monster->triggerZone.x = randomCoordinate.x;
+    monster->triggerZone.z = randomCoordinate.z;
+    printf("(%.2f, %.2f, %.2f)\n", monster->x, monster->y, monster->z);
+}
+
 void build_scene_main_menu(Game* game){
     printf("MAIN_MENU\n");
     change_camera_input_handler(game, false, false);
@@ -271,6 +303,8 @@ void build_scene_main_menu(Game* game){
 
 void build_scene_vn_intro(Game* game){
     printf("VN_INTRO\n");
+    game->visualNovelState.currentDialogID = 0;
+    game->visualNovelState.dialogue = create_dialogue_from_id(DLG_INTRO, game->visualNovelState.playerName, &game->textureAssets.Gyulasz_Scared);
     change_camera_input_handler(game, false, false);
     SDL_SetRelativeMouseMode(SDL_TRUE);
 }
@@ -285,6 +319,7 @@ void build_scene_dealer_room(Game* game){
     SDL_SetWindowBrightness(game->window, 0.4f);
     game->gameObjects.Dealer.isMoving = true;
     game->visualNovelState.currentDialogID = DLG_MONSTER_APPEARS;
+    SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 
 void build_scene_pre_bat_vision(Game* game){
@@ -292,6 +327,7 @@ void build_scene_pre_bat_vision(Game* game){
     enableFog(2,10,0.4f);
     SDL_SetWindowBrightness(game->window, 1.0f);
     game->visualNovelState.currentDialogID = DLG_SCENE_SWITCH_BAT_VISION;
+    SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 
 void build_scene_bat_vision(Game* game){
@@ -300,6 +336,7 @@ void build_scene_bat_vision(Game* game){
     glEnable(GL_LIGHT2);
     set_camera_position_default(&game->player.camera);
     setup_projection(game->screen.screenWidth, game->screen.screenHeight);
+    randomize_monster_energy(game, &game->gameObjects.PunchPacificMonster);
     game->gameObjects.ImmortalSnail.isMoving = false;
     game->triggerZones.BatVisionHelsieTakeAHint.isActivated = false;
     game->gameObjects.ImmortalSnail.x = 0;
@@ -311,24 +348,35 @@ void build_scene_bat_vision(Game* game){
     game->visualNovelState.dialogue.isFinished = false;
     game->visualNovelState.dialogue.isShowing = true;
     change_camera_input_handler(game, true, true);
+    SDL_SetRelativeMouseMode(SDL_TRUE);
+}
+
+void build_scene_pre_lidar(Game* game){
+    printf("PRE_LIDAR\n");
+    set_camera_position_default(&game->player.camera);
+    prepare_lidar_data(game->gameObjects.LidarMap);
+    SDL_SetWindowBrightness(game->window, 1.0f);
+    SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 
 void build_scene_lidar(Game* game){
     printf("LIDAR\n");
     prepare_lidar_data(game->gameObjects.LidarMap);
     SDL_SetWindowBrightness(game->window, 1.0f);
+    SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 
 void build_scene_last_room(Game* game){
     printf("LAST_ROOM\n");
+    SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 
 void build_scene_dead_room(Game* game){
     printf("DEAD_ROOM\n");
     glDisable(GL_LIGHT2);
     set_camera_position_default(&game->player.camera);
+    SDL_SetRelativeMouseMode(SDL_TRUE);
 }
-
 
 void build_scene(Game* game, GameScene game_scene){
     switch(game_scene){
@@ -349,6 +397,9 @@ void build_scene(Game* game, GameScene game_scene){
             break;
         case LIDAR:
             build_scene_lidar(game);
+            break;
+        case PRE_LIDAR:
+            build_scene_pre_lidar(game);
             break;
         case LAST_ROOM:
             build_scene_last_room(game);

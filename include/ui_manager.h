@@ -16,6 +16,26 @@ typedef struct{
 } UIElement;
 
 typedef struct{
+    UIElement Helsie_Happy;
+    UIElement Helsie_Scared;
+    UIElement Helsie_lt3_Gyula;
+    UIElement Gyulasz_Brave;
+    UIElement Gyulasz_Determined;
+    UIElement Gyulasz_Thinking;
+    UIElement Gyulasz_Have_an_evil_idea;
+    UIElement Gyulasz_Suprised;
+    UIElement Gyulasz_Scared;
+    UIElement Gyulasz_Hand_Shake;
+    UIElement Clippy;
+    UIElement Dealer;
+    UIElement Snail;
+    TTF_Font* mainFont;
+    UIElement ESCButton;
+    UIElement SpaceButton;
+    UIElement VButton;
+} TextureAssets;
+
+typedef struct{
     GLfloat red;
     GLfloat green;
     GLfloat blue;
@@ -71,5 +91,10 @@ void render_dialogue_name(Dialogue* dialogue, TTF_Font* font);
 
 void update_dialogue(Dialogue* d, Uint32 currentTime);
 
+void draw_rect(int x, int y, int w, int h);
+
+void draw_rect_lines(int x, int y, int w, int h);
+
+void render_clippy_bubble(Screen* screen, TextureAssets* textureAssets, UIElement* warningElement);
 
 #endif //SNAILSPACE_UI_MANAGER_H

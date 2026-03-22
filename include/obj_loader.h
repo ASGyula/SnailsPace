@@ -10,6 +10,10 @@
 
 typedef struct{
     float x, y, z;
+} Coordinates;
+
+typedef struct{
+    float x, y, z;
     int number_of_vertex;
 } Vertex;
 
