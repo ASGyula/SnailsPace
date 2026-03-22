@@ -242,6 +242,15 @@ void enableFog(float start, float end, float alpha){
     glFogf(GL_FOG_END, end);
 }
 
+void enableVapeFog(float start, float end, float alpha){
+    glEnable(GL_FOG);
+    float fogColor[] = {1.0f, 0.21f, 0.41f, alpha};
+    glFogfv(GL_FOG_COLOR, fogColor);
+    glFogf(GL_FOG_MODE, GL_LINEAR);
+    glFogf(GL_FOG_START, start);
+    glFogf(GL_FOG_END, end);
+}
+
 void disableFog(){
     glDisable(GL_FOG);
 }

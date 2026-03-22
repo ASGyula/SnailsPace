@@ -14,6 +14,7 @@
 #include "player.h"
 #include "triggers.h"
 #include "ui_manager.h"
+#include "input_manager.h"
 #ifdef _WIN32
     #include <windows.h>
     #include <lmcons.h>
@@ -80,6 +81,7 @@ int main(int argc, char *argv[]){
                         handle_mouse_input(&event, &game.player.camera);
                     }
                     break;
+                case PRE_LIDAR:
                 case LIDAR:
                     handle_mouse_input(&event, &game.player.camera);
                     break;
@@ -101,6 +103,8 @@ int main(int argc, char *argv[]){
         switch(game.scene){
             case MAIN_MENU:
                 render_ui_texture(&game.mainMenuUI.title);
+
+                render_clippy_bubble(&game.screen, &game.textureAssets, &game.mainMenuUI.warning);
                 render_ui_texture(&game.mainMenuUI.warning);
 
                 int mouseX, mouseY;
@@ -122,6 +126,7 @@ int main(int argc, char *argv[]){
 
                 render_ui_texture(&game.mainMenuUI.startButton);
                 render_ui_texture(&game.mainMenuUI.invertYButton);
+                render_ui_texture(&game.textureAssets.Clippy);
                 break;
             case VN_INTRO:
                 if(game.visualNovelState.currentDialogID == DLG_MONSTER_APPEARS){
@@ -204,11 +209,13 @@ int main(int argc, char *argv[]){
                     }
                 }
                 break;
-            case LIDAR:
+            case PRE_LIDAR:
                 setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);
                 update_camera_view(&game.player.camera);
                 render_lidar(game.gameObjects.LidarMap, &game.player.camera);
                 break;
+            case LIDAR:
+              break;
             case LAST_ROOM:
 
                 break;
@@ -223,7 +230,8 @@ int main(int argc, char *argv[]){
                 break;
         }
 
-        handle_wasd_input(&event, &game.player.camera, &game.isRunning, deltaTime, game.sounds, game.scene);
+        handle_esc_input(&event, &game, &game.isRunning, &game.scene);
+        handle_wasd_input(&game.player.camera, deltaTime, game.sounds, game.scene);
         render_ui_texture(&game.textureAssets.ESCButton);
 
         SDL_GL_SwapWindow(game.window);

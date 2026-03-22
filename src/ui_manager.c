@@ -9,6 +9,7 @@
 #include <SDL_ttf.h>
 #include <string.h>
 #include <math.h>
+#include <stdio.h>
 
 #include "dialogue_data.h"
 
@@ -214,4 +215,70 @@ void update_dialogue(Dialogue* d, Uint32 currentTime){
         d->isFinished = true;
         d->charIndex = fullLen;
     }
+}
+
+void draw_rect(int x, int y, int w, int h){
+    glBegin(GL_QUADS);
+    glVertex2i(x, y);
+    glVertex2i(x + w, y);
+    glVertex2i(x + w, y + h);
+    glVertex2i(x, y + h);
+    glEnd();
+}
+
+void draw_rect_lines(int x, int y, int w, int h){
+    glBegin(GL_LINE_LOOP);
+    glVertex2i(x, y);
+    glVertex2i(x + w, y);
+    glVertex2i(x + w, y + h);
+    glVertex2i(x, y + h);
+    glEnd();
+}
+
+void render_clippy_bubble(Screen* screen, TextureAssets* textureAssets, UIElement* warningElement){
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glOrtho(0, screen->screenWidth, screen->screenHeight, 0, -1, 1);
+
+    int bubbleMargin = 15;
+    int startY = screen->screenHeight - textureAssets->Clippy.h - 10;
+    int startX = textureAssets->Clippy.w + 10;
+
+    int bubbleW = warningElement->w/2-50 + (bubbleMargin * 2);
+    int bubbleH = warningElement->h + (bubbleMargin * 2);
+
+    warningElement->y = startY + bubbleMargin;
+    warningElement->x = startX + bubbleMargin;
+
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glColor4f(0.97f, 0.96f, 0.65f, 1.0f);
+    draw_rect(startX, startY, bubbleW, bubbleH);
+
+    glBegin(GL_TRIANGLES);
+    glVertex2i(startX + (bubbleW / 4), startY + bubbleH);
+    glVertex2i(startX + (bubbleW / 4) + 15, startY + bubbleH);
+    glVertex2i(startX - 10, startY + bubbleH + 20);
+    glEnd();
+
+    glLineWidth(2.0f);
+    glColor3f(0.97f, 0.96f, 0.65f);
+    draw_rect_lines(startX, startY, bubbleW, bubbleH);
+
+    glEnable(GL_DEPTH_TEST);
+    glPopMatrix();
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+
+    glDisable(GL_BLEND);
+    glEnable(GL_TEXTURE_2D);
 }

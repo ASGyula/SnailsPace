@@ -69,7 +69,7 @@ void handle_mouse_input_main_menu(SDL_Event* event, Game* game){
         int mouseY = event->button.y;
 
         if(is_mouse_over_ui(&game->mainMenuUI.startButton, mouseX, mouseY)){
-            scene_switch(game, VN_INTRO);
+            scene_switch(game, game->lastCheckpoint);
         }else if(is_mouse_over_ui(&game->mainMenuUI.invertYButton, mouseX, mouseY)){
             game->player.camera.isInvertedMouseY = !game->player.camera.isInvertedMouseY;
             const char* invert_text = game->player.camera.isInvertedMouseY ? "Inverz Y-tengely: BEKAPCSOLVA" : "Inverz Y-tengely: KIKAPCSOLVA";

@@ -20,8 +20,13 @@ void update_snail_ai(Game* game, const float deltaTime){
     const float dist = sqrtf(dx*dx + dy*dy + dz*dz);
 
     if(dist > 1.7f){
-        monster->x += (dx / dist) * monster->animSpeed * deltaTime;
-        monster->z += (dz / dist) * monster->animSpeed * deltaTime;
+        if(game->player.camera.vape.isVaping){
+            monster->x += (dx / dist) * monster->animSpeed * 0.8f * deltaTime;
+            monster->z += (dz / dist) * monster->animSpeed * 0.8f * deltaTime;
+        }else{
+            monster->x += (dx / dist) * monster->animSpeed * deltaTime;
+            monster->z += (dz / dist) * monster->animSpeed * deltaTime;
+        }
     }else{
         monster->isMoving = false;
         scene_switch(game, DEAD_ROOM);
