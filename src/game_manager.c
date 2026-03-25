@@ -6,7 +6,6 @@
 #include <SDL_timer.h>
 #include <stdio.h>
 
-#include "dialogue_data.h"
 #include "graphics.h"
 #include "ui_manager.h"
 #include "world_builder.h"
@@ -33,7 +32,7 @@ Game init_game(const int screen_width, const int screen_height, const char* play
 
     game.scene = MAIN_MENU;
     game.lastCheckpoint = VN_INTRO;
-    scene_switch(&game, MAIN_MENU);
+    scene_switch(&game, BAT_VISION);
     return game;
 }
 

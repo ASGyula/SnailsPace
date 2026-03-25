@@ -11,6 +11,23 @@
 #include "game_manager.h"
 #include "graphics.h"
 
+void handle_mouse_invert_input(SDL_Event* event, Camera* camera){
+    if(camera->isEnabledRotation){
+        if(event->type == SDL_MOUSEMOTION){
+            camera->yaw += event->motion.xrel * camera->mouseSpeed;
+            float randomFloat = rand()%10 + 1;
+            if(camera->isInvertedMouseY){
+                camera->pitch += event->motion.yrel * camera->mouseSpeed*randomFloat;
+            }else{
+                camera->pitch -= event->motion.yrel * camera->mouseSpeed*randomFloat;
+            }
+
+            if(camera->pitch > 89.0f)camera->pitch=89.0f;
+            if(camera->pitch < -89.0f)camera->pitch=-89.0f;
+        }
+    }
+}
+
 void handle_mouse_input(SDL_Event* event, Camera* camera){
     if(camera->isEnabledRotation){
         if(event->type == SDL_MOUSEMOTION){

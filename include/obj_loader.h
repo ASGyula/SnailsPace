@@ -53,10 +53,12 @@ typedef struct {
     Model Helsie;
     Model BatVisionMap;
     Vertex* LidarMap;
+    LightAuraModel PreLidarMap;
     MoveableModel Dealer;
     MoveableModel Vapelt3;
     LightAuraModel PunchPacificMonster;
     MoveableModel ImmortalSnail;
+    MoveableModel SpookyJumpscare;
 } GameObjects;
 
 void load_obj(const char* filename, Vertex** vertices);

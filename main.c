@@ -82,6 +82,8 @@ int main(int argc, char *argv[]){
                     }
                     break;
                 case PRE_LIDAR:
+                    handle_mouse_invert_input(&event, &game.player.camera);
+                    break;
                 case LIDAR:
                     handle_mouse_input(&event, &game.player.camera);
                     break;
@@ -174,6 +176,7 @@ int main(int argc, char *argv[]){
                 setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);
                 update_camera_view(&game.player.camera);
                 update_vaping(&game.player.camera, deltaTime);
+                render_model_without_texture(&game.gameObjects.BatVisionMap);
                 render_bat_vision(&game.gameObjects.BatVisionMap, currentTime);
                 check_player_collision(&game.player.camera, &game.gameObjects.BatVisionMap, 0.5f);
                 render_vape_in_hand(&game.gameObjects.Vapelt3, &game.player.camera);
@@ -212,9 +215,11 @@ int main(int argc, char *argv[]){
             case PRE_LIDAR:
                 setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);
                 update_camera_view(&game.player.camera);
-                render_lidar(game.gameObjects.LidarMap, &game.player.camera);
+                enable_pre_lidar_lights(&game.gameObjects.PreLidarMap, &game.player.camera);
                 break;
             case LIDAR:
+                setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);
+                render_lidar(game.gameObjects.LidarMap, &game.player.camera);
               break;
             case LAST_ROOM:
 

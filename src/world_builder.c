@@ -78,26 +78,53 @@ void build_up_game_objects(Game* game){
     
     //BAT VISION MAP
     load_textured_obj("External/bat_vision_map/map.obj", &game->gameObjects.BatVisionMap);
-    game->gameObjects.BatVisionMap.textureID = load_texture("External/RedEyes/HelsieMidnight/T_MysticFang_Body_D.png");
+    game->gameObjects.BatVisionMap.textureID = load_texture("External/RedEyes/HelsieMidnight/T_BlackMask.png");
    
     //LIDAR MAP
     load_obj("External/volvor/The_Japanese_School_Classroom/model.obj", &game->gameObjects.LidarMap);
-    
+
+    //PRE-LIDAR MAP
+    load_textured_obj("External/volvor/The_Japanese_School_Classroom/model.obj", &game->gameObjects.PreLidarMap.model);
+    game->gameObjects.PreLidarMap.model.textureID = load_texture("External/RedEyes/HelsieMidnight/T_MysticFang_Body_D.png");
+    game->gameObjects.PreLidarMap.r = 1.00f;
+    game->gameObjects.PreLidarMap.g = 1.00f;
+    game->gameObjects.PreLidarMap.b = 1.00f;
+    game->gameObjects.PreLidarMap.a = 1.0f;
+    game->gameObjects.PreLidarMap.radius = 1.0f;
+    game->gameObjects.PreLidarMap.triggerZone.radius = 1.0f;
+    game->gameObjects.PreLidarMap.triggerZone.isActivated = false;
+    game->gameObjects.PreLidarMap.triggerZone.type = TRIGGER_DRINK;
+
     //VAPE
     load_textured_obj("External/Figusorasu/lostvape-centaurus-mod-low-poly/model.obj", &game->gameObjects.Vapelt3.model);
-    game->gameObjects.Vapelt3.model.textureID = load_texture("External/Gemini/SpaceToShout.png");
+    game->gameObjects.Vapelt3.model.textureID = load_texture("External/Figusorasu/lostvape-centaurus-mod-low-poly/texture.png");
     
     //MONSTER ENERGIAITAL SZERETEM SZERETEM HASAMBA BETESZEM
     load_textured_obj("External/Kleyton3D/lata-de-monster/model.obj", &game->gameObjects.PunchPacificMonster.model);
-    game->gameObjects.PunchPacificMonster.model.textureID = load_texture("External/Kleyton3D/lata-de-monster/initialShadingGroup_baseColor.png");
-    game->gameObjects.PunchPacificMonster.r = 0.0f;
-    game->gameObjects.PunchPacificMonster.g = 1.0f;
-    game->gameObjects.PunchPacificMonster.b = 0.0f;
+    game->gameObjects.PunchPacificMonster.model.textureID = load_texture("External/Kleyton3D/lata-de-monster/pipeline_punch.png");
+    game->gameObjects.PunchPacificMonster.r = 0.89f;
+    game->gameObjects.PunchPacificMonster.g = 0.22f;
+    game->gameObjects.PunchPacificMonster.b = 0.31f;
     game->gameObjects.PunchPacificMonster.a = 1.0f;
     game->gameObjects.PunchPacificMonster.radius = 1.0f;
     game->gameObjects.PunchPacificMonster.triggerZone.radius = 1.0f;
     game->gameObjects.PunchPacificMonster.triggerZone.isActivated = false;
     game->gameObjects.PunchPacificMonster.triggerZone.type = TRIGGER_DRINK;
+
+
+    //Kitty level 974 [Backrooms]
+    load_textured_obj("External/BRFogBR/kitty-level-974-backrooms/model.obj", &game->gameObjects.SpookyJumpscare.model);
+    game->gameObjects.SpookyJumpscare.model.textureID = load_texture("External/BRFogBR/kitty-level-974-backrooms/couro.jpeg");
+    game->gameObjects.SpookyJumpscare.triggerZone.radius = 1.0f;
+    game->gameObjects.SpookyJumpscare.triggerZone.isActivated = false;
+    game->gameObjects.SpookyJumpscare.triggerZone.type = TRIGGER_DRINK;
+    game->gameObjects.SpookyJumpscare.x = 0;
+    game->gameObjects.SpookyJumpscare.y = 0.0f;
+    game->gameObjects.SpookyJumpscare.z = 5.0f;
+    game->gameObjects.SpookyJumpscare.targetX = 0;
+    game->gameObjects.SpookyJumpscare.targetY = 0.0f;
+    game->gameObjects.SpookyJumpscare.targetZ = 5.0f;
+    game->gameObjects.SpookyJumpscare.isMoving = false;
 
     //IMMORTAL SNAIL
     load_textured_obj("External/rudolfs/snail/model.obj", &game->gameObjects.ImmortalSnail.model);
@@ -279,7 +306,7 @@ void randomize_monster_energy(Game* game, LightAuraModel* monster) {
         {-4.407894, 0, -75.032768},
         {-8.049614, 0, -74.696838},
         {-5.383556, 0, -80.012871},
-        {-2.822087, 0, -81.025581},
+        {-5.574059, 0, -80.016464},
         {0.075910, 0, -87.432220},
     };
     int randomIndex = rand() % (sizeof(coordinates) / sizeof(coordinates[0]));
@@ -353,7 +380,8 @@ void build_scene_bat_vision(Game* game){
 
 void build_scene_pre_lidar(Game* game){
     printf("PRE_LIDAR\n");
-    set_camera_position_default(&game->player.camera);
+    Coordinates coordinates = {0.6f, 1.6f, 0.0f};
+    set_camera_position(&game->player.camera, coordinates, 90.0f, 0.0f);
     prepare_lidar_data(game->gameObjects.LidarMap);
     SDL_SetWindowBrightness(game->window, 1.0f);
     SDL_SetRelativeMouseMode(SDL_TRUE);
