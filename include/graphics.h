@@ -54,6 +54,8 @@ void update_and_render_smoke(float deltaTime);
 
 void render_light_aura_model(Camera* camera, LightAuraModel* model);
 
+void enable_pre_lidar_lights(LightAuraModel* map, Camera* camera);
+
 void render_game_over_scene(Model* model, Uint32 currentTime, float lightIntensity);
 
 #endif //SNAILSPACE_GRAPHICS_H
