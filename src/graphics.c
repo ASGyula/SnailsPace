@@ -242,6 +242,17 @@ void enableFog(float start, float end, float alpha){
     glFogf(GL_FOG_END, end);
 }
 
+void enable_colored_fog(float start, float end, float r, float g, float b, float alpha, float density){
+    glEnable(GL_FOG);
+    glFogf(GL_FOG_DENSITY, density);
+
+    float fogColor[] = {r, g, b, alpha};
+    glFogfv(GL_FOG_COLOR, fogColor);
+    glFogf(GL_FOG_MODE, GL_EXP2);
+    glFogf(GL_FOG_START, start);
+    glFogf(GL_FOG_END, end);
+}
+
 void enableVapeFog(float start, float end, float alpha){
     glEnable(GL_FOG);
     float fogColor[] = {1.0f, 0.21f, 0.41f, alpha};
@@ -519,7 +530,7 @@ void update_and_render_smoke(float deltaTime){
 void render_light_aura_model(Camera* camera, LightAuraModel* model){
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT2);
-    glDisable(GL_FOG);
+    // glDisable(GL_FOG);
     glMatrixMode(GL_MODELVIEW);
 
     float brightness = camera->auraLightBrightness;
@@ -527,8 +538,8 @@ void render_light_aura_model(Camera* camera, LightAuraModel* model){
     float lightColor[] = {model->r * brightness, model->g * brightness, model->b * brightness, 1.0f};
     float lightPos[] = {model->x, model->y+0.5f, model->z, 1.0f};
 
-    float emissionColor[] = {0.0f, 0.4f * brightness, 0.0f, 1.0f};
-    glMaterialfv(GL_FRONT, GL_EMISSION, emissionColor);
+    // float emissionColor[] = {0.4f* brightness, 0.4f * brightness, 0.4f* brightness, 1.0f};
+    // glMaterialfv(GL_FRONT, GL_EMISSION, emissionColor);
 
     glLightfv(GL_LIGHT2, GL_DIFFUSE, lightColor);
     glLightfv(GL_LIGHT2, GL_POSITION, lightPos);
@@ -545,14 +556,8 @@ void render_light_aura_model(Camera* camera, LightAuraModel* model){
 
     render_model(&model->model);
 
-    float noEmission[] = {0.0f, 0.0f, 0.0f, 1.0f};
-    glMaterialfv(GL_FRONT, GL_EMISSION, noEmission);
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(model->x, model->y, model->z);
-    glRotatef(model->yaw, 0.0f, 1.0f, 0.0f);
-    render_model(&model->model);
+    // float noEmission[] = {0.0f, 0.0f, 0.0f, 1.0f};
+    // glMaterialfv(GL_FRONT, GL_EMISSION, noEmission);
     glPopMatrix();
 
     glEnable(GL_BLEND);
@@ -576,6 +581,32 @@ void render_light_aura_model(Camera* camera, LightAuraModel* model){
 
     glDisable(GL_LIGHTING);
     glDisable(GL_BLEND);
+}
+
+void enable_pre_lidar_lights(LightAuraModel* map, Camera* camera){
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT3);
+    glMatrixMode(GL_MODELVIEW);
+
+    float lightColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
+    float lightPos[] = {map->x, map->y+10, map->z, 1.0f};
+
+    glLightfv(GL_LIGHT3, GL_DIFFUSE, lightColor);
+    glLightfv(GL_LIGHT3, GL_POSITION, lightPos);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_DEPTH_TEST);
+    glPushMatrix();
+
+    enable_colored_fog(0.01f, 3.0f, 0.89f, 0.22f, 0.31f, 1.0f, 1.0f);
+
+    render_light_aura_model(camera, map);
+
+    glPopMatrix();
+
+    glDisable(GL_LIGHTING);
+    glDisable(GL_BLEND);
+    disableFog();
 }
 
 void render_game_over_scene(Model* model, Uint32 currentTime, float lightIntensity) {

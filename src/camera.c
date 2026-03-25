@@ -38,6 +38,18 @@ void set_camera_position_default(Camera* camera){
     camera->isEnabledRotation = true;
 }
 
+void set_camera_position(Camera* camera, Coordinates coordinates, float yaw, float pitch){
+    camera->x = coordinates.x;
+    camera->y = coordinates.y;
+    camera->z = coordinates.z;
+    camera->yaw = yaw;
+    camera->pitch = pitch;
+    camera->mouseSpeed = 0.1f;
+    camera->moveSpeed = 1.0f;
+    camera->isEnabledMovement = false;
+    camera->isEnabledRotation = true;
+}
+
 void update_camera_view(Camera* camera){
     glLoadIdentity();
     glRotatef(camera->pitch, 1.0f, 0.0f, 0.0f);
@@ -60,7 +72,7 @@ void update_vaping(Camera* camera, float deltaTime){
     }
 
     if(camera->vape.smokeAmount <= 0.0f){
-        enableFog(10,30,0.4f);
+        enableFog(10,40,1.0f);
     }else{
         float fogDensity = 0.01f + (camera->vape.smokeAmount * 0.1f);
         glFogf(GL_FOG_DENSITY, fogDensity);

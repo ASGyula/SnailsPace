@@ -10,6 +10,7 @@
 #include "game_manager.h"
 
 void handle_mouse_input(SDL_Event* event, Camera* camera);
+void handle_mouse_invert_input(SDL_Event* event, Camera* camera);
 void handle_esc_input(SDL_Event* event, Game* game, bool* isRunning, GameScene* gameScene);
 void handle_wasd_input(Camera* camera, float deltaTime, Sounds sounds, GameScene gameScene);
 

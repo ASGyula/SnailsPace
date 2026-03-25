@@ -54,6 +54,7 @@ typedef struct{
 
 void initialize_camera(Camera* camera);
 void set_camera_position_default(Camera* camera);
+void set_camera_position(Camera* camera, Coordinates coordinates, float yaw, float pitch);
 void update_camera_view(Camera* camera);
 void update_vaping(Camera* camera, float deltaTime);
 
