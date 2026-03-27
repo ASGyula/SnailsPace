@@ -30,21 +30,21 @@ static const DialogueTemplate ALL_DIALOGUES[] = {
     },
     [DLG_GYULASZ_CALM_HIMSELF_DOWN] = {
         "$PLAYER_NAME$",
-        "Nyugi %s! Csak tiszta fejjel találod meg őt.",
+        "Nyugi %s! Csak a köd teszi. Meg fogod találni.",
         {0.1f, 0.0f, 0.1f, 0.9f},
         {255, 255, 255, 255}, {53, 180, 84, 255},
         390, 600, 390, 540
     },
     [DLG_DEALER_GREETING] = {
         "TITOKZATOS ALAK",
-        "Azt hitted, egyedül vagy a ködben, %s? Én tudom, miért jöttél... vagy inkább... Kiért. De a válasz nincs ingyen.",
+        "A köd nem ereszt el ingyen, %s! Tudom, hogy kit keresel, de biztos vagy benne, hogy ő is keres téged?",
         {0.0f, 0.0f, 0.1f, 0.9f},
         {255, 255, 255, 255}, {255, 204, 0, 255},
         50, 600, 50, 540
     },
     [DLG_PLAYER_SEARCHING_HELSIE] = {
         "$PLAYER_NAME$",
-        "Nem érdekelnek a játékaid. Hol van Helsie? Mit tettél vele?",
+        "Helsieről beszélsz? Mondd el hol van, vagy tűnj az utamból!",
         {0.1f, 0.0f, 0.1f, 0.9f},
         {255, 255, 255, 255}, {53, 180, 84, 255},
         390, 600, 390, 540
@@ -65,7 +65,7 @@ static const DialogueTemplate ALL_DIALOGUES[] = {
     },
     [DLG_DEALER_KNOWS_HELSIE] = {
         "TITOKZATOS ALAK",
-        "Helsie már messze jár. De adhatok valamit, amivel utoléred. Egy szempárt a sötétségben.",
+        "Helsie hangja csak a csali. Itt a vágyaid válnak a börnödöddé. De én adhatok neked egy kiutat.",
         {0.0f, 0.0f, 0.1f, 0.9f},
         {255, 255, 255, 255}, {255, 204, 0, 255},
         50, 600, 50, 540
@@ -114,7 +114,7 @@ static const DialogueTemplate ALL_DIALOGUES[] = {
     },
     [DLG_GYULASZ_READING_THE_OFFER2] = {
         "$PLAYER_NAME$",
-        "Mit tettél Helsievel?",
+        "Várj csak.... ha a kezet fogunk, Helsie biztonságban lesz? Miért érzem úgy, hogy más is van itt?",
         {0.1f, 0.0f, 0.1f, 0.9f},
         {255, 255, 255, 255}, {53, 180, 84, 255},
         390, 600, 390, 540
@@ -198,7 +198,7 @@ static const DialogueTemplate ALL_DIALOGUES[] = {
     },
     [DLG_IN_THE_BAT_VISION_SNAIL5] = {
         "Immortal Snail",
-        "Ahogy az alkuban állt.",
+        "Ahogy az alkuban állt. Ő fizetett érte, hogy sose érhesd el.",
         {0.2f, 0.0f, 0.0f, 0.95f},
         {200, 0, 0, 255}, {100, 0, 0, 255},
         50, 600, 50, 540
@@ -262,6 +262,69 @@ static const DialogueTemplate ALL_DIALOGUES[] = {
     [DLG_GYULASZ_REPLY_TO_MONSTRUMS2] = {
         "$PLAYER_NAME$",
         "...",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_SAVES_PLAYER] = {
+        "MITA",
+        "%s... Végre biztonságban vagy. Olyan szörnyű volt nézni, hogy az a valami követ téged.",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_THX_TO_MITA] = {
+        "$PLAYER_NAME$",
+        "Mita...? Tényleg te vagy az?",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_SAVES_PLAYER2] = {
+        "MITA",
+        "Shh... %s, soha nem hagynám, hogy bántsanak.",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_THX_TO_MITA2] = {
+        "$PLAYER_NAME$",
+        "Köszönöm, Mita! Azt hittem, hogy végem. Bár még mindig csak körvonalakat látok.",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_OPEN_PLAYERS_EYES] = {
+        "MITA",
+        "Csak a sokk hatása. Segítek, figyelj...",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_OPEN_PLAYERS_EYES2] = {
+        "MITA",
+        "Látod? Máris jobb.",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_INVITATION] = {
+        "MITA",
+        "%s, gyere velem a konyhába, készítettem neked egy kis harapnivalót. Muszáj enned valamit, hogy erőre kapj.",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_ACCEPT_MITAS_INVITATION] = {
+        "$PLAYER_NAME$",
+        "Köszönöm, Mita!",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_ACCEPT_MITAS_INVITATION2] = {
+        "$PLAYER_NAME$",
+        "",
         {0.1f, 0.0f, 0.1f, 0.9f},
         {255, 255, 255, 255}, {53, 180, 84, 255},
         390, 600, 390, 540
@@ -470,6 +533,48 @@ void handle_mouse_input_visual_novel(SDL_Event* event, VisualNovelState* visual_
                     visual_novel_state->isShowingUI = false;
                     newDialog = create_dialogue_from_id(DLG_GYULASZ_REPLY_TO_MONSTRUMS2, visual_novel_state->playerName, &texture_assets->Gyulasz_Suprised);
                     increase_visual_novel_state(visual_novel_state, 34);
+                    break;
+                case DLG_GYULASZ_REPLY_TO_MONSTRUMS2:
+                    newDialog = create_dialogue_from_id(DLG_MITA_SAVES_PLAYER, visual_novel_state->playerName, &texture_assets->Mita_Relieved);
+                    increase_visual_novel_state(visual_novel_state, 35);
+                    break;
+                case DLG_MITA_SAVES_PLAYER:
+                    visual_novel_state->isShowingUI = true;
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_THX_TO_MITA, visual_novel_state->playerName, &texture_assets->Gyulasz_Suprised);
+                    increase_visual_novel_state(visual_novel_state, 36);
+                    add_sound_wave(0.0f, 1.8f, 5.0f, 10.0f, 20.0f, 5.0f, 'v');
+                    break;
+                case DLG_PLAYER_THX_TO_MITA:
+                    newDialog = create_dialogue_from_id(DLG_MITA_SAVES_PLAYER2, visual_novel_state->playerName, &texture_assets->Mita_Relieved);
+                    increase_visual_novel_state(visual_novel_state, 37);
+                    add_sound_wave(0.0f, 1.6f, 5.0f, 10.0f, 20.0f, 5.0f, 'v');
+                    break;
+                case DLG_MITA_SAVES_PLAYER2:
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_THX_TO_MITA2, visual_novel_state->playerName, &texture_assets->Gyulasz_Happy);
+                    increase_visual_novel_state(visual_novel_state, 38);
+                    add_sound_wave(0.0f, 1.6f, 5.0f, 10.0f, 20.0f, 5.0f, 'v');
+                    break;
+                case DLG_PLAYER_THX_TO_MITA2:
+                    newDialog = create_dialogue_from_id(DLG_MITA_OPEN_PLAYERS_EYES, visual_novel_state->playerName, &texture_assets->Mita_Relieved);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    add_sound_wave(0.0f, 1.8f, 5.0f, 10.0f, 20.0f, 5.0f, 'v');
+                    break;
+                case DLG_MITA_OPEN_PLAYERS_EYES:
+                    newDialog = create_dialogue_from_id(DLG_MITA_OPEN_PLAYERS_EYES2, visual_novel_state->playerName, &texture_assets->Mita_Happy);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_OPEN_PLAYERS_EYES2:
+                    newDialog = create_dialogue_from_id(DLG_MITA_INVITATION, visual_novel_state->playerName, &texture_assets->Mita_Blush);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_INVITATION:
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_ACCEPT_MITAS_INVITATION, visual_novel_state->playerName, &texture_assets->Gyulasz_Happy_Pro_Max);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_PLAYER_ACCEPT_MITAS_INVITATION:
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_ACCEPT_MITAS_INVITATION2, visual_novel_state->playerName, &texture_assets->Gyulasz_Happy_Pro_Max);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    visual_novel_state->isShowingUI = false;
                     break;
                 default:
                     break;

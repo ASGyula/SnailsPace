@@ -57,7 +57,6 @@ int main(int argc, char *argv[]){
         .screenHeight = SCREEN_HEIGHT
     };
 
-
     SDL_Event event;
     while(game.isRunning){
         Uint32 currentTime = SDL_GetTicks();
@@ -75,6 +74,13 @@ int main(int argc, char *argv[]){
                     handle_mouse_input_visual_novel(&event, &game.visualNovelState, &game.visualNovelState.dialogue, &game.textureAssets);
                     break;
                 case BAT_VISION:
+                    if(game.visualNovelState.isShowingUI){
+                        handle_mouse_input_visual_novel(&event, &game.visualNovelState, &game.visualNovelState.dialogue, &game.textureAssets);
+                    }else{
+                        handle_mouse_input(&event, &game.player.camera);
+                    }
+                    break;
+                case MITA_SAVES_PLAYER:
                     if(game.visualNovelState.isShowingUI){
                         handle_mouse_input_visual_novel(&event, &game.visualNovelState, &game.visualNovelState.dialogue, &game.textureAssets);
                     }else{
@@ -175,47 +181,82 @@ int main(int argc, char *argv[]){
             case BAT_VISION:
                 setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);
                 update_camera_view(&game.player.camera);
-                update_vaping(&game.player.camera, deltaTime);
-                render_model_without_texture(&game.gameObjects.BatVisionMap);
+                if(game.caughtBySnailAt == 0) update_vaping(&game.player.camera, deltaTime);
+                // render_model_without_texture(&game.gameObjects.BatVisionMap);
                 render_bat_vision(&game.gameObjects.BatVisionMap, currentTime);
-                check_player_collision(&game.player.camera, &game.gameObjects.BatVisionMap, 0.5f);
-                render_vape_in_hand(&game.gameObjects.Vapelt3, &game.player.camera);
-                update_and_render_smoke(deltaTime);
+                // check_player_collision(&game.player.camera, &game.gameObjects.BatVisionMap, 0.5f);
 
-                render_light_aura_model(&game.player.camera, &game.gameObjects.PunchPacificMonster);
+                if(game.caughtBySnailAt == 0){
+                    render_vape_in_hand(&game.gameObjects.Vapelt3, &game.player.camera);
 
-                if(game.player.camera.nextShout < currentTime){
-                    render_ui_texture(&game.textureAssets.SpaceButton);
-                }
+                    update_and_render_smoke(deltaTime);
 
-                if(!game.player.camera.vape.isVaping){
-                    render_ui_texture(&game.textureAssets.VButton);
-                }
+                    render_light_aura_model(&game.player.camera, &game.gameObjects.PunchPacificMonster);
 
-                check_trigger_zones(&game);
-
-                if(game.gameObjects.ImmortalSnail.isMoving){
-                    render_moveable_model(&game.gameObjects.ImmortalSnail);
-                    update_snail_ai(&game, deltaTime);
-                }
-
-                if(game.triggerZones.BatVisionHelsieTakeAHint.isActivated){
-                    if(game.visualNovelState.isShowingUI){
-                        change_camera_input_handler(&game, false, false);
-                        render_dialogue_box(SCREEN_WIDTH, SCREEN_HEIGHT, &game.visualNovelState.dialogue);
-                        update_dialogue(&game.visualNovelState.dialogue, currentTime);
-                        render_dialogue_name(&game.visualNovelState.dialogue, game.textureAssets.mainFont);
-                        render_dialogue_text(&game.visualNovelState.dialogue, game.textureAssets.mainFont);
-                        render_ui_texture(&game.visualNovelState.dialogue.speaker);
-                    }else{
-                        change_camera_input_handler(&game, true, true);
+                    if(game.player.camera.nextShout < currentTime){
+                        render_ui_texture(&game.textureAssets.SpaceButton);
                     }
+
+
+                    if(!game.player.camera.vape.isVaping){
+                        render_ui_texture(&game.textureAssets.VButton);
+                    }
+
+                    check_trigger_zones(&game);
+
+                    if(game.triggerZones.BatVisionHelsieTakeAHint.isActivated){
+                        if(game.visualNovelState.isShowingUI){
+                            change_camera_input_handler(&game, false, false);
+                            render_dialogue_box(SCREEN_WIDTH, SCREEN_HEIGHT, &game.visualNovelState.dialogue);
+                            update_dialogue(&game.visualNovelState.dialogue, currentTime);
+                            render_dialogue_name(&game.visualNovelState.dialogue, game.textureAssets.mainFont);
+                            render_dialogue_text(&game.visualNovelState.dialogue, game.textureAssets.mainFont);
+                            render_ui_texture(&game.visualNovelState.dialogue.speaker);
+                        }else{
+                            change_camera_input_handler(&game, true, true);
+                        }
+                    }
+
+                    if(game.gameObjects.ImmortalSnail.isMoving){
+                        render_moveable_model(&game.gameObjects.ImmortalSnail);
+                        update_snail_ai(&game, deltaTime);
+                    }
+                }else{
+                    if((game.caughtBySnailAt+3000) > currentTime){
+                        if(game.caughtBySnailAt+1800 > currentTime){
+                            render_moveable_model(&game.gameObjects.ImmortalSnail);
+                        }else{
+                            enable_snail_caught_lights(&game.gameObjects.ImmortalSnail, currentTime, game.caughtBySnailAt);
+                        }
+                        update_snail_ai(&game, deltaTime);
+                    }else{
+                        scene_switch(&game, MITA_SAVES_PLAYER);
+                    }
+                }
+
+                break;
+            case MITA_SAVES_PLAYER:
+                update_camera_view(&game.player.camera);
+
+                if(game.visualNovelState.currentDialogID < DLG_MITA_OPEN_PLAYERS_EYES2){
+                    render_bat_vision(&game.gameObjects.MitasRoom, currentTime);
+                }else{
+                    render_model(&game.gameObjects.MitasRoom);
+                }
+
+                if(game.visualNovelState.isShowingUI){
+                    render_dialogue_box(SCREEN_WIDTH, SCREEN_HEIGHT, &game.visualNovelState.dialogue);
+                    update_dialogue(&game.visualNovelState.dialogue, currentTime);
+                    render_dialogue_name(&game.visualNovelState.dialogue, game.textureAssets.mainFont);
+                    render_dialogue_text(&game.visualNovelState.dialogue, game.textureAssets.mainFont);
+                    render_ui_texture(&game.visualNovelState.dialogue.speaker);
                 }
                 break;
             case PRE_LIDAR:
                 setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);
                 update_camera_view(&game.player.camera);
                 enable_pre_lidar_lights(&game.gameObjects.PreLidarMap, &game.player.camera);
+
                 break;
             case LIDAR:
                 setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);

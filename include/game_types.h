@@ -19,6 +19,7 @@ typedef enum{
     DEALER_ROOM,
     PRE_BAT_VISION,
     BAT_VISION,
+    MITA_SAVES_PLAYER,
     PRE_LIDAR,
     LIDAR,
     LAST_ROOM,

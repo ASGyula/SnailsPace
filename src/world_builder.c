@@ -18,6 +18,7 @@ void set_player_defaults(Game* game){
     game->player.camera.screenHeight = game->screen.screenHeight;
     game->player.camera.lastShout = 0;
     game->player.camera.nextShout = 0;
+    game->caughtBySnailAt = 0;
     game->player.camera.isInvertedMouseY = true;
     initialize_camera(&game->player.camera);
 }
@@ -28,6 +29,7 @@ void set_visual_novel_state(Game* game, const char* player_name){
     game->visualNovelState.playerName = (char*)player_name;
     Dialogue dialogue = create_dialogue_from_id(DLG_INTRO, player_name, &game->textureAssets.Gyulasz_Scared);
     game->visualNovelState.dialogue = dialogue;
+    game->visualNovelState.isShowingUI = false;
 }
 
 void set_fonts_standards(Game* game){
@@ -63,7 +65,11 @@ void build_up_game_objects(Game* game){
     //HELSIE BÉBIBOGYÓ
     load_textured_obj("External/RedEyes/HelsieMidnightbyRedEyes.obj", &game->gameObjects.Helsie);
     game->gameObjects.Helsie.textureID = load_texture("External/RedEyes/T_MysticFang_Body_D.png");
-    
+
+    //MISIDE HÁZ
+    load_textured_obj("External/FarawellGames/Miside_room/MisideMitasroom2ndvariation.obj", &game->gameObjects.MitasRoom);
+    game->gameObjects.MitasRoom.textureID = load_texture("External/FarawellGames/Miside_room/000001ED868FE8F0.png");
+
     //DEALER
     load_textured_obj("External/VibaPop/TheDealer.obj", &game->gameObjects.Dealer.model);
     game->gameObjects.Dealer.model.textureID = load_texture("External/Vibapop/TheDealerTextureB.png");
@@ -106,7 +112,7 @@ void build_up_game_objects(Game* game){
     game->gameObjects.PunchPacificMonster.g = 0.22f;
     game->gameObjects.PunchPacificMonster.b = 0.31f;
     game->gameObjects.PunchPacificMonster.a = 1.0f;
-    game->gameObjects.PunchPacificMonster.radius = 1.0f;
+    game->gameObjects.PunchPacificMonster.radius = 5.0f;
     game->gameObjects.PunchPacificMonster.triggerZone.radius = 1.0f;
     game->gameObjects.PunchPacificMonster.triggerZone.isActivated = false;
     game->gameObjects.PunchPacificMonster.triggerZone.type = TRIGGER_DRINK;
@@ -181,7 +187,35 @@ void paint_texture_assets(Game *game){
     game->textureAssets.Helsie_lt3_Gyula.y = game->screen.screenHeight - game->textureAssets.Helsie_lt3_Gyula.h;
     game->textureAssets.Helsie_lt3_Gyula.isShowing = true;
 
-    game->textureAssets.Gyulasz_Thinking.textureID = load_texture("External/Gemini/Gyulasz_Thinking.png");
+    game->textureAssets.Mita_Relieved.textureID = load_texture("External/Gemini/Mita_Relieved.png");
+    game->textureAssets.Mita_Relieved.w = 400;
+    game->textureAssets.Mita_Relieved.h = 400;
+    game->textureAssets.Mita_Relieved.x = 0;
+    game->textureAssets.Mita_Relieved.y = game->screen.screenHeight - game->textureAssets.Mita_Relieved.h;
+    game->textureAssets.Mita_Relieved.isShowing = true;
+
+    game->textureAssets.Mita_Happy.textureID = load_texture("External/Gemini/Mita_Happy.png");
+    game->textureAssets.Mita_Happy.w = 400;
+    game->textureAssets.Mita_Happy.h = 400;
+    game->textureAssets.Mita_Happy.x = 0;
+    game->textureAssets.Mita_Happy.y = game->screen.screenHeight - game->textureAssets.Mita_Happy.h;
+    game->textureAssets.Mita_Happy.isShowing = true;
+
+    game->textureAssets.Mita_Blush.textureID = load_texture("External/Gemini/Mita_Blush.png");
+    game->textureAssets.Mita_Blush.w = 400;
+    game->textureAssets.Mita_Blush.h = 400;
+    game->textureAssets.Mita_Blush.x = 0;
+    game->textureAssets.Mita_Blush.y = game->screen.screenHeight - game->textureAssets.Mita_Blush.h;
+    game->textureAssets.Mita_Blush.isShowing = true;
+
+    game->textureAssets.Mita_Smack.textureID = load_texture("External/Gemini/Mita_Smack.png");
+    game->textureAssets.Mita_Smack.w = 400;
+    game->textureAssets.Mita_Smack.h = 400;
+    game->textureAssets.Mita_Smack.x = 0;
+    game->textureAssets.Mita_Smack.y = game->screen.screenHeight - game->textureAssets.Mita_Smack.h;
+    game->textureAssets.Mita_Smack.isShowing = true;
+
+        game->textureAssets.Gyulasz_Thinking.textureID = load_texture("External/Gemini/Gyulasz_Thinking.png");
     game->textureAssets.Gyulasz_Thinking.w = 400;
     game->textureAssets.Gyulasz_Thinking.h = 450;
     game->textureAssets.Gyulasz_Thinking.x = 0;
@@ -215,6 +249,20 @@ void paint_texture_assets(Game *game){
     game->textureAssets.Gyulasz_Hand_Shake.x = 0;
     game->textureAssets.Gyulasz_Hand_Shake.y = game->screen.screenHeight - game->textureAssets.Gyulasz_Hand_Shake.h;
     game->textureAssets.Gyulasz_Hand_Shake.isShowing = true;
+
+    game->textureAssets.Gyulasz_Happy.textureID = load_texture("External/Gemini/Gyulasz_Happy.png");
+    game->textureAssets.Gyulasz_Happy.w = 400;
+    game->textureAssets.Gyulasz_Happy.h = 400;
+    game->textureAssets.Gyulasz_Happy.x = 0;
+    game->textureAssets.Gyulasz_Happy.y = game->screen.screenHeight - game->textureAssets.Gyulasz_Happy.h;
+    game->textureAssets.Gyulasz_Happy.isShowing = true;
+
+    game->textureAssets.Gyulasz_Happy_Pro_Max.textureID = load_texture("External/Gemini/Gyulasz_Happy_Pro_Max.png");
+    game->textureAssets.Gyulasz_Happy_Pro_Max.w = 400;
+    game->textureAssets.Gyulasz_Happy_Pro_Max.h = 400;
+    game->textureAssets.Gyulasz_Happy_Pro_Max.x = 0;
+    game->textureAssets.Gyulasz_Happy_Pro_Max.y = game->screen.screenHeight - game->textureAssets.Gyulasz_Happy.h;
+    game->textureAssets.Gyulasz_Happy_Pro_Max.isShowing = true;
 
     game->textureAssets.Clippy.textureID = load_texture("External/JokeBattlesWikia/Clippy.png");
     game->textureAssets.Clippy.w = 200;
@@ -370,12 +418,32 @@ void build_scene_bat_vision(Game* game){
     game->gameObjects.ImmortalSnail.y = 0;
     game->gameObjects.ImmortalSnail.z = 20.0f;
     game->visualNovelState.isShowingUI = false;
+    game->caughtBySnailAt = 0;
+
     glEnable(GL_TEXTURE_2D);
     game->visualNovelState.dialogue = create_dialogue_from_id(DLG_GYULASZ_SEE_NOTHING4, game->visualNovelState.playerName, &game->textureAssets.Gyulasz_Scared);
     game->visualNovelState.dialogue.isFinished = false;
     game->visualNovelState.dialogue.isShowing = true;
     change_camera_input_handler(game, true, true);
     SDL_SetRelativeMouseMode(SDL_TRUE);
+}
+
+void build_scene_mita_saves_player(Game* game){
+    printf("MITA_SAVES_PLAYER\n");
+    glDisable(GL_LIGHT3);
+    set_camera_position_default(&game->player.camera);
+    setup_projection(game->screen.screenWidth, game->screen.screenHeight);
+
+    glEnable(GL_TEXTURE_2D);
+    game->visualNovelState.currentDialogID = 35;
+    game->visualNovelState.dialogue = create_dialogue_from_id(DLG_MITA_SAVES_PLAYER, game->visualNovelState.playerName, &game->textureAssets.Mita_Relieved);
+    game->visualNovelState.dialogue.isFinished = false;
+    game->visualNovelState.dialogue.isShowing = true;
+    game->visualNovelState.isShowingUI = true;
+    change_camera_input_handler(game, true, true);
+    SDL_SetRelativeMouseMode(SDL_TRUE);
+
+    add_sound_wave(0.0f, 1.6f, 5.0f, 10.0f, 20.0f, 5.0f, 'v');
 }
 
 void build_scene_pre_lidar(Game* game){
@@ -423,11 +491,14 @@ void build_scene(Game* game, GameScene game_scene){
         case BAT_VISION:
             build_scene_bat_vision(game);
             break;
-        case LIDAR:
-            build_scene_lidar(game);
+        case MITA_SAVES_PLAYER:
+            build_scene_mita_saves_player(game);
             break;
         case PRE_LIDAR:
             build_scene_pre_lidar(game);
+            break;
+        case LIDAR:
+            build_scene_lidar(game);
             break;
         case LAST_ROOM:
             build_scene_last_room(game);
