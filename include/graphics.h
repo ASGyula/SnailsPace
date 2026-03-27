@@ -35,6 +35,7 @@ void render_model(const Model* model);
 void render_model_without_texture(const Model* model);
 
 void enableFog(float start, float end, float alpha);
+void enable_colored_fog(float start, float end, float r, float g, float b, float alpha, float density);
 void disableFog();
 
 void render_bat_vision(const Model* model, Uint32 currentTime);
@@ -54,6 +55,7 @@ void update_and_render_smoke(float deltaTime);
 
 void render_light_aura_model(Camera* camera, LightAuraModel* model);
 
+void enable_snail_caught_lights(MoveableModel* model, Uint32 currentTime, Uint32 caughtTime);
 void enable_pre_lidar_lights(LightAuraModel* map, Camera* camera);
 
 void render_game_over_scene(Model* model, Uint32 currentTime, float lightIntensity);

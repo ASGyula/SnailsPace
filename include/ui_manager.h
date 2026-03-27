@@ -19,6 +19,10 @@ typedef struct{
     UIElement Helsie_Happy;
     UIElement Helsie_Scared;
     UIElement Helsie_lt3_Gyula;
+    UIElement Mita_Relieved;
+    UIElement Mita_Happy;
+    UIElement Mita_Blush;
+    UIElement Mita_Smack;
     UIElement Gyulasz_Brave;
     UIElement Gyulasz_Determined;
     UIElement Gyulasz_Thinking;
@@ -26,6 +30,8 @@ typedef struct{
     UIElement Gyulasz_Suprised;
     UIElement Gyulasz_Scared;
     UIElement Gyulasz_Hand_Shake;
+    UIElement Gyulasz_Happy;
+    UIElement Gyulasz_Happy_Pro_Max;
     UIElement Clippy;
     UIElement Dealer;
     UIElement Snail;
