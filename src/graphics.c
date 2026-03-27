@@ -268,7 +268,7 @@ void disableFog(){
 
 void render_bat_vision(const Model* model, const Uint32 currentTime){
     if(!model || !model->vertices){
-        printf("[HIBA] render_bat_vision: nem talalhato modell");
+        printf("[HIBA] render_bat_vision: nem talalhato modell\n");
         return;
     }
     glDisable(GL_LIGHTING);
@@ -581,6 +581,40 @@ void render_light_aura_model(Camera* camera, LightAuraModel* model){
 
     glDisable(GL_LIGHTING);
     glDisable(GL_BLEND);
+}
+
+void enable_snail_caught_lights(MoveableModel* model, Uint32 currentTime, Uint32 caughtTime){
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT3);
+    glMatrixMode(GL_MODELVIEW);
+
+    float lightColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
+    float lightPos[] = {model->x, model->y+3, model->z, 1.0f};
+
+    glLightfv(GL_LIGHT3, GL_DIFFUSE, lightColor);
+    glLightfv(GL_LIGHT3, GL_POSITION, lightPos);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_DEPTH_TEST);
+    glPushMatrix();
+
+    enable_colored_fog(0.01f, 3.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f);
+
+    if(currentTime > (caughtTime+1000)){
+        glPushMatrix();
+        glLoadIdentity();
+
+        glTranslatef(0.0f, -0.5f, -0.4f);
+        glRotatef(180.0f, 0.0f, 1.0f, 0.0f);
+
+        glRotatef(45.0f, 1.0f, 0.0f, 0.0f);
+        render_model(&model->model);
+        glPopMatrix();
+    }
+
+    glDisable(GL_LIGHTING);
+    glDisable(GL_BLEND);
+    disableFog();
 }
 
 void enable_pre_lidar_lights(LightAuraModel* map, Camera* camera){

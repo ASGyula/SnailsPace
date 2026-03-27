@@ -24,6 +24,7 @@ typedef struct{
     bool isLoading;
     Player player;
     Uint32 lastTime;
+    Uint32 caughtBySnailAt;
     SDL_Window* window;
     SDL_GLContext* glContext;
     GameScene lastCheckpoint;

@@ -13,9 +13,9 @@
 
 #include "dialogue_data.h"
 
-static GLuint create_text_texture(TTF_Font* font, const char* text, SDL_Color color, int* width, int* height) {
-    SDL_Surface* s = TTF_RenderUTF8_Blended_Wrapped(font, text, color, 800); // Szélesebb wrap a hosszú szövegeknek
-    if (!s) return 0;
+static GLuint create_text_texture(TTF_Font* font, const char* text, SDL_Color color, int* width, int* height){
+    SDL_Surface* s = TTF_RenderUTF8_Blended_Wrapped(font, text, color, 600);
+    if(!s) return 0;
 
     GLuint textureID;
     glGenTextures(1, &textureID);
@@ -28,10 +28,10 @@ static GLuint create_text_texture(TTF_Font* font, const char* text, SDL_Color co
 
     int mode = GL_RGBA;
     if(s->format->BytesPerPixel == 4){
-        if (s->format->Rmask == 0x000000ff) mode = GL_RGBA;
+        if(s->format->Rmask == 0x000000ff) mode = GL_RGBA;
         else mode = GL_BGRA;
     }else if(s->format->BytesPerPixel == 3){
-        if (s->format->Rmask == 0x000000ff) mode = GL_RGB;
+        if(s->format->Rmask == 0x000000ff) mode = GL_RGB;
         else mode = GL_BGR;
     }
 
@@ -50,8 +50,8 @@ static GLuint create_text_texture(TTF_Font* font, const char* text, SDL_Color co
     return textureID;
 }
 
-static void draw_texture_2d(GLuint textureID, int x, int y, int w, int h) {
-    if (textureID == 0) return;
+static void draw_texture_2d(GLuint textureID, int x, int y, int w, int h){
+    if(textureID == 0) return;
 
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_LIGHTING);
@@ -96,7 +96,7 @@ static void draw_texture_2d(GLuint textureID, int x, int y, int w, int h) {
     glEnable(GL_DEPTH_TEST);
 }
 
-UIElement create_text_ui_element(TTF_Font* font, const char* text, SDL_Color color, int x, int y) {
+UIElement create_text_ui_element(TTF_Font* font, const char* text, SDL_Color color, int x, int y){
     UIElement elem = {0};
     elem.x = x;
     elem.y = y;
@@ -105,15 +105,15 @@ UIElement create_text_ui_element(TTF_Font* font, const char* text, SDL_Color col
     return elem;
 }
 
-void update_text_ui_element(UIElement* element, TTF_Font* font, const char* text, SDL_Color color) {
-    if (element->textureID != 0) {
+void update_text_ui_element(UIElement* element, TTF_Font* font, const char* text, SDL_Color color){
+    if(element->textureID != 0){
         glDeleteTextures(1, &element->textureID);
     }
     element->textureID = create_text_texture(font, text, color, &element->w, &element->h);
 }
 
-bool is_mouse_over_ui(UIElement* element, int mouseX, int mouseY) {
-    if (!element->isShowing) return false;
+bool is_mouse_over_ui(UIElement* element, int mouseX, int mouseY){
+    if(!element->isShowing) return false;
     return (mouseX >= element->x && mouseX <= element->x + element->w &&
             mouseY >= element->y && mouseY <= element->y + element->h);
 }
@@ -177,10 +177,10 @@ void render_dialogue_box(int screenWidth, int screenHeight, Dialogue* dialogue){
 }
 
 void render_dialogue_text(Dialogue* d, TTF_Font* font){
-    if (!font || !d->currentVisibleText[0]) return;
+    if(!font || !d->currentVisibleText[0]) return;
 
-    if (d->charIndex != d->lastCharIndex && d->charIndex != 0) {
-        if (d->textTexture != 0) glDeleteTextures(1, &d->textTexture);
+    if(d->charIndex != d->lastCharIndex && d->charIndex != 0){
+        if(d->textTexture != 0) glDeleteTextures(1, &d->textTexture);
 
         d->textTexture = create_text_texture(font, d->currentVisibleText, d->textColor, &d->textWidth, &d->textHeight);
         d->lastCharIndex = d->charIndex;
@@ -190,9 +190,9 @@ void render_dialogue_text(Dialogue* d, TTF_Font* font){
 }
 
 void render_dialogue_name(Dialogue* d, TTF_Font* font){
-    if (!font || !d->speakerName[0]) return;
+    if(!font || !d->speakerName[0]) return;
 
-    if (d->nameTexture == 0) {
+    if(d->nameTexture == 0){
         d->nameTexture = create_text_texture(font, d->speakerName, d->nameColor, &d->nameWidth, &d->nameHeight);
     }
 
@@ -200,7 +200,7 @@ void render_dialogue_name(Dialogue* d, TTF_Font* font){
 }
 
 void update_dialogue(Dialogue* d, Uint32 currentTime){
-    if (d->isFinished) return;
+    if(d->isFinished) return;
 
     int elapsed = currentTime - d->startTime;
     int speed = 30;
@@ -245,7 +245,7 @@ void render_clippy_bubble(Screen* screen, TextureAssets* textureAssets, UIElemen
     int startY = screen->screenHeight - textureAssets->Clippy.h - 10;
     int startX = textureAssets->Clippy.w + 10;
 
-    int bubbleW = warningElement->w/2-50 + (bubbleMargin * 2);
+    int bubbleW = warningElement->w/2+45 + (bubbleMargin * 2);
     int bubbleH = warningElement->h + (bubbleMargin * 2);
 
     warningElement->y = startY + bubbleMargin;

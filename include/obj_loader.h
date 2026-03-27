@@ -52,6 +52,7 @@ typedef struct{
 typedef struct {
     Model Helsie;
     Model BatVisionMap;
+    Model MitasRoom;
     Vertex* LidarMap;
     LightAuraModel PreLidarMap;
     MoveableModel Dealer;
