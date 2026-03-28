@@ -152,3 +152,16 @@ bool load_textured_obj(const char* name, Model* model){
     fclose(file);
     return true;
 }
+
+void change_loaded_moveable_obj_positon(MoveableModel* object, float x, float y, float z, float pitch, float yaw, float roll){
+    object->x = x;
+    object->y = y;
+    object->z = z;
+    object->targetX = x;
+    object->targetY = y;
+    object->targetZ = z;
+    object->pitch = pitch;
+    object->yaw = yaw;
+    object->roll = roll;
+    printf("[INFO] Objektum atallitva\n");
+}

@@ -289,14 +289,14 @@ static const DialogueTemplate ALL_DIALOGUES[] = {
     },
     [DLG_PLAYER_THX_TO_MITA2] = {
         "$PLAYER_NAME$",
-        "Köszönöm, Mita! Azt hittem, hogy végem. Bár még mindig csak körvonalakat látok.",
+        "Köszönöm, Mita! Azt hittem, hogy végem. Bár még mindig csak körvonalakat látok. Bár téged tökéletesen látlak.",
         {0.1f, 0.0f, 0.1f, 0.9f},
         {255, 255, 255, 255}, {53, 180, 84, 255},
         390, 600, 390, 540
     },
     [DLG_MITA_OPEN_PLAYERS_EYES] = {
         "MITA",
-        "Csak a sokk hatása. Segítek, figyelj...",
+        "Aww, %s. Csak a sokk hatása. Segítek, figyelj...",
         {1.0f, 0.8f, 0.9f, 1.0f},
         {153, 22, 183, 255}, {153, 22, 183, 255},
         390, 600, 390, 540
@@ -555,7 +555,7 @@ void handle_mouse_input_visual_novel(SDL_Event* event, VisualNovelState* visual_
                     add_sound_wave(1.35f, 2.0f, -2.0f, 10.0f, 20.0f, 5.0f, 'p');
                     break;
                 case DLG_PLAYER_THX_TO_MITA2:
-                    newDialog = create_dialogue_from_id(DLG_MITA_OPEN_PLAYERS_EYES, visual_novel_state->playerName, &texture_assets->Mita_Relieved);
+                    newDialog = create_dialogue_from_id(DLG_MITA_OPEN_PLAYERS_EYES, visual_novel_state->playerName, &texture_assets->Mita_Blush);
                     increase_visual_novel_state_by_one(visual_novel_state);
                     add_sound_wave(1.35f, 1.8f, -2.0f, 15.0f, 20.0f, 5.0f, 'm');
                     break;
@@ -564,7 +564,7 @@ void handle_mouse_input_visual_novel(SDL_Event* event, VisualNovelState* visual_
                     increase_visual_novel_state_by_one(visual_novel_state);
                     break;
                 case DLG_MITA_OPEN_PLAYERS_EYES2:
-                    newDialog = create_dialogue_from_id(DLG_MITA_INVITATION, visual_novel_state->playerName, &texture_assets->Mita_Blush);
+                    newDialog = create_dialogue_from_id(DLG_MITA_INVITATION, visual_novel_state->playerName, &texture_assets->Mita_Happy);
                     increase_visual_novel_state_by_one(visual_novel_state);
                     break;
                 case DLG_MITA_INVITATION:
