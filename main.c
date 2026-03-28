@@ -241,10 +241,18 @@ int main(int argc, char *argv[]){
             case MITA_SAVES_PLAYER:
                 update_camera_view(&game.player.camera);
 
+                render_moveable_model(&game.gameObjects.Mita);
+
                 if(game.visualNovelState.currentDialogID < DLG_MITA_OPEN_PLAYERS_EYES2){
                     render_bat_vision(&game.gameObjects.MitasRoom, currentTime, 'n');
                 }else{
+                    glEnable(GL_FOG);
                     render_model(&game.gameObjects.MitasRoom);
+                    enable_colored_fog(50.0f, 80.0f, 1.0f, 0.8f, 0.9f, 1.0f, 0.1f);
+
+                    if(game.visualNovelState.currentDialogID == DLG_PLAYER_ACCEPT_MITAS_INVITATION){
+                        change_loaded_moveable_obj_positon(&game.gameObjects.Mita, -9.03f, 0.85f, -2.75f, 0.0f, -90.0f, 0.0f);
+                    }
                 }
 
                 if(game.visualNovelState.isShowingUI){

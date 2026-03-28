@@ -10,6 +10,7 @@
 #include "graphics.h"
 
 #define IMMORTAL_SNAIL_SPEED 10.0f
+#define MITA_SPEED 30.0f
 
 void set_player_defaults(Game* game){
     printf("[INICIALIZALAS] set_player_defaults\n");
@@ -62,9 +63,23 @@ void build_up_trigger_zones(Game* game){
 void build_up_game_objects(Game* game){
     printf("[INICIALIZALAS] building_up_trigger_zones\n");
     
-    //HELSIE BÉBIBOGYÓ
+    //HELSIE
     load_textured_obj("External/RedEyes/HelsieMidnightbyRedEyes.obj", &game->gameObjects.Helsie);
     game->gameObjects.Helsie.textureID = load_texture("External/RedEyes/T_MysticFang_Body_D.png");
+
+    //MITA
+    load_textured_obj("External/vanessacampbell701/mitasidegirl/model.obj", &game->gameObjects.Mita.model);
+    game->gameObjects.Mita.model.textureID = load_texture("External/vanessacampbell701/mitasidegirl/Baked_Atlas.png");
+    game->gameObjects.Mita.x = 0.85f;
+    game->gameObjects.Mita.y = 0.85f;
+    game->gameObjects.Mita.z = -2.0f;
+    game->gameObjects.Mita.targetX = 0.85f;
+    game->gameObjects.Mita.targetY = 1.0f;
+    game->gameObjects.Mita.targetZ = -2.0f;
+    game->gameObjects.Mita.pitch = 0.0f;
+    game->gameObjects.Mita.yaw = -270.0f;
+    game->gameObjects.Mita.animSpeed = MITA_SPEED;
+    game->gameObjects.Mita.isMoving = false;
 
     //MISIDE HÁZ
     load_textured_obj("External/FarawellGames/Miside_room/model.obj", &game->gameObjects.MitasRoom);

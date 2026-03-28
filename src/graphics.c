@@ -434,10 +434,16 @@ void update_moveable_model_position(MoveableModel* objectum, float deltaTime){
 
 }
 
-void render_moveable_model(MoveableModel* object){
+void render_moveable_model(MoveableModel* object) {
     glPushMatrix();
+
     glTranslatef(object->x, object->y, object->z);
+    glRotatef(object->yaw,   0.0f, 1.0f, 0.0f);
+    glRotatef(object->pitch, 1.0f, 0.0f, 0.0f);
+    glRotatef(object->roll,  0.0f, 0.0f, 1.0f);
+
     render_model(&object->model);
+
     glPopMatrix();
 }
 
