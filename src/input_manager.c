@@ -111,7 +111,7 @@ void handle_wasd_input(Camera* camera, float deltaTime, Sounds sounds, GameScene
         if(state[SDL_SCANCODE_SPACE]){
             // if(SDL_GetTicks() - camera->lastShout > SHOUT_COOLDOWN  && isEnabledSoundWave){
             if(SDL_GetTicks() - camera->lastShout > SHOUT_COOLDOWN){
-                printf("(x, y, z) = (%f %f %f)\n (p/w) = (%f, %f)", camera->x, camera->y, camera->z, camera->pitch, camera->yaw);
+                printf("(x, y, z) = (%f %f %f)\n (p/w) = (%f, %f)\n", camera->x, camera->y, camera->z, camera->pitch, camera->yaw);
                 playSound(sounds.ShoutSound);
                 add_sound_wave(camera->x, camera->y, camera->z, SHOUT_SPEED, SHOUT_DISTANCE, SHOUT_SENS, SHOUT_SOURCE);
                 camera->lastShout = SDL_GetTicks();

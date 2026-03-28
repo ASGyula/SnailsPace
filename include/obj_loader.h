@@ -51,8 +51,9 @@ typedef struct{
 
 typedef struct {
     Model Helsie;
-    Model BatVisionMap;
+    MoveableModel Mita;
     Model MitasRoom;
+    Model BatVisionMap;
     Vertex* LidarMap;
     LightAuraModel PreLidarMap;
     MoveableModel Dealer;
@@ -65,5 +66,7 @@ typedef struct {
 void load_obj(const char* filename, Vertex** vertices);
 
 bool load_textured_obj(const char* filename, Model* model);
+
+void change_loaded_moveable_obj_positon(MoveableModel* object, float x, float y, float z, float pitch, float yaw, float roll);
 
 #endif //SNAILSPACE_OBJ_LOADER_H

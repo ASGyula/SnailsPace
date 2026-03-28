@@ -1,0 +1,42 @@
+# Blender 5.0.1 MTL File: 'model.blend'
+# www.blender.org
+
+newmtl Body.004
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 2
+map_Kd source/MitaSideGirl/Body.png
+map_d source/MitaSideGirl/Body.png
+
+newmtl Cloth.004
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 2
+map_Kd source/MitaSideGirl/cloth.png
+map_d source/MitaSideGirl/cloth.png
+
+newmtl Face.004
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 2
+map_Kd source/MitaSideGirl/Face.png
+map_d source/MitaSideGirl/Face.png
+
+newmtl Hairs.004
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 2
+map_Kd source/MitaSideGirl/Hair.png
+map_d source/MitaSideGirl/Hair.png
