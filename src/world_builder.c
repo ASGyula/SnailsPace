@@ -67,8 +67,8 @@ void build_up_game_objects(Game* game){
     game->gameObjects.Helsie.textureID = load_texture("External/RedEyes/T_MysticFang_Body_D.png");
 
     //MISIDE HÁZ
-    load_textured_obj("External/FarawellGames/Miside_room/MisideMitasroom2ndvariation.obj", &game->gameObjects.MitasRoom);
-    game->gameObjects.MitasRoom.textureID = load_texture("External/FarawellGames/Miside_room/000001ED868FE8F0.png");
+    load_textured_obj("External/FarawellGames/Miside_room/model.obj", &game->gameObjects.MitasRoom);
+    game->gameObjects.MitasRoom.textureID = load_texture("External/FarawellGames/Miside_room/Baked_Atlas.png");
 
     //DEALER
     load_textured_obj("External/VibaPop/TheDealer.obj", &game->gameObjects.Dealer.model);
@@ -431,7 +431,8 @@ void build_scene_bat_vision(Game* game){
 void build_scene_mita_saves_player(Game* game){
     printf("MITA_SAVES_PLAYER\n");
     glDisable(GL_LIGHT3);
-    set_camera_position_default(&game->player.camera);
+    Coordinates coordinates = {1.35f, 2.0f, -2.0f};
+    set_camera_position(&game->player.camera, coordinates,-90, 3);
     setup_projection(game->screen.screenWidth, game->screen.screenHeight);
 
     glEnable(GL_TEXTURE_2D);
@@ -443,7 +444,7 @@ void build_scene_mita_saves_player(Game* game){
     change_camera_input_handler(game, true, true);
     SDL_SetRelativeMouseMode(SDL_TRUE);
 
-    add_sound_wave(0.0f, 1.6f, 5.0f, 10.0f, 20.0f, 5.0f, 'v');
+    add_sound_wave(1.35f, 1.9f, -2.0f, 15.0f, 20.0f, 5.0f, 'm');
 }
 
 void build_scene_pre_lidar(Game* game){

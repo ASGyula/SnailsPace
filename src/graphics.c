@@ -266,7 +266,7 @@ void disableFog(){
     glDisable(GL_FOG);
 }
 
-void render_bat_vision(const Model* model, const Uint32 currentTime){
+void render_bat_vision(const Model* model, const Uint32 currentTime, char modifier){
     if(!model || !model->vertices){
         printf("[HIBA] render_bat_vision: nem talalhato modell\n");
         return;
@@ -331,8 +331,14 @@ void render_bat_vision(const Model* model, const Uint32 currentTime){
 
         if(dist >= (waveBack-active_wave.width) && dist <= (waveFront+active_wave.width)){
             const float brightness = (dist - (waveBack-5.0f)) / (waveFront - (waveBack-5.0f));
-            glColor3f(brightness, brightness, brightness);
-            if(i + 2 >= model->number_of_vertex) break;
+            if(modifier == 'n'){
+                glColor3f(brightness, brightness, brightness);
+            }else if(modifier == 's'){
+                glColor4f(1.0f, 0.0f, 0.0f, brightness);
+            }else if(modifier == 'm'){
+                glColor4f(1.0f, 0.8f, 0.9f, brightness);
+            }
+           if(i + 2 >= model->number_of_vertex) break;
             bool is_quad_part1 = false;
             bool is_quad_part2 = false;
             if(i + 5 < model->number_of_vertex){
@@ -600,11 +606,12 @@ void enable_snail_caught_lights(MoveableModel* model, Uint32 currentTime, Uint32
 
     enable_colored_fog(0.01f, 3.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f);
 
-    if(currentTime > (caughtTime+1000)){
+    if(currentTime > (caughtTime+500)){
         glPushMatrix();
         glLoadIdentity();
 
-        glTranslatef(0.0f, -0.5f, -0.4f);
+        // glTranslatef(0.0f, -0.5f, -0.4f);
+        glTranslatef(0.0f, -1.0f, -1.8f);
         glRotatef(180.0f, 0.0f, 1.0f, 0.0f);
 
         glRotatef(45.0f, 1.0f, 0.0f, 0.0f);
