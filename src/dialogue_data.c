@@ -542,22 +542,22 @@ void handle_mouse_input_visual_novel(SDL_Event* event, VisualNovelState* visual_
                     visual_novel_state->isShowingUI = true;
                     newDialog = create_dialogue_from_id(DLG_PLAYER_THX_TO_MITA, visual_novel_state->playerName, &texture_assets->Gyulasz_Suprised);
                     increase_visual_novel_state(visual_novel_state, 36);
-                    add_sound_wave(0.0f, 1.8f, 5.0f, 10.0f, 20.0f, 5.0f, 'v');
+                    add_sound_wave(1.35f, 2.0f, -2.0f, 10.0f, 20.0f, 5.0f, 'p');
                     break;
                 case DLG_PLAYER_THX_TO_MITA:
                     newDialog = create_dialogue_from_id(DLG_MITA_SAVES_PLAYER2, visual_novel_state->playerName, &texture_assets->Mita_Relieved);
                     increase_visual_novel_state(visual_novel_state, 37);
-                    add_sound_wave(0.0f, 1.6f, 5.0f, 10.0f, 20.0f, 5.0f, 'v');
+                    add_sound_wave(1.35f, 1.8f, -2.0f, 15.0f, 20.0f, 5.0f, 'm');
                     break;
                 case DLG_MITA_SAVES_PLAYER2:
                     newDialog = create_dialogue_from_id(DLG_PLAYER_THX_TO_MITA2, visual_novel_state->playerName, &texture_assets->Gyulasz_Happy);
                     increase_visual_novel_state(visual_novel_state, 38);
-                    add_sound_wave(0.0f, 1.6f, 5.0f, 10.0f, 20.0f, 5.0f, 'v');
+                    add_sound_wave(1.35f, 2.0f, -2.0f, 10.0f, 20.0f, 5.0f, 'p');
                     break;
                 case DLG_PLAYER_THX_TO_MITA2:
                     newDialog = create_dialogue_from_id(DLG_MITA_OPEN_PLAYERS_EYES, visual_novel_state->playerName, &texture_assets->Mita_Relieved);
                     increase_visual_novel_state_by_one(visual_novel_state);
-                    add_sound_wave(0.0f, 1.8f, 5.0f, 10.0f, 20.0f, 5.0f, 'v');
+                    add_sound_wave(1.35f, 1.8f, -2.0f, 15.0f, 20.0f, 5.0f, 'm');
                     break;
                 case DLG_MITA_OPEN_PLAYERS_EYES:
                     newDialog = create_dialogue_from_id(DLG_MITA_OPEN_PLAYERS_EYES2, visual_novel_state->playerName, &texture_assets->Mita_Happy);
