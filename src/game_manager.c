@@ -32,7 +32,7 @@ Game init_game(const int screen_width, const int screen_height, const char* play
 
     game.scene = MAIN_MENU;
     game.lastCheckpoint = VN_INTRO;
-    scene_switch(&game, BAT_VISION);
+    scene_switch(&game, MITA_SAVES_PLAYER);
     return game;
 }
 

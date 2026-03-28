@@ -38,7 +38,7 @@ void enableFog(float start, float end, float alpha);
 void enable_colored_fog(float start, float end, float r, float g, float b, float alpha, float density);
 void disableFog();
 
-void render_bat_vision(const Model* model, Uint32 currentTime);
+void render_bat_vision(const Model* model, Uint32 currentTime, char modifier);
 
 void add_sound_wave(float x, float y, float z, float speed, float max_dist, float width, char source);
 

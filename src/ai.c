@@ -31,16 +31,19 @@ void update_snail_ai(Game* game, const float deltaTime){
     }else{
         if(game->caughtBySnailAt == 0){
             game->caughtBySnailAt = SDL_GetTicks();
-            add_sound_wave(monster->x, monster->y, monster->z, 10, 30, 10, 'm');
+            add_sound_wave(monster->x, monster->y, monster->z, 10, 19, 10, 'm');
+        }else if(game->caughtBySnailAt+1800 > SDL_GetTicks()){
+            add_sound_wave(monster->x, monster->y, monster->z, 20, 40, 20, 'm');
         }
 
         float targetYaw = 180.0f;
-        float rotationSpeed = 5.0f * deltaTime;
+        float targetPitch = 40.0f;
+        float rotationSpeed = 10.0f * deltaTime;
 
         if(camera->yaw < targetYaw) camera->yaw += rotationSpeed * 20.0f;
         if(camera->yaw > targetYaw) camera->yaw -= rotationSpeed * 20.0f;
 
-        camera->pitch = -10.0f;
+        if(camera->pitch < targetPitch) camera->pitch += rotationSpeed * 10.0f;
 
         monster->x = camera->x;
         monster->z = camera->z + 1.0f;

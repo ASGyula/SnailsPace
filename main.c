@@ -170,7 +170,7 @@ int main(int argc, char *argv[]){
 
                 update_camera_view(&game.player.camera);
 
-                render_bat_vision(&game.gameObjects.BatVisionMap, currentTime);
+                render_bat_vision(&game.gameObjects.BatVisionMap, currentTime, 'n');
 
                 render_dialogue_box(SCREEN_WIDTH, SCREEN_HEIGHT, &game.visualNovelState.dialogue);
                 update_dialogue(&game.visualNovelState.dialogue, currentTime);
@@ -181,12 +181,14 @@ int main(int argc, char *argv[]){
             case BAT_VISION:
                 setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);
                 update_camera_view(&game.player.camera);
+                render_model_without_texture(&game.gameObjects.BatVisionMap);
                 if(game.caughtBySnailAt == 0) update_vaping(&game.player.camera, deltaTime);
-                // render_model_without_texture(&game.gameObjects.BatVisionMap);
-                render_bat_vision(&game.gameObjects.BatVisionMap, currentTime);
                 // check_player_collision(&game.player.camera, &game.gameObjects.BatVisionMap, 0.5f);
 
                 if(game.caughtBySnailAt == 0){
+                    render_model_without_texture(&game.gameObjects.BatVisionMap);
+                    render_bat_vision(&game.gameObjects.BatVisionMap, currentTime, 'n');
+
                     render_vape_in_hand(&game.gameObjects.Vapelt3, &game.player.camera);
 
                     update_and_render_smoke(deltaTime);
@@ -223,10 +225,11 @@ int main(int argc, char *argv[]){
                     }
                 }else{
                     if((game.caughtBySnailAt+3000) > currentTime){
-                        if(game.caughtBySnailAt+1800 > currentTime){
-                            render_moveable_model(&game.gameObjects.ImmortalSnail);
-                        }else{
+                        if(game.caughtBySnailAt+2000 > currentTime){
+                            render_bat_vision(&game.gameObjects.BatVisionMap, currentTime, 's');
                             enable_snail_caught_lights(&game.gameObjects.ImmortalSnail, currentTime, game.caughtBySnailAt);
+                        }else{
+                            render_bat_vision(&game.gameObjects.BatVisionMap, currentTime, 'm');
                         }
                         update_snail_ai(&game, deltaTime);
                     }else{
@@ -239,7 +242,7 @@ int main(int argc, char *argv[]){
                 update_camera_view(&game.player.camera);
 
                 if(game.visualNovelState.currentDialogID < DLG_MITA_OPEN_PLAYERS_EYES2){
-                    render_bat_vision(&game.gameObjects.MitasRoom, currentTime);
+                    render_bat_vision(&game.gameObjects.MitasRoom, currentTime, 'n');
                 }else{
                     render_model(&game.gameObjects.MitasRoom);
                 }
