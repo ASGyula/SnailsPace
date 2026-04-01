@@ -41,6 +41,7 @@ typedef struct{
 
 typedef struct{
     TriggerZone BatVisionHelsieTakeAHint;
+    TriggerZone LidarChangesToFast;
 } GameTriggerZones;
 
 #endif //SNAILSPACE_GAME_TYPES_H

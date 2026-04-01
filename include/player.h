@@ -14,4 +14,6 @@ typedef struct{
 
 void check_player_collision(Camera* camera, const Model* model, float playerRadius);
 
+void check_player_collision_mesh(Camera* camera, const Model* model, float playerRadius);
+
 #endif //SNAILSPACE_PLAYER_H

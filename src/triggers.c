@@ -39,4 +39,27 @@ void check_trigger_zones(Game* game){
             // scene_switch(game, PRE_LIDAR);
         }
     }
+
+    if(!game->gameObjects.WhiteMonster.triggerZone.isActivated){
+        const float dx = game->player.camera.x - game->gameObjects.WhiteMonster.triggerZone.x;
+        const float dz = game->player.camera.z - game->gameObjects.WhiteMonster.triggerZone.z;
+        const float distance = sqrtf(dx * dx + dz * dz);
+
+
+        if(distance < game->gameObjects.WhiteMonster.triggerZone.radius){
+            game->gameObjects.WhiteMonster.triggerZone.isActivated = true;
+            scene_switch(game, PRE_LIDAR);
+        }
+    }
+
+    if(!game->triggerZones.LidarChangesToFast.isActivated){
+        const float dx = game->player.camera.x - game->triggerZones.LidarChangesToFast.x;
+        const float dz = game->player.camera.z - game->triggerZones.LidarChangesToFast.z;
+        const float distance = sqrtf(dx * dx + dz * dz);
+
+
+        if(distance < game->triggerZones.LidarChangesToFast.radius){
+            game->triggerZones.LidarChangesToFast.isActivated = true;
+        }
+    }
 }
