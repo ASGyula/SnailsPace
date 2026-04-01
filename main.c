@@ -183,7 +183,7 @@ int main(int argc, char *argv[]){
                 update_camera_view(&game.player.camera);
                 render_model_without_texture(&game.gameObjects.BatVisionMap);
                 if(game.caughtBySnailAt == 0) update_vaping(&game.player.camera, deltaTime);
-                // check_player_collision(&game.player.camera, &game.gameObjects.BatVisionMap, 0.5f);
+                check_player_collision(&game.player.camera, &game.gameObjects.BatVisionMap, 0.5f);
 
                 if(game.caughtBySnailAt == 0){
                     render_model_without_texture(&game.gameObjects.BatVisionMap);
@@ -242,6 +242,7 @@ int main(int argc, char *argv[]){
                 update_camera_view(&game.player.camera);
 
                 render_moveable_model(&game.gameObjects.Mita);
+                check_player_collision(&game.player.camera, &game.gameObjects.MitasRoom, 0.5f);
 
                 if(game.visualNovelState.currentDialogID < DLG_MITA_OPEN_PLAYERS_EYES2){
                     render_bat_vision(&game.gameObjects.MitasRoom, currentTime, 'n');
@@ -271,8 +272,26 @@ int main(int argc, char *argv[]){
                 break;
             case LIDAR:
                 setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);
-                render_lidar(game.gameObjects.LidarMap, &game.player.camera);
-              break;
+                update_camera_view(&game.player.camera);
+                render_model_without_texture(&game.gameObjects.LidarMapWT);
+
+                check_player_collision_mesh(&game.player.camera, &game.gameObjects.LidarMapWT, 0.1f);
+
+                render_light_aura_model(&game.player.camera, &game.gameObjects.WhiteMonster);
+
+                glEnable(GL_FOG);
+                enableFog(1, 10, 1.0f);
+
+                check_trigger_zones(&game);
+
+                if(game.triggerZones.LidarChangesToFast.isActivated){
+                    render_lidar_fast(game.gameObjects.LidarMap->number_of_vertex);
+                    enableFog(1, 4, 1.0f);
+                }else{
+                    render_lidar(game.gameObjects.LidarMap, &game.player.camera);
+                }
+
+                break;
             case LAST_ROOM:
 
                 break;

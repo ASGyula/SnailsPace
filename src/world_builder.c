@@ -57,6 +57,14 @@ void build_up_trigger_zones(Game* game){
     game->triggerZones.BatVisionHelsieTakeAHint.radius = 2;
     game->triggerZones.BatVisionHelsieTakeAHint.type = TRIGGER_DIALOGUE;
     game->triggerZones.BatVisionHelsieTakeAHint.isActivated = false;
+
+    //LIDAR > LIDAR FAST
+    game->triggerZones.LidarChangesToFast.x = 23;
+    game->triggerZones.LidarChangesToFast.z = -28;
+    game->triggerZones.LidarChangesToFast.radius = 2;
+    game->triggerZones.LidarChangesToFast.type = TRIGGER_DIALOGUE;
+    game->triggerZones.LidarChangesToFast.isActivated = false;
+
 }
 
 
@@ -85,6 +93,13 @@ void build_up_game_objects(Game* game){
     load_textured_obj("External/FarawellGames/Miside_room/model.obj", &game->gameObjects.MitasRoom);
     game->gameObjects.MitasRoom.textureID = load_texture("External/FarawellGames/Miside_room/Baked_Atlas.png");
 
+    //LIDAR MAP
+    load_obj("External/heyisah78/miside-horror-stage/model.obj", &game->gameObjects.LidarMap);
+
+    load_textured_obj("External/heyisah78/miside-horror-stage/Lidar.obj", &game->gameObjects.LidarMapWT);
+    game->gameObjects.LidarMapWT.textureID = load_texture("External/RedEyes/HelsieMidnight/T_BlackMask.png");
+
+
     //DEALER
     load_textured_obj("External/VibaPop/TheDealer.obj", &game->gameObjects.Dealer.model);
     game->gameObjects.Dealer.model.textureID = load_texture("External/Vibapop/TheDealerTextureB.png");
@@ -100,9 +115,6 @@ void build_up_game_objects(Game* game){
     //BAT VISION MAP
     load_textured_obj("External/bat_vision_map/map.obj", &game->gameObjects.BatVisionMap);
     game->gameObjects.BatVisionMap.textureID = load_texture("External/RedEyes/HelsieMidnight/T_BlackMask.png");
-   
-    //LIDAR MAP
-    load_obj("External/volvor/The_Japanese_School_Classroom/model.obj", &game->gameObjects.LidarMap);
 
     //PRE-LIDAR MAP
     load_textured_obj("External/volvor/The_Japanese_School_Classroom/model.obj", &game->gameObjects.PreLidarMap.model);
@@ -132,20 +144,38 @@ void build_up_game_objects(Game* game){
     game->gameObjects.PunchPacificMonster.triggerZone.isActivated = false;
     game->gameObjects.PunchPacificMonster.triggerZone.type = TRIGGER_DRINK;
 
+    load_textured_obj("External/Kleyton3D/lata-de-monster/model.obj", &game->gameObjects.WhiteMonster.model);
+    game->gameObjects.WhiteMonster.model.textureID = load_texture("External/Kleyton3D/lata-de-monster/white.png");
+    game->gameObjects.WhiteMonster.r = 1.0f;
+    game->gameObjects.WhiteMonster.g = 1.0f;
+    game->gameObjects.WhiteMonster.b = 1.0f;
+    game->gameObjects.WhiteMonster.a = 1.0f;
+    game->gameObjects.WhiteMonster.radius = 5.0f;
+    game->gameObjects.WhiteMonster.triggerZone.radius = 1.0f;
+    game->gameObjects.WhiteMonster.triggerZone.isActivated = false;
+    game->gameObjects.WhiteMonster.triggerZone.type = TRIGGER_DRINK;
+    game->gameObjects.WhiteMonster.x = 22.91f;
+    game->gameObjects.WhiteMonster.y = 0.0f;
+    game->gameObjects.WhiteMonster.z = -50.0f;
+
+    game->gameObjects.WhiteMonster.radius = 1.0f;
+    game->gameObjects.WhiteMonster.triggerZone.isActivated = false;
+    game->gameObjects.WhiteMonster.triggerZone.x = game->gameObjects.WhiteMonster.x;
+    game->gameObjects.WhiteMonster.triggerZone.z = game->gameObjects.WhiteMonster.z;
 
     //Kitty level 974 [Backrooms]
-    load_textured_obj("External/BRFogBR/kitty-level-974-backrooms/model.obj", &game->gameObjects.SpookyJumpscare.model);
-    game->gameObjects.SpookyJumpscare.model.textureID = load_texture("External/BRFogBR/kitty-level-974-backrooms/couro.jpeg");
-    game->gameObjects.SpookyJumpscare.triggerZone.radius = 1.0f;
-    game->gameObjects.SpookyJumpscare.triggerZone.isActivated = false;
-    game->gameObjects.SpookyJumpscare.triggerZone.type = TRIGGER_DRINK;
-    game->gameObjects.SpookyJumpscare.x = 0;
-    game->gameObjects.SpookyJumpscare.y = 0.0f;
-    game->gameObjects.SpookyJumpscare.z = 5.0f;
-    game->gameObjects.SpookyJumpscare.targetX = 0;
-    game->gameObjects.SpookyJumpscare.targetY = 0.0f;
-    game->gameObjects.SpookyJumpscare.targetZ = 5.0f;
-    game->gameObjects.SpookyJumpscare.isMoving = false;
+    // load_textured_obj("External/BRFogBR/kitty-level-974-backrooms/model.obj", &game->gameObjects.SpookyJumpscare.model);
+    // game->gameObjects.SpookyJumpscare.model.textureID = load_texture("External/BRFogBR/kitty-level-974-backrooms/couro.jpeg");
+    // game->gameObjects.SpookyJumpscare.triggerZone.radius = 1.0f;
+    // game->gameObjects.SpookyJumpscare.triggerZone.isActivated = false;
+    // game->gameObjects.SpookyJumpscare.triggerZone.type = TRIGGER_DRINK;
+    // game->gameObjects.SpookyJumpscare.x = 0;
+    // game->gameObjects.SpookyJumpscare.y = 0.0f;
+    // game->gameObjects.SpookyJumpscare.z = 5.0f;
+    // game->gameObjects.SpookyJumpscare.targetX = 0;
+    // game->gameObjects.SpookyJumpscare.targetY = 0.0f;
+    // game->gameObjects.SpookyJumpscare.targetZ = 5.0f;
+    // game->gameObjects.SpookyJumpscare.isMoving = false;
 
     //IMMORTAL SNAIL
     load_textured_obj("External/rudolfs/snail/model.obj", &game->gameObjects.ImmortalSnail.model);
@@ -473,9 +503,12 @@ void build_scene_pre_lidar(Game* game){
 
 void build_scene_lidar(Game* game){
     printf("LIDAR\n");
+    Coordinates coordinates = {0.5f, 0.75f, 0.0f};
+    set_camera_position(&game->player.camera, coordinates, 0.0f, 0.0f);
     prepare_lidar_data(game->gameObjects.LidarMap);
     SDL_SetWindowBrightness(game->window, 1.0f);
     SDL_SetRelativeMouseMode(SDL_TRUE);
+    change_camera_input_handler(game, true, true);
 }
 
 void build_scene_last_room(Game* game){

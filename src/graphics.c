@@ -77,7 +77,7 @@ void render_lidar(const Vertex* vertices, const Camera* camera){
 
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
-    glPointSize(10.0f);
+    glPointSize(15.0f);
     glBegin(GL_POINTS);
     for(int i = 0; i<number_of_vertices;i++){
         const float dx = vertices[i].x - camera->x;
@@ -86,9 +86,9 @@ void render_lidar(const Vertex* vertices, const Camera* camera){
 
         const float distance = sqrtf(dx*dx + dy*dy + dz*dz);
         if(distance < LIDAR_DRAW_DISTANCE){
-            if(distance > 10){
+            if(distance > 7){
                 const int randomHidePoint = rand()%10;
-                if(randomHidePoint <=5){
+                if(randomHidePoint <=7){
                     continue;
                 }
             }
