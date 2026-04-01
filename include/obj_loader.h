@@ -54,11 +54,13 @@ typedef struct {
     MoveableModel Mita;
     Model MitasRoom;
     Model BatVisionMap;
+    Model LidarMapWT;
     Vertex* LidarMap;
     LightAuraModel PreLidarMap;
     MoveableModel Dealer;
     MoveableModel Vapelt3;
     LightAuraModel PunchPacificMonster;
+    LightAuraModel WhiteMonster;
     MoveableModel ImmortalSnail;
     MoveableModel SpookyJumpscare;
 } GameObjects;

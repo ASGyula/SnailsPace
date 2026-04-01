@@ -107,3 +107,58 @@ void check_player_collision(Camera* camera, const Model* model, float playerRadi
 
     camera->y = playerPos.y - playerRadius + EYE_HEIGHT;
 }
+
+void check_player_collision_mesh(Camera* camera, const Model* model, float playerRadius) {
+    if(!model || !model->vertices) return;
+
+    static float lastSafeX = 0;
+    static float lastSafeZ = 0;
+
+    if(lastSafeX == 0 && lastSafeZ == 0){
+        lastSafeX = camera->x;
+        lastSafeZ = camera->z;
+    }
+
+    float footY = 0;
+    float radiusSq = playerRadius * playerRadius;
+
+    bool collidedX = false;
+    Vec3 posX = {camera->x, footY + 0.8f, lastSafeZ};
+
+    for(int i = 0; i < model->number_of_vertex; i += 3){
+        Vec3 v0 = {model->vertices[i].x, model->vertices[i].y, model->vertices[i].z};
+        Vec3 v1 = {model->vertices[i+1].x, model->vertices[i+1].y, model->vertices[i+1].z};
+        Vec3 v2 = {model->vertices[i+2].x, model->vertices[i+2].y, model->vertices[i+2].z};
+        if(fmaxf(v0.y, fmaxf(v1.y, v2.y)) < footY + 0.3f) continue;
+
+        Vec3 closest = closest_point_on_triangle(posX, v0, v1, v2);
+        if(length_sq(sub(posX, closest)) < radiusSq){
+            collidedX = true;
+            break;
+        }
+    }
+
+    if (collidedX) camera->x = lastSafeX;
+    else lastSafeX = camera->x;
+
+    bool collidedZ = false;
+    Vec3 posZ = {lastSafeX, footY + 0.8f, camera->z};
+
+    for(int i = 0; i < model->number_of_vertex; i += 3){
+        Vec3 v0 = {model->vertices[i].x, model->vertices[i].y, model->vertices[i].z};
+        Vec3 v1 = {model->vertices[i+1].x, model->vertices[i+1].y, model->vertices[i+1].z};
+        Vec3 v2 = {model->vertices[i+2].x, model->vertices[i+2].y, model->vertices[i+2].z};
+        if(fmaxf(v0.y, fmaxf(v1.y, v2.y)) < footY + 0.3f) continue;
+
+        Vec3 closest = closest_point_on_triangle(posZ, v0, v1, v2);
+        if(length_sq(sub(posZ, closest)) < radiusSq){
+            collidedZ = true;
+            break;
+        }
+    }
+
+    if (collidedZ) camera->z = lastSafeZ;
+    else lastSafeZ = camera->z;
+
+    camera->y = EYE_HEIGHT / 2;
+}
