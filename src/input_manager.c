@@ -59,7 +59,7 @@ void handle_esc_input(SDL_Event* event, Game* game, bool* isRunning, GameScene* 
             }
             is_esc_pressed = true;
         }
-    }else {
+    }else{
         is_esc_pressed = false;
     }
 }

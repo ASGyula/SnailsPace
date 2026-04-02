@@ -242,7 +242,7 @@ int main(int argc, char *argv[]){
                 update_camera_view(&game.player.camera);
 
                 render_moveable_model(&game.gameObjects.Mita);
-                check_player_collision(&game.player.camera, &game.gameObjects.MitasRoom, 0.5f);
+                check_player_collision_mesh_miside_room(&game.player.camera, &game.gameObjects.MitasRoom, 0.1f);
 
                 if(game.visualNovelState.currentDialogID < DLG_MITA_OPEN_PLAYERS_EYES2){
                     render_bat_vision(&game.gameObjects.MitasRoom, currentTime, 'n');

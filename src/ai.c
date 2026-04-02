@@ -20,7 +20,7 @@ void update_snail_ai(Game* game, const float deltaTime){
     const float dz = camera->z - monster->z;
     const float dist = sqrtf(dx*dx + dy*dy + dz*dz);
 
-    if(dist > 1.7f){
+    if(dist > 1.79f){
         if(game->player.camera.vape.isVaping){
             monster->x += (dx / dist) * monster->animSpeed * 0.8f * deltaTime;
             monster->z += (dz / dist) * monster->animSpeed * 0.8f * deltaTime;
