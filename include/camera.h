@@ -18,6 +18,8 @@ typedef struct{
 
 typedef struct{
     float x, y, z;
+    float lastSafeX;
+    float lastSafeZ;
     float pitch, yaw;
     float mouseSpeed;
     float moveSpeed;

@@ -164,87 +164,65 @@ void check_player_collision_mesh(Camera* camera, const Model* model, float playe
     camera->y = EYE_HEIGHT / 2;
 }
 
-void check_player_collision_mesh_miside_room(Camera* camera, const Model* model, float playerRadius) {
+void check_player_collision_miside_room(Camera* camera, const Model* model, float playerRadius, float floorY) {
     if(!model || !model->vertices) return;
 
-    static float lastSafeX = 0;
-    static float lastSafeZ = 0;
+    camera->y = floorY + 1.7f;
+    const float bodyCheckY = floorY + 1.1f;
 
-    if(lastSafeX == 0 && lastSafeZ == 0){
-        lastSafeX = camera->x;
-        lastSafeZ = camera->z;
+    if(camera->lastSafeX == 0 && camera->lastSafeZ == 0) {
+        camera->lastSafeX = camera->x;
+        camera->lastSafeZ = camera->z;
     }
 
-    float footY = 1.0f;
-    float radiusSq = playerRadius * playerRadius;
+    const float radiusSq = playerRadius * playerRadius;
+    const float margin = 0.5f;
 
-    bool collidedX = false;
-    Vec3 testPosX = {camera->x, footY, lastSafeZ};
+    const float pMinX = camera->x - playerRadius - margin;
+    const float pMaxX = camera->x + playerRadius + margin;
+    const float pMinZ = camera->z - playerRadius - margin;
+    const float pMaxZ = camera->z + playerRadius + margin;
 
-    for(int i = 0; i < model->number_of_vertex; i += 3){
-        Vec3 v0 = {model->vertices[i].x, model->vertices[i].y, model->vertices[i].z};
-        Vec3 v1 = {model->vertices[i+1].x, model->vertices[i+1].y, model->vertices[i+1].z};
-        Vec3 v2 = {model->vertices[i+2].x, model->vertices[i+2].y, model->vertices[i+2].z};
+    const ModelVertex* v = model->vertices;
+    const int count = model->number_of_vertex;
 
-        float minY = fminf(v0.y, fminf(v1.y, v2.y));
-        float maxY = fmaxf(v0.y, fmaxf(v1.y, v2.y));
+    bool collisionDetected = false;
 
-        float minX = fminf(v0.x, fminf(v1.x, v2.x));
-        float maxX = fmaxf(v0.x, fmaxf(v1.x, v2.x));
-        float minZ = fminf(v0.z, fminf(v1.z, v2.z));
-        float maxZ = fmaxf(v0.z, fmaxf(v1.z, v2.z));
+    for(int i = 0; i < count; i += 3) {
+        if (v[i].x < pMinX - 1.0f || v[i].x > pMaxX + 1.0f) continue;
+        if (v[i].z < pMinZ - 1.0f || v[i].z > pMaxZ + 1.0f) continue;
 
-        if(maxY < footY - 0.3f) continue;
-        if(minY > footY + 0.3f) continue;
+        float triMaxY = v[i].y;
+        if(v[i+1].y > triMaxY) triMaxY = v[i+1].y;
+        if(v[i+2].y > triMaxY) triMaxY = v[i+2].y;
+        if (triMaxY < floorY + 0.5f) continue;
 
-        if (camera->x < minX - playerRadius || camera->x > maxX + playerRadius ||
-            lastSafeZ < minZ - playerRadius || lastSafeZ > maxZ + playerRadius) {
-            continue;
-        }
+        float tMinX = v[i].x, tMaxX = v[i].x;
+        if(v[i+1].x < tMinX) tMinX = v[i+1].x; if(v[i+1].x > tMaxX) tMaxX = v[i+1].x;
+        if(v[i+2].x < tMinX) tMinX = v[i+2].x; if(v[i+2].x > tMaxX) tMaxX = v[i+2].x;
+        if (camera->x + playerRadius < tMinX || camera->x - playerRadius > tMaxX) continue;
 
-        Vec3 closest = closest_point_on_triangle(testPosX, v0, v1, v2);
-        if(length_sq(sub(testPosX, closest)) < radiusSq){
-            collidedX = true;
+        float tMinZ = v[i].z, tMaxZ = v[i].z;
+        if(v[i+1].z < tMinZ) tMinZ = v[i+1].z; if(v[i+1].z > tMaxZ) tMaxZ = v[i+1].z;
+        if(v[i+2].z < tMinZ) tMinZ = v[i+2].z; if(v[i+2].z > tMaxZ) tMaxZ = v[i+2].z;
+        if (camera->z + playerRadius < tMinZ || camera->z - playerRadius > tMaxZ) continue;
+
+        Vec3 p = {camera->x, bodyCheckY, camera->z};
+        Vec3 a = {v[i].x, v[i].y, v[i].z};
+        Vec3 b = {v[i+1].x, v[i+1].y, v[i+1].z};
+        Vec3 c = {v[i+2].x, v[i+2].y, v[i+2].z};
+
+        if(length_sq(sub(p, closest_point_on_triangle(p, a, b, c))) < radiusSq) {
+            collisionDetected = true;
             break;
         }
     }
 
-    if(collidedX) camera->x = lastSafeX;
-    else lastSafeX = camera->x;
-
-
-    bool collidedZ = false;
-    Vec3 testPosZ = {lastSafeX, footY, camera->z};
-
-    for(int i = 0; i < model->number_of_vertex; i += 3){
-        Vec3 v0 = {model->vertices[i].x, model->vertices[i].y, model->vertices[i].z};
-        Vec3 v1 = {model->vertices[i+1].x, model->vertices[i+1].y, model->vertices[i+1].z};
-        Vec3 v2 = {model->vertices[i+2].x, model->vertices[i+2].y, model->vertices[i+2].z};
-
-        float minY = fminf(v0.y, fminf(v1.y, v2.y));
-        float maxY = fmaxf(v0.y, fmaxf(v1.y, v2.y));
-
-        float minX = fminf(v0.x, fminf(v1.x, v2.x));
-        float maxX = fmaxf(v0.x, fmaxf(v1.x, v2.x));
-        float minZ = fminf(v0.z, fminf(v1.z, v2.z));
-        float maxZ = fmaxf(v0.z, fmaxf(v1.z, v2.z));
-
-
-        if(maxY < footY - 0.3f) continue;
-        if(minY > footY + 0.3f) continue;
-
-        if (lastSafeX < minX - playerRadius || lastSafeX > maxX + playerRadius ||
-            camera->z < minZ - playerRadius || camera->z > maxZ + playerRadius) {
-            continue;
-        }
-
-        Vec3 closest = closest_point_on_triangle(testPosZ, v0, v1, v2);
-        if(length_sq(sub(testPosZ, closest)) < radiusSq){
-            collidedZ = true;
-            break;
-        }
+    if (collisionDetected){
+        camera->x = camera->lastSafeX;
+        camera->z = camera->lastSafeZ;
+    }else{
+        camera->lastSafeX = camera->x;
+        camera->lastSafeZ = camera->z;
     }
-
-    if (collidedZ) camera->z = lastSafeZ;
-    else lastSafeZ = camera->z;
 }
