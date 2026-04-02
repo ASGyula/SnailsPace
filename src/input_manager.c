@@ -68,40 +68,37 @@ void handle_wasd_input(Camera* camera, float deltaTime, Sounds sounds, GameScene
 
     const Uint8* state = SDL_GetKeyboardState(NULL);
     float rad_yaw = camera->yaw * (M_PI/180.0f);
-
     float moveSpeed = camera->moveSpeed * deltaTime * BASE_MOVEMENT_SPEED;
-    static Uint32 nextStepWave = 0;
-
+    float dirX = 0, dirZ = 0;
     bool isEnabledSoundWave = gameScene == BAT_VISION || gameScene == DEALER_ROOM;
 
     if(camera->isEnabledMovement){
         if(state[SDL_SCANCODE_W]){
-            camera->x += sinf(rad_yaw) * moveSpeed;
-            camera->z -= cosf(rad_yaw) * moveSpeed;
-            if(SDL_GetTicks() > nextStepWave && isEnabledSoundWave){
-                add_sound_wave(camera->x, camera->y, camera->z, STEPS_SPEED, STEPS_DISTANCE, STEPS_SENS, STEPS_SOURCE);
-                nextStepWave = SDL_GetTicks() + STEPS_COOLDOWN;
-            }
-        }
-        if(state[SDL_SCANCODE_A]){
-            camera->x -= cosf(rad_yaw) * moveSpeed;
-            camera->z -= sinf(rad_yaw) * moveSpeed;
-            if(SDL_GetTicks() > nextStepWave && isEnabledSoundWave){
-                add_sound_wave(camera->x, camera->y, camera->z, STEPS_SPEED, STEPS_DISTANCE, STEPS_SENS, STEPS_SOURCE);
-                nextStepWave = SDL_GetTicks() + STEPS_COOLDOWN;
-            }
+            dirX += sinf(rad_yaw);
+            dirZ -= cosf(rad_yaw);
         }
         if(state[SDL_SCANCODE_S]){
-            camera->x -= sinf(rad_yaw) * moveSpeed;
-            camera->z += cosf(rad_yaw) * moveSpeed;
-            if(SDL_GetTicks() > nextStepWave && isEnabledSoundWave){
-                add_sound_wave(camera->x, camera->y, camera->z, STEPS_SPEED, STEPS_DISTANCE, STEPS_SENS, STEPS_SOURCE);
-                nextStepWave = SDL_GetTicks() + STEPS_COOLDOWN;
-            }
+            dirX -= sinf(rad_yaw);
+            dirZ += cosf(rad_yaw);
+        }
+        if(state[SDL_SCANCODE_A]){
+            dirX -= cosf(rad_yaw);
+            dirZ -= sinf(rad_yaw);
         }
         if(state[SDL_SCANCODE_D]){
-            camera->x += cosf(rad_yaw) * moveSpeed;
-            camera->z += sinf(rad_yaw) * moveSpeed;
+            dirX += cosf(rad_yaw);
+            dirZ += sinf(rad_yaw);
+        }
+
+        float length = sqrtf(dirX * dirX + dirZ * dirZ);
+        if(length > 0.0f){
+            dirX /= length;
+            dirZ /= length;
+
+            camera->x += dirX * moveSpeed;
+            camera->z += dirZ * moveSpeed;
+
+            static Uint32 nextStepWave = 0;
             if(SDL_GetTicks() > nextStepWave && isEnabledSoundWave){
                 add_sound_wave(camera->x, camera->y, camera->z, STEPS_SPEED, STEPS_DISTANCE, STEPS_SENS, STEPS_SOURCE);
                 nextStepWave = SDL_GetTicks() + STEPS_COOLDOWN;
