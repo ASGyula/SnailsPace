@@ -480,6 +480,17 @@ void build_scene_mita_saves_player(Game* game){
     set_camera_position(&game->player.camera, coordinates,-90, 3);
     setup_projection(game->screen.screenWidth, game->screen.screenHeight);
 
+    game->gameObjects.Mita.x = 0.85f;
+    game->gameObjects.Mita.y = 0.85f;
+    game->gameObjects.Mita.z = -2.0f;
+    game->gameObjects.Mita.targetX = 0.85f;
+    game->gameObjects.Mita.targetY = 1.0f;
+    game->gameObjects.Mita.targetZ = -2.0f;
+    game->gameObjects.Mita.pitch = 0.0f;
+    game->gameObjects.Mita.yaw = -270.0f;
+    game->gameObjects.Mita.animSpeed = MITA_SPEED;
+    game->gameObjects.Mita.isMoving = false;
+
     glEnable(GL_TEXTURE_2D);
     game->visualNovelState.currentDialogID = 35;
     game->visualNovelState.dialogue = create_dialogue_from_id(DLG_MITA_SAVES_PLAYER, game->visualNovelState.playerName, &game->textureAssets.Mita_Relieved);
