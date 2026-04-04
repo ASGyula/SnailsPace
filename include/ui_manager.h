@@ -39,6 +39,7 @@ typedef struct{
     UIElement ESCButton;
     UIElement SpaceButton;
     UIElement VButton;
+    UIElement EButton;
 } TextureAssets;
 
 typedef struct{
@@ -47,6 +48,11 @@ typedef struct{
     GLfloat blue;
     GLfloat alpha;
 } Color;
+
+typedef struct {
+    char text[128];
+    int nextDialogID;
+} DialogueChoice;
 
 typedef struct{
     char fullText[512];
@@ -74,6 +80,10 @@ typedef struct{
     int nameStartY;
     UIElement speaker;
     bool isShowing;
+
+    DialogueChoice choices[2];
+    int numChoices;
+    bool isWaitingForChoice;
 } Dialogue;
 
 typedef struct{

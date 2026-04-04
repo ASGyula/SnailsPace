@@ -84,6 +84,7 @@ int main(int argc, char *argv[]){
                     if(game.visualNovelState.isShowingUI){
                         handle_mouse_input_visual_novel(&event, &game.visualNovelState, &game.visualNovelState.dialogue, &game.textureAssets);
                     }else{
+                        handle_miside_interact_input(&game.player.camera, deltaTime, &game.visualNovelState, &game.gameObjects.Scissors.triggerZone);
                         handle_mouse_input(&event, &game.player.camera);
                     }
                     break;
@@ -244,15 +245,37 @@ int main(int argc, char *argv[]){
                 render_moveable_model(&game.gameObjects.Mita);
                 check_player_collision_miside_room(&game.player.camera, &game.gameObjects.MitasRoom, 0.15f, 0.3f);
 
+                check_miside_trigger_zones(&game, &game.textureAssets);
+
                 if(game.visualNovelState.currentDialogID < DLG_MITA_OPEN_PLAYERS_EYES2){
                     render_bat_vision(&game.gameObjects.MitasRoom, currentTime, 'n');
                 }else{
-                    glEnable(GL_FOG);
-                    render_model(&game.gameObjects.MitasRoom);
-                    enable_colored_fog(50.0f, 80.0f, 1.0f, 0.8f, 0.9f, 1.0f, 0.1f);
+                    if(game.triggerZones.TryToEnterMitasRoom.isActivated){
+                        if(game.visualNovelState.currentDialogID < DLG_MITA_CLEARS_PLAYER_DIZZINESS){
+                            if(game.visualNovelState.currentDialogID == DLG_PLAYER_DIZZINESS){
+                                change_loaded_moveable_obj_positon(&game.gameObjects.Mita, -3.69f, 0.85f, -5.47f, 0.0f, 90.0f, 0.0f);
+                            }
+                            render_chromatic(&game.gameObjects.MitasRoom, 1.0f);
+                        }else{
+                            if(game.visualNovelState.currentDialogID == DLG_MITA_CLEARS_PLAYER_DIZZINESS2){
+                                change_loaded_moveable_obj_positon(&game.gameObjects.Mita, -7.048f, 0.85f, -7.91f, 0.0f, -290.0f, 0.0f);
+                            }
+                            render_model(&game.gameObjects.MitasRoom);
 
-                    if(game.visualNovelState.currentDialogID == DLG_PLAYER_ACCEPT_MITAS_INVITATION){
-                        change_loaded_moveable_obj_positon(&game.gameObjects.Mita, -9.03f, 0.85f, -2.75f, 0.0f, -90.0f, 0.0f);
+                            enable_colored_fog(50.0f, 80.0f, 1.0f, 0.8f, 0.9f, 1.0f, 0.1f);
+                        }
+                    }else{
+                        glEnable(GL_FOG);
+                        render_model(&game.gameObjects.MitasRoom);
+
+                        enable_colored_fog(50.0f, 80.0f, 1.0f, 0.8f, 0.9f, 1.0f, 0.1f);
+
+                        if(game.visualNovelState.currentDialogID == DLG_PLAYER_ACCEPT_MITAS_INVITATION){
+                            change_loaded_moveable_obj_positon(&game.gameObjects.Mita, -9.03f, 0.85f, -2.75f, 0.0f, -90.0f, 0.0f);
+                        }
+                        if(game.visualNovelState.currentDialogID == DLG_MITA_TAKE_THE_SCISSORS){
+                            change_loaded_moveable_obj_positon(&game.gameObjects.Mita, -7.048f, 0.85f, -7.91f, 0.0f, -290.0f, 0.0f);
+                        }
                     }
                 }
 
@@ -262,6 +285,14 @@ int main(int argc, char *argv[]){
                     render_dialogue_name(&game.visualNovelState.dialogue, game.textureAssets.mainFont);
                     render_dialogue_text(&game.visualNovelState.dialogue, game.textureAssets.mainFont);
                     render_ui_texture(&game.visualNovelState.dialogue.speaker);
+                }
+
+                if(game.visualNovelState.quest_state == SEARCHING_FOR_SCISSORS){
+                    render_light_aura_model(&game.player.camera, &game.gameObjects.Scissors);
+
+                    if(game.gameObjects.Scissors.triggerZone.isActivated){
+                        render_ui_texture(&game.textureAssets.EButton);
+                    }
                 }
                 break;
             case PRE_LIDAR:
@@ -307,7 +338,7 @@ int main(int argc, char *argv[]){
         }
 
         handle_esc_input(&event, &game, &game.isRunning, &game.scene);
-        handle_wasd_input(&game.player.camera, deltaTime, game.sounds, game.scene);
+        if(!game.visualNovelState.isShowingUI)handle_wasd_input(&game.player.camera, deltaTime, game.sounds, game.scene);
         render_ui_texture(&game.textureAssets.ESCButton);
 
         SDL_GL_SwapWindow(game.window);

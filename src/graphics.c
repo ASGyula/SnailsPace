@@ -579,15 +579,18 @@ void render_light_aura_model(Camera* camera, LightAuraModel* model){
     glPushMatrix();
     glTranslatef(model->x, model->y, model->z);
 
-    glColor4f(model->r, model->g, model->b, brightness*0.3f);
+    if(model->a != 0){
+        glColor4f(model->r, model->g, model->b, brightness*model->a);
 
-    glBegin(GL_TRIANGLE_FAN);
-    glVertex3f(0.f, 0.f, 0.f);
-    for(int i = 0; i <= 360; i += 10){
-        float angle = i * M_PI / 180.0f;
-        glVertex3f(cosf(angle) * (model->radius*0.15), sinf(angle) * (model->radius*0.15) + 0.15, 0);
+        glBegin(GL_TRIANGLE_FAN);
+        glVertex3f(0.f, 0.f, 0.f);
+        for(int i = 0; i <= 360; i += 10){
+            float angle = i * M_PI / 180.0f;
+            glVertex3f(cosf(angle) * (model->radius*0.15), sinf(angle) * (model->radius*0.15) + 0.15, 0);
+        }
+        glEnd();
     }
-    glEnd();
+
 
     glPopMatrix();
 
@@ -681,4 +684,23 @@ void render_game_over_scene(Model* model, Uint32 currentTime, float lightIntensi
     glPopMatrix();
 
     update_and_render_smoke(0.01f);
+}
+
+void render_chromatic(Model* model, float intensity){
+    glColorMask(GL_TRUE, GL_FALSE, GL_FALSE, GL_TRUE);
+    glPushMatrix();
+    glTranslatef(-intensity, 0.0f, 0.0f);
+    render_model(model);
+    glPopMatrix();
+
+    glColorMask(GL_FALSE, GL_TRUE, GL_FALSE, GL_TRUE);
+    render_model(model);
+
+    glColorMask(GL_FALSE, GL_FALSE, GL_TRUE, GL_TRUE);
+    glPushMatrix();
+    glTranslatef(intensity, 0.0f, 0.0f);
+    render_model(model);
+    glPopMatrix();
+
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 }
