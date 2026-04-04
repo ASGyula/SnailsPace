@@ -25,6 +25,7 @@ typedef struct{
     Player player;
     Uint32 lastTime;
     Uint32 caughtBySnailAt;
+    Uint32 tryToEnterMitasRoom;
     SDL_Window* window;
     SDL_GLContext* glContext;
     GameScene lastCheckpoint;

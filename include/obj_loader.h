@@ -61,6 +61,7 @@ typedef struct {
     MoveableModel Vapelt3;
     LightAuraModel PunchPacificMonster;
     LightAuraModel WhiteMonster;
+    LightAuraModel Scissors;
     MoveableModel ImmortalSnail;
     MoveableModel SpookyJumpscare;
 } GameObjects;
