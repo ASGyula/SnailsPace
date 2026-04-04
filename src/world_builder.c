@@ -43,6 +43,7 @@ void set_fonts_standards(Game* game){
 
 void sounds_tuning_up(Game* game){
     printf("[INICIALIZALAS] sounds_tuning_up\n");
+    game->sounds.Mita_Bonk = Mix_LoadWAV("../assets/External/AIHASTO/Mita_Bonk.wav");
     game->sounds.Overture = Mix_LoadWAV("../assets/External/Gemini/Overture.wav");
     game->sounds.ShoutSound = Mix_LoadWAV("../assets/External/YouTube/Shout.wav");
     game->sounds.VapeFincsiVape = Mix_LoadWAV("../assets/asgyu/VapeNyamiFincsaVape.wav");
@@ -57,6 +58,34 @@ void build_up_trigger_zones(Game* game){
     game->triggerZones.BatVisionHelsieTakeAHint.radius = 2;
     game->triggerZones.BatVisionHelsieTakeAHint.type = TRIGGER_DIALOGUE;
     game->triggerZones.BatVisionHelsieTakeAHint.isActivated = false;
+
+    //MITA OLLÓT KÉR
+    game->triggerZones.MitaAsksForAScissors.x = -7.35f;
+    game->triggerZones.MitaAsksForAScissors.z = -2.37f;
+    game->triggerZones.MitaAsksForAScissors.radius = 1;
+    game->triggerZones.MitaAsksForAScissors.type = TRIGGER_DIALOGUE;
+    game->triggerZones.MitaAsksForAScissors.isActivated = false;
+
+    //MITA BONK VÁLASZTÁS
+    game->triggerZones.MitaBonkChoice.x = -1.859f;
+    game->triggerZones.MitaBonkChoice.z = -2.73f;
+    game->triggerZones.MitaBonkChoice.radius = 3;
+    game->triggerZones.MitaBonkChoice.type = TRIGGER_DIALOGUE;
+    game->triggerZones.MitaBonkChoice.isActivated = false;
+
+    //BELÉPÉS MITA SZOBÁJÁBA BONK ALATT
+    game->triggerZones.TryToEnterMitasRoom.x = -2.63f;
+    game->triggerZones.TryToEnterMitasRoom.z = -5.45f;
+    game->triggerZones.TryToEnterMitasRoom.radius = 0.5f;
+    game->triggerZones.TryToEnterMitasRoom.type = TRIGGER_DIALOGUE;
+    game->triggerZones.TryToEnterMitasRoom.isActivated = false;
+
+    //MITA MEGKAPJA AZ OLLÓT
+    game->triggerZones.MitaTakeScissors.x = -8.49f;
+    game->triggerZones.MitaTakeScissors.z = -2.56f;
+    game->triggerZones.MitaTakeScissors.radius = 0.5f;
+    game->triggerZones.MitaTakeScissors.type = TRIGGER_DIALOGUE;
+    game->triggerZones.MitaTakeScissors.isActivated = false;
 
     //LIDAR > LIDAR FAST
     game->triggerZones.LidarChangesToFast.x = 23;
@@ -163,19 +192,22 @@ void build_up_game_objects(Game* game){
     game->gameObjects.WhiteMonster.triggerZone.x = game->gameObjects.WhiteMonster.x;
     game->gameObjects.WhiteMonster.triggerZone.z = game->gameObjects.WhiteMonster.z;
 
-    //Kitty level 974 [Backrooms]
-    // load_textured_obj("External/BRFogBR/kitty-level-974-backrooms/model.obj", &game->gameObjects.SpookyJumpscare.model);
-    // game->gameObjects.SpookyJumpscare.model.textureID = load_texture("External/BRFogBR/kitty-level-974-backrooms/couro.jpeg");
-    // game->gameObjects.SpookyJumpscare.triggerZone.radius = 1.0f;
-    // game->gameObjects.SpookyJumpscare.triggerZone.isActivated = false;
-    // game->gameObjects.SpookyJumpscare.triggerZone.type = TRIGGER_DRINK;
-    // game->gameObjects.SpookyJumpscare.x = 0;
-    // game->gameObjects.SpookyJumpscare.y = 0.0f;
-    // game->gameObjects.SpookyJumpscare.z = 5.0f;
-    // game->gameObjects.SpookyJumpscare.targetX = 0;
-    // game->gameObjects.SpookyJumpscare.targetY = 0.0f;
-    // game->gameObjects.SpookyJumpscare.targetZ = 5.0f;
-    // game->gameObjects.SpookyJumpscare.isMoving = false;
+    //OLLÓ
+    load_textured_obj("External/tuturu/day-3-scissors/model.obj", &game->gameObjects.Scissors.model);
+    game->gameObjects.Scissors.model.textureID = load_texture("External/tuturu/day-3-scissors/3_scissors_bc.png");
+    game->gameObjects.Scissors.r = 0.56f;
+    game->gameObjects.Scissors.g = 0.56f;
+    game->gameObjects.Scissors.b = 0.61f;
+    game->gameObjects.Scissors.a = 0.0f;
+    game->gameObjects.Scissors.radius = 1.0f;
+    game->gameObjects.Scissors.triggerZone.x = 4.750f;
+    game->gameObjects.Scissors.triggerZone.z = -4.1f;
+    game->gameObjects.Scissors.triggerZone.radius = 0.5f;
+    game->gameObjects.Scissors.triggerZone.isActivated = false;
+    game->gameObjects.Scissors.triggerZone.type = TRIGGER_DRINK;
+    game->gameObjects.Scissors.x = 4.750f;
+    game->gameObjects.Scissors.y = 1.7f;
+    game->gameObjects.Scissors.z = -4.1f;
 
     //IMMORTAL SNAIL
     load_textured_obj("External/rudolfs/snail/model.obj", &game->gameObjects.ImmortalSnail.model);
@@ -350,6 +382,13 @@ void paint_texture_assets(Game *game){
     game->textureAssets.VButton.x = (game->screen.screenWidth - game->textureAssets.VButton.w) - 30;
     game->textureAssets.VButton.y = game->screen.screenHeight - game->textureAssets.VButton.h - 30;
     game->textureAssets.VButton.isShowing = true;
+
+    game->textureAssets.EButton.textureID = load_texture("External/littleicon/letter-e.png");
+    game->textureAssets.EButton.w = 64;
+    game->textureAssets.EButton.h = 64;
+    game->textureAssets.EButton.x = (game->screen.screenWidth/2 - 10);
+    game->textureAssets.EButton.y = game->screen.screenHeight/2 - game->textureAssets.EButton.h/2;
+    game->textureAssets.EButton.isShowing = true;
 }
 
 void build_main_menu_ui(Game* game) {
@@ -425,6 +464,7 @@ void build_scene_vn_intro(Game* game){
     printf("VN_INTRO\n");
     game->visualNovelState.currentDialogID = 0;
     game->visualNovelState.dialogue = create_dialogue_from_id(DLG_INTRO, game->visualNovelState.playerName, &game->textureAssets.Gyulasz_Scared);
+    game->visualNovelState.quest_state = NOTHING;
     change_camera_input_handler(game, false, false);
     SDL_SetRelativeMouseMode(SDL_TRUE);
 }
@@ -439,6 +479,7 @@ void build_scene_dealer_room(Game* game){
     SDL_SetWindowBrightness(game->window, 0.4f);
     game->gameObjects.Dealer.isMoving = true;
     game->visualNovelState.currentDialogID = DLG_MONSTER_APPEARS;
+    game->visualNovelState.quest_state = NOTHING;
     SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 
@@ -447,6 +488,7 @@ void build_scene_pre_bat_vision(Game* game){
     enableFog(2,10,0.4f);
     SDL_SetWindowBrightness(game->window, 1.0f);
     game->visualNovelState.currentDialogID = DLG_SCENE_SWITCH_BAT_VISION;
+    game->visualNovelState.quest_state = NOTHING;
     SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 
@@ -470,6 +512,7 @@ void build_scene_bat_vision(Game* game){
     game->visualNovelState.dialogue.isFinished = false;
     game->visualNovelState.dialogue.isShowing = true;
     change_camera_input_handler(game, true, true);
+    game->visualNovelState.quest_state = NOTHING;
     SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 
@@ -497,6 +540,13 @@ void build_scene_mita_saves_player(Game* game){
     game->visualNovelState.dialogue.isFinished = false;
     game->visualNovelState.dialogue.isShowing = true;
     game->visualNovelState.isShowingUI = true;
+    game->triggerZones.MitaAsksForAScissors.isActivated = false;
+    game->triggerZones.MitaBonkChoice.isActivated = false;
+    game->triggerZones.TryToEnterMitasRoom.isActivated = false;
+    game->gameObjects.Scissors.triggerZone.isActivated = false;
+    game->triggerZones.MitaTakeScissors.isActivated = false;
+    game->tryToEnterMitasRoom=0;
+    game->visualNovelState.quest_state = KITCHEN_START;
     change_camera_input_handler(game, true, true);
     SDL_SetRelativeMouseMode(SDL_TRUE);
 

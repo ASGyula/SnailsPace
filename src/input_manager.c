@@ -8,6 +8,7 @@
 #include <stdio.h>
 
 #include "camera.h"
+#include "dialogue_data.h"
 #include "game_manager.h"
 #include "graphics.h"
 
@@ -151,5 +152,21 @@ void handle_wasd_input(Camera* camera, float deltaTime, Sounds sounds, GameScene
         }
     }else{
         kp_plus_pressed = false;
+    }
+}
+
+void handle_miside_interact_input(Camera* camera, float deltaTime, VisualNovelState* visual_novel_state, TriggerZone* trigger_zone){
+    const Uint8* state = SDL_GetKeyboardState(NULL);
+
+    static bool e_pressed = false;
+    if(state[SDL_SCANCODE_E]){
+        if(trigger_zone->isActivated == true){
+            e_pressed = true;
+            increase_visual_novel_state(visual_novel_state, DLG_PLAYER_CONFUSED_SCISSORS_LOCATION);
+            visual_novel_state->isShowingUI = true;
+            visual_novel_state->quest_state = MITA_OR_BONK;
+        }
+    }else{
+        e_pressed = false;
     }
 }

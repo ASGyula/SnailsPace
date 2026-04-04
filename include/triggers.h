@@ -8,4 +8,6 @@
 
 void check_trigger_zones(Game* game);
 
+void check_miside_trigger_zones(Game* game, TextureAssets* texture_assets);
+
 #endif //SNAILSPACE_TRIGGERS_H

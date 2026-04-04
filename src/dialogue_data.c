@@ -310,7 +310,7 @@ static const DialogueTemplate ALL_DIALOGUES[] = {
     },
     [DLG_MITA_INVITATION] = {
         "MITA",
-        "%s, gyere velem a konyhába, készítettem neked egy kis harapnivalót. Muszáj enned valamit, hogy erőre kapj.",
+        "%s, gyere velem a konyhába, készítettem neked egy kis harapnivalót. Még készül, de mindjárt kész.",
         {1.0f, 0.8f, 0.9f, 1.0f},
         {153, 22, 183, 255}, {153, 22, 183, 255},
         390, 600, 390, 540
@@ -327,6 +327,139 @@ static const DialogueTemplate ALL_DIALOGUES[] = {
         "",
         {0.1f, 0.0f, 0.1f, 0.9f},
         {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_ASKS_FOR_A_SCISSORS] = {
+        "MITA",
+        "%s, majdnem elfelejtettem.",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_ASKS_FOR_A_SCISSORS2] = {
+        "MITA",
+        "Idehoznád kérlek az ollót?",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_ASKS_FOR_A_SCISSORS3] = {
+        "MITA",
+        "Azt hiszem, hogy a fürdő szobában van.",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_ACCEPT_MITA_SCISSORS_REQUEST] = {
+        "$PLAYER_NAME$",
+        "Persze, Mita! Máris hozom.",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_CONFUSED_SCISSORS_LOCATION] = {
+        "$PLAYER_NAME$",
+        "Megvan az olló.",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_CONFUSED_SCISSORS_LOCATION2] = {
+        "$PLAYER_NAME$",
+        "Visszaviszem Mitának.",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_CONFUSED_BONKING] = {
+        "$PLAYER_NAME$",
+        "Mi ez a zaj?",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_CONFUSED_BONKING2] = {
+        "$PLAYER_NAME$",
+        "Mita szobájából jön.",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_DIZZINESS] = {
+        "$PLAYER_NAME$",
+        "sdafga",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_WORRY_ABOUT_PLAYERS_DIZZINESS] = {
+        "MITA",
+        "Minden rendben, %s?",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_WORRY_ABOUT_PLAYERS_DIZZINESS2] = {
+        "MITA",
+        "Kicsit, mintha megszédültél volna.",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_WORRY_ABOUT_PLAYERS_DIZZINESS3] = {
+        "MITA",
+        "Várj, segítek!",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_CLEARS_PLAYER_DIZZINESS] = {
+        "MITA",
+        "Jobban érzed magad, %s?",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_FEELS_BETTER] = {
+        "$PLAYER_NAME$",
+        "Igen, Mita, köszönöm.",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_CLEARS_PLAYER_DIZZINESS2] = {
+        "MITA",
+        "Örülök, %s! Gyere, ülj le az ágyamra, játszunk valamit, hogy megnyugodj.",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_CLEARS_PLAYER_DIZZINESS_TP] = {
+        "MITA",
+        "Örülök, %s! Gyere, ülj le az asztalhoz, játszunk valamit, hogy megnyugodj.",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_GIVE_MITA_THE_SCISSORS] = {
+        "$PLAYER_NAME$",
+        "Meghoztam az ollót, Mita.",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_TAKE_THE_SCISSORS] = {
+        "MITA",
+        "Köszönöm, %s. Kell még ennek pár perc. Addig gyere a szobámba, és játszunk valamit!",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_TAKE_THE_SCISSORS_TP] = {
+        "MITA",
+        "Gyere, %s!",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
         390, 600, 390, 540
     }
 };
@@ -572,9 +705,92 @@ void handle_mouse_input_visual_novel(SDL_Event* event, VisualNovelState* visual_
                     increase_visual_novel_state_by_one(visual_novel_state);
                     break;
                 case DLG_PLAYER_ACCEPT_MITAS_INVITATION:
-                    newDialog = create_dialogue_from_id(DLG_PLAYER_ACCEPT_MITAS_INVITATION2, visual_novel_state->playerName, &texture_assets->Gyulasz_Happy_Pro_Max);
+                    newDialog = create_dialogue_from_id(DLG_MITA_ASKS_FOR_A_SCISSORS, visual_novel_state->playerName, &texture_assets->Mita_Happy);
                     increase_visual_novel_state_by_one(visual_novel_state);
                     visual_novel_state->isShowingUI = false;
+                    break;
+                case DLG_PLAYER_ACCEPT_MITAS_INVITATION2:
+                    newDialog = create_dialogue_from_id(DLG_MITA_ASKS_FOR_A_SCISSORS, visual_novel_state->playerName, &texture_assets->Mita_Happy);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    visual_novel_state->isShowingUI = true;
+                    break;
+                case DLG_MITA_ASKS_FOR_A_SCISSORS:
+                    newDialog = create_dialogue_from_id(DLG_MITA_ASKS_FOR_A_SCISSORS2, visual_novel_state->playerName, &texture_assets->Mita_Happy);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_ASKS_FOR_A_SCISSORS2:
+                    newDialog = create_dialogue_from_id(DLG_MITA_ASKS_FOR_A_SCISSORS3, visual_novel_state->playerName, &texture_assets->Mita_Happy);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_ASKS_FOR_A_SCISSORS3:
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_ACCEPT_MITA_SCISSORS_REQUEST, visual_novel_state->playerName, &texture_assets->Gyulasz_Happy);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_PLAYER_ACCEPT_MITA_SCISSORS_REQUEST:
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_CONFUSED_SCISSORS_LOCATION, visual_novel_state->playerName, &texture_assets->Gyulasz_Happy);
+                    visual_novel_state->isShowingUI = false;
+                    visual_novel_state->quest_state = SEARCHING_FOR_SCISSORS;
+                    break;
+                case DLG_PLAYER_CONFUSED_SCISSORS_LOCATION:
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_CONFUSED_SCISSORS_LOCATION2, visual_novel_state->playerName, &texture_assets->Gyulasz_Happy);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_PLAYER_CONFUSED_SCISSORS_LOCATION2:
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_CONFUSED_BONKING, visual_novel_state->playerName, &texture_assets->Gyulasz_Thinking);
+                    visual_novel_state->isShowingUI = false;
+                    break;
+                case DLG_PLAYER_CONFUSED_BONKING:
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_CONFUSED_BONKING2, visual_novel_state->playerName, &texture_assets->Gyulasz_Thinking);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_PLAYER_CONFUSED_BONKING2:
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_DIZZINESS, visual_novel_state->playerName, &texture_assets->Gyulasz_Thinking);
+                    visual_novel_state->quest_state = MITA_OR_BONK;
+                    visual_novel_state->isShowingUI = false;
+                    break;
+                case DLG_PLAYER_DIZZINESS:
+                    newDialog = create_dialogue_from_id(DLG_MITA_WORRY_ABOUT_PLAYERS_DIZZINESS, visual_novel_state->playerName, &texture_assets->Mita_Relieved);
+                    visual_novel_state->isShowingUI = true;
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_WORRY_ABOUT_PLAYERS_DIZZINESS:
+                    newDialog = create_dialogue_from_id(DLG_MITA_WORRY_ABOUT_PLAYERS_DIZZINESS2, visual_novel_state->playerName, &texture_assets->Mita_Relieved);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_WORRY_ABOUT_PLAYERS_DIZZINESS2:
+                    newDialog = create_dialogue_from_id(DLG_MITA_WORRY_ABOUT_PLAYERS_DIZZINESS3, visual_novel_state->playerName, &texture_assets->Mita_Relieved);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_WORRY_ABOUT_PLAYERS_DIZZINESS3:
+                    newDialog = create_dialogue_from_id(DLG_MITA_CLEARS_PLAYER_DIZZINESS, visual_novel_state->playerName, &texture_assets->Mita_Relieved);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_CLEARS_PLAYER_DIZZINESS:
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_FEELS_BETTER, visual_novel_state->playerName, &texture_assets->Gyulasz_Happy_Pro_Max);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_PLAYER_FEELS_BETTER:
+                    newDialog = create_dialogue_from_id(DLG_MITA_CLEARS_PLAYER_DIZZINESS2, visual_novel_state->playerName, &texture_assets->Mita_Blush);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_CLEARS_PLAYER_DIZZINESS2:
+                    newDialog = create_dialogue_from_id(DLG_MITA_CLEARS_PLAYER_DIZZINESS_TP, visual_novel_state->playerName, &texture_assets->Gyulasz_Happy_Pro_Max);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    visual_novel_state->isShowingUI = false;
+                    break;
+                case DLG_MITA_CLEARS_PLAYER_DIZZINESS_TP:
+                    newDialog = create_dialogue_from_id(DLG_MITA_CLEARS_PLAYER_DIZZINESS_TP, visual_novel_state->playerName, &texture_assets->Gyulasz_Happy_Pro_Max);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_PLAYER_GIVE_MITA_THE_SCISSORS:
+                    newDialog = create_dialogue_from_id(DLG_MITA_TAKE_THE_SCISSORS, visual_novel_state->playerName, &texture_assets->Mita_Blush);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_TAKE_THE_SCISSORS:
+                    newDialog = create_dialogue_from_id(DLG_MITA_TAKE_THE_SCISSORS_TP, visual_novel_state->playerName, &texture_assets->Mita_Blush);
+                    visual_novel_state->isShowingUI = false;
+                    visual_novel_state->quest_state = PRE_TIC_TAC_TOE;
+                    increase_visual_novel_state_by_one(visual_novel_state);
                     break;
                 default:
                     break;

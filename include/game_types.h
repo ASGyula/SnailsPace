@@ -6,11 +6,22 @@
 #define SNAILSPACE_GAME_TYPES_H
 #include "ui_manager.h"
 
+
+typedef enum {
+    NOTHING,
+    KITCHEN_START,
+    SEARCHING_FOR_SCISSORS,
+    MITA_OR_BONK,
+    PRE_TIC_TAC_TOE,
+    PLAYING_TIC_TAC_TOE
+} QuestState;
+
 typedef struct{
     int currentDialogID;
     char* playerName;
     bool isShowingUI;
     Dialogue dialogue;
+    QuestState quest_state;
 } VisualNovelState;
 
 typedef enum{
@@ -41,6 +52,10 @@ typedef struct{
 
 typedef struct{
     TriggerZone BatVisionHelsieTakeAHint;
+    TriggerZone MitaAsksForAScissors;
+    TriggerZone MitaBonkChoice;
+    TriggerZone TryToEnterMitasRoom;
+    TriggerZone MitaTakeScissors;
     TriggerZone LidarChangesToFast;
 } GameTriggerZones;
 
