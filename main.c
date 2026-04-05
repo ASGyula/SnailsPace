@@ -84,7 +84,7 @@ int main(int argc, char *argv[]){
                     if(game.visualNovelState.isShowingUI){
                         handle_mouse_input_visual_novel(&event, &game.visualNovelState, &game.visualNovelState.dialogue, &game.textureAssets);
                     }else{
-                        handle_miside_interact_input(&game.player.camera, deltaTime, &game.visualNovelState, &game.gameObjects.Scissors.triggerZone);
+                        handle_miside_interact_input(&event, &game.visualNovelState, &game.gameObjects.Scissors.triggerZone);
                         handle_mouse_input(&event, &game.player.camera);
                     }
                     break;
@@ -245,7 +245,7 @@ int main(int argc, char *argv[]){
                 render_moveable_model(&game.gameObjects.Mita);
                 check_player_collision_miside_room(&game.player.camera, &game.gameObjects.MitasRoom, 0.15f, 0.3f);
 
-                check_miside_trigger_zones(&game, &game.textureAssets);
+                check_miside_trigger_zones(&game, &game.textureAssets, &game.gameObjects.Mita);
 
                 if(game.visualNovelState.currentDialogID < DLG_MITA_OPEN_PLAYERS_EYES2){
                     render_bat_vision(&game.gameObjects.MitasRoom, currentTime, 'n');
@@ -277,6 +277,47 @@ int main(int argc, char *argv[]){
                             change_loaded_moveable_obj_positon(&game.gameObjects.Mita, -7.048f, 0.85f, -7.91f, 0.0f, -290.0f, 0.0f);
                         }
                     }
+                }
+
+                if(game.visualNovelState.quest_state == PLAYING_TIC_TAC_TOE){
+                    render_tic_tac_toe(&game.visualNovelState.ticTacToe, game.textureAssets.Gyulasz_Happy.textureID, game.textureAssets.Mita_Blush.textureID, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+                    render_ui_texture(&game.textureAssets.TicTacToeControll);
+
+                    if(game.visualNovelState.ticTacToe.isGameOver){
+                        if(game.visualNovelState.ticTacToe.winner == 1){
+                            game.visualNovelState.dialogue = create_dialogue_from_id(DLG_MITA_CONGRATZ_PLAYER_TIC_TAC_TOE, game.visualNovelState.playerName, &game.textureAssets.Mita_Blush);
+                            increase_visual_novel_state(&game.visualNovelState, DLG_MITA_CONGRATZ_PLAYER_TIC_TAC_TOE);
+                        }else if(game.visualNovelState.ticTacToe.winner == 2){
+                            game.visualNovelState.dialogue = create_dialogue_from_id(DLG_PLAYER_CONGRATZ_MITA_TIC_TAC_TOE, game.visualNovelState.playerName, &game.textureAssets.Gyulasz_Happy_Pro_Max);
+                            increase_visual_novel_state(&game.visualNovelState, DLG_PLAYER_CONGRATZ_MITA_TIC_TAC_TOE);
+                        }else if(game.visualNovelState.ticTacToe.winner == 3){
+                            game.visualNovelState.dialogue = create_dialogue_from_id(DLG_TIC_TAC_TOE_DRAW, game.visualNovelState.playerName, &game.textureAssets.Mita_Happy);
+                            increase_visual_novel_state(&game.visualNovelState, DLG_TIC_TAC_TOE_DRAW);
+                        }
+
+
+                        static Uint32 closeTimer = 0;
+                        if(closeTimer == 0) closeTimer = currentTime + 1000;
+                        if(currentTime > closeTimer){
+                            if(game.visualNovelState.ticTacToe.round >= 4){
+                                game.visualNovelState.quest_state = AFTER_TIC_TAC_TOE;
+                                change_camera_input_handler(&game, true, true);
+                                game.visualNovelState.dialogue = create_dialogue_from_id(DLG_PLAYER_INVESTIGATE_BONKING, game.visualNovelState.playerName, &game.textureAssets.Gyulasz_Thinking);
+                                increase_visual_novel_state(&game.visualNovelState, DLG_PLAYER_INVESTIGATE_BONKING);
+                            }
+                            game.visualNovelState.ticTacToe.active = false;
+                            clear_tic_tac_toe(&game.visualNovelState.ticTacToe);
+                            closeTimer = 0;
+                            game.visualNovelState.isShowingUI = true;
+                        }
+                    }else{
+                        update_mita_ai(&game.visualNovelState.ticTacToe, SDL_GetTicks());
+                    }
+                }
+
+                if(game.visualNovelState.quest_state == DECISION_TIME){
+                    render_decision_ui(game.screen, &game.visualNovelState.decisionUI, &game.textureAssets);
                 }
 
                 if(game.visualNovelState.isShowingUI){

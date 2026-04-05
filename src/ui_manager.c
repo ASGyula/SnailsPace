@@ -8,10 +8,9 @@
 #include <SDL_timer.h>
 #include <SDL_ttf.h>
 #include <string.h>
-#include <math.h>
 #include <stdio.h>
 
-#include "dialogue_data.h"
+#include "game_types.h"
 
 static GLuint create_text_texture(TTF_Font* font, const char* text, SDL_Color color, int* width, int* height){
     SDL_Surface* s = TTF_RenderUTF8_Blended_Wrapped(font, text, color, 600);
@@ -281,4 +280,115 @@ void render_clippy_bubble(Screen* screen, TextureAssets* textureAssets, UIElemen
 
     glDisable(GL_BLEND);
     glEnable(GL_TEXTURE_2D);
+}
+
+void render_tic_tac_toe(TicTacToe* ttt, GLuint texX, GLuint texO, int screenWidth, int screenHeight) {
+    if(!ttt->active) return;
+
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_FOG);
+
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glOrtho(0, screenWidth, screenHeight, 0, -1, 1);
+
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+
+    int cellSize = 120;
+    int gridW = cellSize * 3;
+    int gridH = cellSize * 3;
+    int startX = (screenWidth - gridW) / 2;
+    int startY = (screenHeight - gridH) / 2;
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glDisable(GL_TEXTURE_2D);
+    glColor4f(0.0f, 0.0f, 0.0f, 0.3f);
+    draw_rect(startX + (ttt->cursorX * cellSize), startY + (ttt->cursorY * cellSize), cellSize, cellSize);
+
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    glLineWidth(4.0f);
+    glBegin(GL_LINES);
+    for(int i = 0; i <= 3; i++){
+        glVertex2i(startX + (i * cellSize), startY);
+        glVertex2i(startX + (i * cellSize), startY + gridH);
+        glVertex2i(startX, startY + (i * cellSize));
+        glVertex2i(startX + gridW, startY + (i * cellSize));
+    }
+    glEnd();
+
+    glEnable(GL_TEXTURE_2D);
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+            int posX = startX + (i * cellSize);
+            int posY = startY + (j * cellSize);
+
+            if(ttt->board[i][j] == 1){
+                draw_texture_2d(texX, posX + 10, posY + 10, cellSize - 20, cellSize - 20);
+            }else if (ttt->board[i][j] == 2){
+                draw_texture_2d(texO, posX + 10, posY + 10, cellSize - 20, cellSize - 20);
+            }
+        }
+    }
+
+    glPopMatrix();
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_TEXTURE_2D);
+}
+
+void render_decision_ui(Screen screen, DecisionUI* decisionUI, TextureAssets* textureAssets) {
+    if(!decisionUI->isWaitingForDecision) return;
+
+    glDisable(GL_LIGHTING);
+    glDisable(GL_FOG);
+    glDisable(GL_DEPTH_TEST);
+
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glOrtho(0, screen.screenWidth, screen.screenHeight, 0, -1, 1);
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glDisable(GL_TEXTURE_2D);
+
+    glColor4f(0.0f, 0.0f, 0.0f, 0.6f);
+    draw_rect(0, 0, screen.screenWidth, screen.screenHeight);
+
+    int btnW = 300;
+    int btnH = 80;
+    int centerY = screen.screenHeight / 2 - 40;
+
+    glColor4f(0.8f, 0.2f, 0.8f, 0.9f);
+    draw_rect(50, centerY, btnW, btnH);
+
+    glColor4f(0.3f, 0.2f, 0.9f, 0.9f);
+    draw_rect(screen.screenWidth - btnW - 50, centerY, btnW, btnH);
+
+    glEnable(GL_TEXTURE_2D);
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
+    draw_texture_2d(textureAssets->VButton.textureID, 60, centerY + 10, 60, 60);
+    draw_texture_2d(decisionUI->leaveButton.textureID, 130, centerY + 25, decisionUI->leaveButton.w, decisionUI->leaveButton.h);
+
+    draw_texture_2d(textureAssets->EButton.textureID, screen.screenWidth - 300, centerY + 10, 60, 60);
+    draw_texture_2d(decisionUI->stayButton.textureID, screen.screenWidth -230, centerY + 25, decisionUI->stayButton.w, decisionUI->stayButton.h);
+
+    glPopMatrix();
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glEnable(GL_DEPTH_TEST);
 }

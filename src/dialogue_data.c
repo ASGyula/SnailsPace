@@ -461,7 +461,259 @@ static const DialogueTemplate ALL_DIALOGUES[] = {
         {1.0f, 0.8f, 0.9f, 1.0f},
         {153, 22, 183, 255}, {153, 22, 183, 255},
         390, 600, 390, 540
-    }
+    },
+    [DLG_MITA_TALK_ABOUT_TIC_TAC_TOE] = {
+        "MITA",
+        "Készen állsz %s egy kis amőbára?",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_TALK_ABOUT_TIC_TAC_TOE] = {
+        "$PLAYER_NAME$",
+        "Készen állok, Mita.",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_TALK_ABOUT_TIC_TAC_TOE2] = {
+        "MITA",
+        "Győzzön a jobbik! Te kezdesz.",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_CONGRATZ_MITA_TIC_TAC_TOE] = {
+        "$PLAYER_NAME$",
+        "Szép volt, Mita.",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_WINS_TIC_TAC_TOE] = {
+        "MITA",
+        "Te is jól játszottál, %s!",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_CONGRATZ_PLAYER_TIC_TAC_TOE] = {
+        "MITA",
+        "Szép volt, %s. Ügyes vagy!",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_WINS_TIC_TAC_TOE] = {
+        "$PLAYER_NAME$",
+        "Ügyes voltál te is, Mita.",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_TIC_TAC_TOE_DRAW] = {
+        "MITA",
+        "Hmmm, döntetlen. Menjen egy visszavágó!",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_INVESTIGATE_BONKING] = {
+        "$PLAYER_NAME$",
+        "Mi ez a hang?",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_INVESTIGATE_BONKING2] = {
+        "$PLAYER_NAME$",
+        "A szekrényből jön.",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_REJECT_INVESTIGATE_BONGING] = {
+        "MITA",
+        "Hang?",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_REJECT_INVESTIGATE_BONGING2] = {
+        "MITA",
+        "Milyen hang?",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_REJECT_INVESTIGATE_BONGING3] = {
+        "MITA",
+        "Nem hallok semmit.",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_REJECT_INVESTIGATE_BONGING4] = {
+        "MITA",
+        "Mit hallottál pontosan?",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_INVESTIGATE_BONKING3] = {
+        "$PLAYER_NAME$",
+        "Mintha valaki a szekrényből kopogna...",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_REJECT_INVESTIGATE_BONGING5] = {
+        "MITA",
+        "De ott...",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_REJECT_INVESTIGATE_BONGING6] = {
+        "MITA",
+        "nincs senki.",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_INVESTIGATE_BONKING4] = {
+        "$PLAYER_NAME$",
+        "Ki szeretném nyitni a szekrényt.",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_INVESTIGATE_BONKING5] = {
+        "$PLAYER_NAME$",
+        "A végére akarok járni ennek.",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_REJECT_INVESTIGATE_BONGING7] = {
+        "MITA",
+        "De miért?",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_REJECT_INVESTIGATE_BONGING8] = {
+        "MITA",
+        "Megint...",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_REJECT_INVESTIGATE_BONGING9] = {
+        "MITA",
+        "Te meg mit művelsz?",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_REJECT_INVESTIGATE_BONGING10] = {
+        "MITA",
+        "Ott csak...",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_REJECT_INVESTIGATE_BONGING11] = {
+        "MITA",
+        "az alsőneműim vannak...!",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_INVESTIGATE_BONKING6] = {
+        "$PLAYER_NAME$",
+        "Valamit rejtegetsz előlem?",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_REJECT_INVESTIGATE_BONGING12] = {
+        "MITA",
+        "Csak higgy nekem!",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_REJECT_INVESTIGATE_BONGING13] = {
+        "MITA",
+        "Mi rosszat tettem?",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_REJECT_INVESTIGATE_BONGING14] = {
+        "MITA",
+        "Csak...",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_REJECT_INVESTIGATE_BONGING15] = {
+        "MITA",
+        "együtt akarok lenni veled.",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_INVESTIGATE_BONKING7] = {
+        "$PLAYER_NAME$",
+        "Én is de...",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_REJECT_INVESTIGATE_BONGING16] = {
+        "MITA",
+        "Miért érdekel téged annyira ez a szekrény?",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_INVESTIGATE_BONKING8] = {
+        "$PLAYER_NAME$",
+        "Csak tudni szeretném, hogy mi ez a kopogás!",
+        {0.1f, 0.0f, 0.1f, 0.9f},
+        {255, 255, 255, 255}, {53, 180, 84, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_REJECT_INVESTIGATE_BONGING17] = {
+        "MITA",
+        "Azért, mert csak négy szoba van?",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_REJECT_INVESTIGATE_BONGING18] = {
+        "MITA",
+        "Túl kicsi neked a világom?",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_REJECT_INVESTIGATE_BONGING19] = {
+        "MITA",
+        "Velem miért nem elégszel meg?",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_MITA_REJECT_INVESTIGATE_BONGING20] = {
+        "MITA",
+        "Maradj velem!",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
 };
 
 Dialogue create_dialogue_from_id(DialogueID id, const char* name_placeholder, const UIElement* speaker_img){
@@ -781,6 +1033,7 @@ void handle_mouse_input_visual_novel(SDL_Event* event, VisualNovelState* visual_
                 case DLG_MITA_CLEARS_PLAYER_DIZZINESS_TP:
                     newDialog = create_dialogue_from_id(DLG_MITA_CLEARS_PLAYER_DIZZINESS_TP, visual_novel_state->playerName, &texture_assets->Gyulasz_Happy_Pro_Max);
                     increase_visual_novel_state_by_one(visual_novel_state);
+                    visual_novel_state->isShowingUI = false;
                     break;
                 case DLG_PLAYER_GIVE_MITA_THE_SCISSORS:
                     newDialog = create_dialogue_from_id(DLG_MITA_TAKE_THE_SCISSORS, visual_novel_state->playerName, &texture_assets->Mita_Blush);
@@ -791,6 +1044,157 @@ void handle_mouse_input_visual_novel(SDL_Event* event, VisualNovelState* visual_
                     visual_novel_state->isShowingUI = false;
                     visual_novel_state->quest_state = PRE_TIC_TAC_TOE;
                     increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_TALK_ABOUT_TIC_TAC_TOE:
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_TALK_ABOUT_TIC_TAC_TOE, visual_novel_state->playerName, &texture_assets->Gyulasz_Happy);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_PLAYER_TALK_ABOUT_TIC_TAC_TOE:
+                    newDialog = create_dialogue_from_id(DLG_MITA_TALK_ABOUT_TIC_TAC_TOE2, visual_novel_state->playerName, &texture_assets->Mita_Blush);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_TALK_ABOUT_TIC_TAC_TOE2:
+                    visual_novel_state->isShowingUI = false;
+                    visual_novel_state->quest_state = PLAYING_TIC_TAC_TOE;
+                    visual_novel_state->ticTacToe.active = true;
+                    break;
+                case DLG_PLAYER_CONGRATZ_MITA_TIC_TAC_TOE:
+                    newDialog = create_dialogue_from_id(DLG_MITA_WINS_TIC_TAC_TOE, visual_novel_state->playerName, &texture_assets->Mita_Blush);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_WINS_TIC_TAC_TOE:
+                    visual_novel_state->isShowingUI = false;
+                    // newDialog = create_dialogue_from_id(DLG_MITA_WINS_TIC_TAC_TOE, visual_novel_state->playerName, &texture_assets->Mita_Blush);
+                    // increase_visual_novel_state_by_one(visual_novel_state);
+                    visual_novel_state->ticTacToe.active = true;
+                    break;
+                case DLG_MITA_CONGRATZ_PLAYER_TIC_TAC_TOE:
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_WINS_TIC_TAC_TOE, visual_novel_state->playerName, &texture_assets->Gyulasz_Happy_Pro_Max);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_PLAYER_WINS_TIC_TAC_TOE:
+                    visual_novel_state->isShowingUI = false;
+                    visual_novel_state->ticTacToe.active = true;
+                    break;
+                case DLG_TIC_TAC_TOE_DRAW:
+                    visual_novel_state->isShowingUI = false;
+                    visual_novel_state->ticTacToe.active = true;
+                    break;
+                case DLG_PLAYER_INVESTIGATE_BONKING:
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_INVESTIGATE_BONKING2, visual_novel_state->playerName, &texture_assets->Gyulasz_Thinking);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_PLAYER_INVESTIGATE_BONKING2:
+                    newDialog = create_dialogue_from_id(DLG_MITA_REJECT_INVESTIGATE_BONGING, visual_novel_state->playerName, &texture_assets->Mita_Relieved);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_REJECT_INVESTIGATE_BONGING:
+                    newDialog = create_dialogue_from_id(DLG_MITA_REJECT_INVESTIGATE_BONGING2, visual_novel_state->playerName, &texture_assets->Mita_Relieved);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_REJECT_INVESTIGATE_BONGING2:
+                    newDialog = create_dialogue_from_id(DLG_MITA_REJECT_INVESTIGATE_BONGING3, visual_novel_state->playerName, &texture_assets->Mita_Relieved);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_REJECT_INVESTIGATE_BONGING3:
+                    newDialog = create_dialogue_from_id(DLG_MITA_REJECT_INVESTIGATE_BONGING4, visual_novel_state->playerName, &texture_assets->Mita_Relieved);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_REJECT_INVESTIGATE_BONGING4:
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_INVESTIGATE_BONKING3, visual_novel_state->playerName, &texture_assets->Gyulasz_Thinking);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_PLAYER_INVESTIGATE_BONKING3:
+                    newDialog = create_dialogue_from_id(DLG_MITA_REJECT_INVESTIGATE_BONGING5, visual_novel_state->playerName, &texture_assets->Mita_Disappointed);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_REJECT_INVESTIGATE_BONGING5:
+                    newDialog = create_dialogue_from_id(DLG_MITA_REJECT_INVESTIGATE_BONGING6, visual_novel_state->playerName, &texture_assets->Mita_Disappointed);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_REJECT_INVESTIGATE_BONGING6:
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_INVESTIGATE_BONKING4, visual_novel_state->playerName, &texture_assets->Gyulasz_Thinking);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_PLAYER_INVESTIGATE_BONKING4:
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_INVESTIGATE_BONKING5, visual_novel_state->playerName, &texture_assets->Gyulasz_Thinking);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_PLAYER_INVESTIGATE_BONKING5:
+                    newDialog = create_dialogue_from_id(DLG_MITA_REJECT_INVESTIGATE_BONGING7, visual_novel_state->playerName, &texture_assets->Mita_Disappointed);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_REJECT_INVESTIGATE_BONGING7:
+                    newDialog = create_dialogue_from_id(DLG_MITA_REJECT_INVESTIGATE_BONGING8, visual_novel_state->playerName, &texture_assets->Mita_Disappointed);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_REJECT_INVESTIGATE_BONGING8:
+                    visual_novel_state->isShowingUI = false;
+                    newDialog = create_dialogue_from_id(DLG_MITA_REJECT_INVESTIGATE_BONGING9, visual_novel_state->playerName, &texture_assets->Mita_Disappointed);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_REJECT_INVESTIGATE_BONGING9:
+                    newDialog = create_dialogue_from_id(DLG_MITA_REJECT_INVESTIGATE_BONGING10, visual_novel_state->playerName, &texture_assets->Mita_Disappointed);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_REJECT_INVESTIGATE_BONGING10:
+                    newDialog = create_dialogue_from_id(DLG_MITA_REJECT_INVESTIGATE_BONGING11, visual_novel_state->playerName, &texture_assets->Mita_Disappointed);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_REJECT_INVESTIGATE_BONGING11:
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_INVESTIGATE_BONKING6, visual_novel_state->playerName, &texture_assets->Gyulasz_Thinking);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_PLAYER_INVESTIGATE_BONKING6:
+                    newDialog = create_dialogue_from_id(DLG_MITA_REJECT_INVESTIGATE_BONGING12, visual_novel_state->playerName, &texture_assets->Mita_Disappointed);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_REJECT_INVESTIGATE_BONGING12:
+                    newDialog = create_dialogue_from_id(DLG_MITA_REJECT_INVESTIGATE_BONGING13, visual_novel_state->playerName, &texture_assets->Mita_Angry);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_REJECT_INVESTIGATE_BONGING13:
+                    newDialog = create_dialogue_from_id(DLG_MITA_REJECT_INVESTIGATE_BONGING14, visual_novel_state->playerName, &texture_assets->Mita_Angry);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_REJECT_INVESTIGATE_BONGING14:
+                    newDialog = create_dialogue_from_id(DLG_MITA_REJECT_INVESTIGATE_BONGING15, visual_novel_state->playerName, &texture_assets->Mita_Angry);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_REJECT_INVESTIGATE_BONGING15:
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_INVESTIGATE_BONKING7, visual_novel_state->playerName, &texture_assets->Gyulasz_Happy);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_PLAYER_INVESTIGATE_BONKING7:
+                    newDialog = create_dialogue_from_id(DLG_MITA_REJECT_INVESTIGATE_BONGING16, visual_novel_state->playerName, &texture_assets->Mita_Angry);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_REJECT_INVESTIGATE_BONGING16:
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_INVESTIGATE_BONKING8, visual_novel_state->playerName, &texture_assets->Gyulasz_Thinking);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_PLAYER_INVESTIGATE_BONKING8:
+                    newDialog = create_dialogue_from_id(DLG_MITA_REJECT_INVESTIGATE_BONGING17, visual_novel_state->playerName, &texture_assets->Mita_Angry);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_REJECT_INVESTIGATE_BONGING17:
+                    newDialog = create_dialogue_from_id(DLG_MITA_REJECT_INVESTIGATE_BONGING18, visual_novel_state->playerName, &texture_assets->Mita_Angry);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_REJECT_INVESTIGATE_BONGING18:
+                    newDialog = create_dialogue_from_id(DLG_MITA_REJECT_INVESTIGATE_BONGING19, visual_novel_state->playerName, &texture_assets->Mita_Angry);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_REJECT_INVESTIGATE_BONGING19:
+                    newDialog = create_dialogue_from_id(DLG_MITA_REJECT_INVESTIGATE_BONGING20, visual_novel_state->playerName, &texture_assets->Mita_Angry);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_MITA_REJECT_INVESTIGATE_BONGING20:
+                    visual_novel_state->isShowingUI = false;
+                    visual_novel_state->quest_state = DECISION_TIME;
+                    stopSounds();
+                    // newDialog = create_dialogue_from_id(DLG_MITA_REJECT_INVESTIGATE_BONGING20, visual_novel_state->playerName, &texture_assets->Mita_Angry);
+                    // increase_visual_novel_state_by_one(visual_novel_state);
                     break;
                 default:
                     break;

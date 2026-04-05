@@ -18,3 +18,7 @@ void playSoundWithLoops(Mix_Chunk* sound, int loops){
         Mix_PlayChannel(-1, sound, loops);
     }
 }
+
+void stopSounds(){
+    Mix_HaltChannel(-1);
+}

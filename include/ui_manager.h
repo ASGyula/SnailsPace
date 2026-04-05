@@ -9,6 +9,8 @@
 #include <SDL_ttf.h>
 #include <stdbool.h>
 
+#include "tic_tac_toe.h"
+
 typedef struct{
     GLuint textureID;
     int x, y, w, h;
@@ -22,6 +24,8 @@ typedef struct{
     UIElement Mita_Relieved;
     UIElement Mita_Happy;
     UIElement Mita_Blush;
+    UIElement Mita_Disappointed;
+    UIElement Mita_Angry;
     UIElement Mita_Smack;
     UIElement Gyulasz_Brave;
     UIElement Gyulasz_Determined;
@@ -40,7 +44,14 @@ typedef struct{
     UIElement SpaceButton;
     UIElement VButton;
     UIElement EButton;
+    UIElement TicTacToeControll;
 } TextureAssets;
+
+typedef struct{
+    UIElement stayButton;
+    UIElement leaveButton;
+    bool isWaitingForDecision;
+} DecisionUI;
 
 typedef struct{
     GLfloat red;
@@ -49,10 +60,11 @@ typedef struct{
     GLfloat alpha;
 } Color;
 
-typedef struct {
-    char text[128];
-    int nextDialogID;
-} DialogueChoice;
+typedef enum{
+    CHOICE_NONE,
+    CHOICE_LEAVE,
+    CHOICE_STAY
+} PlayerDecision;
 
 typedef struct{
     char fullText[512];
@@ -80,10 +92,6 @@ typedef struct{
     int nameStartY;
     UIElement speaker;
     bool isShowing;
-
-    DialogueChoice choices[2];
-    int numChoices;
-    bool isWaitingForChoice;
 } Dialogue;
 
 typedef struct{
@@ -112,5 +120,9 @@ void draw_rect(int x, int y, int w, int h);
 void draw_rect_lines(int x, int y, int w, int h);
 
 void render_clippy_bubble(Screen* screen, TextureAssets* textureAssets, UIElement* warningElement);
+
+void render_tic_tac_toe(TicTacToe* ttt, GLuint texX, GLuint texO, int screenWidth, int screenHeight);
+
+void render_decision_ui(Screen screen, DecisionUI* decisionUI, TextureAssets* textureAssets);
 
 #endif //SNAILSPACE_UI_MANAGER_H
