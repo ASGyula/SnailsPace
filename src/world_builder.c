@@ -87,6 +87,20 @@ void build_up_trigger_zones(Game* game){
     game->triggerZones.MitaTakeScissors.type = TRIGGER_DIALOGUE;
     game->triggerZones.MitaTakeScissors.isActivated = false;
 
+    //TIC-TAC-TOE
+    game->triggerZones.PlayTicTacToe.x = -5.67f;
+    game->triggerZones.PlayTicTacToe.z = -7.12f;
+    game->triggerZones.PlayTicTacToe.radius = 1.0f;
+    game->triggerZones.PlayTicTacToe.type = TRIGGER_DIALOGUE;
+    game->triggerZones.PlayTicTacToe.isActivated = false;
+
+    //MITA SZEKRÉNYE
+    game->triggerZones.InvestigateMitasCloset.x = -7.44f;
+    game->triggerZones.InvestigateMitasCloset.z = -8.35f;
+    game->triggerZones.InvestigateMitasCloset.radius = 0.5f;
+    game->triggerZones.InvestigateMitasCloset.type = TRIGGER_DIALOGUE;
+    game->triggerZones.InvestigateMitasCloset.isActivated = false;
+
     //LIDAR > LIDAR FAST
     game->triggerZones.LidarChangesToFast.x = 23;
     game->triggerZones.LidarChangesToFast.z = -28;
@@ -285,6 +299,20 @@ void paint_texture_assets(Game *game){
     game->textureAssets.Mita_Blush.y = game->screen.screenHeight - game->textureAssets.Mita_Blush.h;
     game->textureAssets.Mita_Blush.isShowing = true;
 
+    game->textureAssets.Mita_Disappointed.textureID = load_texture("External/Gemini/Mita_Disappointed.png");
+    game->textureAssets.Mita_Disappointed.w = 400;
+    game->textureAssets.Mita_Disappointed.h = 400;
+    game->textureAssets.Mita_Disappointed.x = 0;
+    game->textureAssets.Mita_Disappointed.y = game->screen.screenHeight - game->textureAssets.Mita_Disappointed.h;
+    game->textureAssets.Mita_Disappointed.isShowing = true;
+
+    game->textureAssets.Mita_Angry.textureID = load_texture("External/Gemini/Mita_Angry.png");
+    game->textureAssets.Mita_Angry.w = 400;
+    game->textureAssets.Mita_Angry.h = 400;
+    game->textureAssets.Mita_Angry.x = 0;
+    game->textureAssets.Mita_Angry.y = game->screen.screenHeight - game->textureAssets.Mita_Angry.h;
+    game->textureAssets.Mita_Angry.isShowing = true;
+
     game->textureAssets.Mita_Smack.textureID = load_texture("External/Gemini/Mita_Smack.png");
     game->textureAssets.Mita_Smack.w = 400;
     game->textureAssets.Mita_Smack.h = 400;
@@ -292,7 +320,7 @@ void paint_texture_assets(Game *game){
     game->textureAssets.Mita_Smack.y = game->screen.screenHeight - game->textureAssets.Mita_Smack.h;
     game->textureAssets.Mita_Smack.isShowing = true;
 
-        game->textureAssets.Gyulasz_Thinking.textureID = load_texture("External/Gemini/Gyulasz_Thinking.png");
+    game->textureAssets.Gyulasz_Thinking.textureID = load_texture("External/Gemini/Gyulasz_Thinking.png");
     game->textureAssets.Gyulasz_Thinking.w = 400;
     game->textureAssets.Gyulasz_Thinking.h = 450;
     game->textureAssets.Gyulasz_Thinking.x = 0;
@@ -389,6 +417,16 @@ void paint_texture_assets(Game *game){
     game->textureAssets.EButton.x = (game->screen.screenWidth/2 - 10);
     game->textureAssets.EButton.y = game->screen.screenHeight/2 - game->textureAssets.EButton.h/2;
     game->textureAssets.EButton.isShowing = true;
+
+    SDL_Color white = {255, 255, 255, 255};
+
+    game->visualNovelState.decisionUI.leaveButton = create_text_ui_element(game->textureAssets.mainFont, "NE MARADJ VELE", white, 150, game->screen.screenHeight / 2);
+    game->visualNovelState.decisionUI.stayButton = create_text_ui_element(game->textureAssets.mainFont, "MARADJ VELE", white, game->screen.screenWidth - 450, game->screen.screenHeight / 2);
+    game->visualNovelState.decisionUI.isWaitingForDecision = true;
+
+    SDL_Color black = {0, 0, 0, 255};
+    const char* ttt_text = "[W] [A] [S] [D] mozgás\n[ENTER] választás";
+    game->textureAssets.TicTacToeControll = create_text_ui_element(game->textureAssets.mainFont, ttt_text, black, (game->screen.screenWidth/2)-(game->textureAssets.TicTacToeControll.w/2)-100, (game->screen.screenHeight-150));
 }
 
 void build_main_menu_ui(Game* game) {
@@ -399,6 +437,8 @@ void build_main_menu_ui(Game* game) {
     SDL_Color gray = {150, 150, 150, 255};
 
     int cw = game->screen.screenWidth / 2;
+
+    stopSounds();
 
     game->mainMenuUI.title = create_text_ui_element(game->textureAssets.mainFont, "Snail's Pace", red, 0, 150);
     game->mainMenuUI.title.x = cw - (game->mainMenuUI.title.w / 2);
@@ -523,6 +563,16 @@ void build_scene_mita_saves_player(Game* game){
     set_camera_position(&game->player.camera, coordinates,-90, 3);
     setup_projection(game->screen.screenWidth, game->screen.screenHeight);
 
+    memset(&game->visualNovelState.ticTacToe, 0, sizeof(TicTacToe));
+
+    game->visualNovelState.ticTacToe.active = false;
+    game->visualNovelState.ticTacToe.round = 1;
+    game->visualNovelState.ticTacToe.cursorX = 1;
+    game->visualNovelState.ticTacToe.cursorY = 1;
+    game->visualNovelState.ticTacToe.currentPlayer = 1;
+    game->visualNovelState.ticTacToe.winner = 0;
+    game->visualNovelState.ticTacToe.isGameOver = false;
+
     game->gameObjects.Mita.x = 0.85f;
     game->gameObjects.Mita.y = 0.85f;
     game->gameObjects.Mita.z = -2.0f;
@@ -545,6 +595,8 @@ void build_scene_mita_saves_player(Game* game){
     game->triggerZones.TryToEnterMitasRoom.isActivated = false;
     game->gameObjects.Scissors.triggerZone.isActivated = false;
     game->triggerZones.MitaTakeScissors.isActivated = false;
+    game->triggerZones.PlayTicTacToe.isActivated = false;
+    game->triggerZones.InvestigateMitasCloset.isActivated = false;
     game->tryToEnterMitasRoom=0;
     game->visualNovelState.quest_state = KITCHEN_START;
     change_camera_input_handler(game, true, true);

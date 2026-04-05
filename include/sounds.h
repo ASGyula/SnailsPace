@@ -18,4 +18,6 @@ void playSound(Mix_Chunk *sound);
 
 void playSoundWithLoops(Mix_Chunk *sound, int loops);
 
+void stopSounds();
+
 #endif //SNAILSPACE_SOUNDS_H

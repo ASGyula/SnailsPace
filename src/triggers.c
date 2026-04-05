@@ -65,7 +65,7 @@ void check_trigger_zones(Game* game){
     }
 }
 
-void check_miside_trigger_zones(Game* game, TextureAssets* texture_assets){
+void check_miside_trigger_zones(Game* game, TextureAssets* texture_assets, MoveableModel* Mita){
     if(!game->triggerZones.MitaAsksForAScissors.isActivated){
         const float dx = game->player.camera.x - game->triggerZones.MitaAsksForAScissors.x;
         const float dz = game->player.camera.z - game->triggerZones.MitaAsksForAScissors.z;
@@ -129,6 +129,40 @@ void check_miside_trigger_zones(Game* game, TextureAssets* texture_assets){
             game->triggerZones.MitaTakeScissors.isActivated = true;
             game->visualNovelState.isShowingUI = true;
             increase_visual_novel_state(&game->visualNovelState, DLG_PLAYER_GIVE_MITA_THE_SCISSORS);
+        }
+    }
+
+    if(!game->triggerZones.PlayTicTacToe.isActivated && (game->visualNovelState.quest_state == PRE_TIC_TAC_TOE || game->visualNovelState.quest_state == MITA_OR_BONK)){
+        const float dx = game->player.camera.x - game->triggerZones.PlayTicTacToe.x;
+        const float dz = game->player.camera.z - game->triggerZones.PlayTicTacToe.z;
+        const float distance = sqrtf(dx * dx + dz * dz);
+
+        if(distance < game->triggerZones.PlayTicTacToe.radius){
+            Dialogue newDialog = create_dialogue_from_id(DLG_MITA_TALK_ABOUT_TIC_TAC_TOE, game->visualNovelState.playerName, &texture_assets->Mita_Happy);
+            game->visualNovelState.dialogue = newDialog;
+
+            game->triggerZones.PlayTicTacToe.isActivated = true;
+            game->visualNovelState.quest_state = PLAYING_TIC_TAC_TOE;
+            game->visualNovelState.isShowingUI = true;
+            change_camera_input_handler(game, false, false);
+            increase_visual_novel_state(&game->visualNovelState, DLG_MITA_TALK_ABOUT_TIC_TAC_TOE);
+        }
+    } 
+    
+    if(!game->triggerZones.InvestigateMitasCloset.isActivated && (game->visualNovelState.quest_state == AFTER_TIC_TAC_TOE)){
+        const float dx = game->player.camera.x - game->triggerZones.InvestigateMitasCloset.x;
+        const float dz = game->player.camera.z - game->triggerZones.InvestigateMitasCloset.z;
+        const float distance = sqrtf(dx * dx + dz * dz);
+
+        if(distance < game->triggerZones.InvestigateMitasCloset.radius){
+            change_loaded_moveable_obj_positon(Mita, -7.83f, 0.85f, -8.7354f, 0, -310, 0);
+            Dialogue newDialog = create_dialogue_from_id(DLG_MITA_REJECT_INVESTIGATE_BONGING9, game->visualNovelState.playerName, &texture_assets->Mita_Disappointed);
+            game->visualNovelState.dialogue = newDialog;
+
+            change_camera_input_handler(game, false, false);
+            game->triggerZones.InvestigateMitasCloset.isActivated = true;
+            game->visualNovelState.isShowingUI = true;
+            increase_visual_novel_state(&game->visualNovelState, DLG_MITA_REJECT_INVESTIGATE_BONGING9);
         }
     }
 }
