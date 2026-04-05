@@ -155,12 +155,12 @@ void handle_wasd_input(Camera* camera, float deltaTime, Sounds sounds, GameScene
     }
 }
 
-void handle_miside_interact_input(Camera* camera, float deltaTime, VisualNovelState* visual_novel_state, TriggerZone* trigger_zone){
+void handle_miside_interact_input(SDL_Event* event, VisualNovelState* visual_novel_state, TriggerZone* trigger_zone){
     const Uint8* state = SDL_GetKeyboardState(NULL);
 
     static bool e_pressed = false;
     if(state[SDL_SCANCODE_E]){
-        if(trigger_zone->isActivated == true){
+        if(trigger_zone->isActivated == true && visual_novel_state->quest_state == SEARCHING_FOR_SCISSORS){
             e_pressed = true;
             increase_visual_novel_state(visual_novel_state, DLG_PLAYER_CONFUSED_SCISSORS_LOCATION);
             visual_novel_state->isShowingUI = true;
@@ -168,5 +168,56 @@ void handle_miside_interact_input(Camera* camera, float deltaTime, VisualNovelSt
         }
     }else{
         e_pressed = false;
+    }
+
+    if(visual_novel_state->quest_state == DECISION_TIME){
+        const Uint8* state = SDL_GetKeyboardState(NULL);
+
+        if(state[SDL_SCANCODE_Q]){
+            visual_novel_state->quest_state = ESCAPE_ROUTE;
+        }
+
+        if(state[SDL_SCANCODE_E]){
+            visual_novel_state->quest_state = STAY_WITH_MITA;
+        }
+    }
+
+
+    if(visual_novel_state->quest_state != PLAYING_TIC_TAC_TOE || !visual_novel_state->ticTacToe.active) return;
+
+    if(event->type == SDL_KEYDOWN){
+        switch(event->key.keysym.scancode){
+            case SDL_SCANCODE_W:
+                if (visual_novel_state->ticTacToe.cursorY > 0) visual_novel_state->ticTacToe.cursorY--;
+                break;
+            case SDL_SCANCODE_S:
+                if (visual_novel_state->ticTacToe.cursorY < 2) visual_novel_state->ticTacToe.cursorY++;
+                break;
+            case SDL_SCANCODE_A:
+                if (visual_novel_state->ticTacToe.cursorX > 0) visual_novel_state->ticTacToe.cursorX--;
+                break;
+            case SDL_SCANCODE_D:
+                if (visual_novel_state->ticTacToe.cursorX < 2) visual_novel_state->ticTacToe.cursorX++;
+                break;
+            case SDL_SCANCODE_SPACE:
+            case SDL_SCANCODE_RETURN:
+                int x = visual_novel_state->ticTacToe.cursorX;
+                int y = visual_novel_state->ticTacToe.cursorY;
+                
+                if(visual_novel_state->ticTacToe.board[x][y] == 0 && visual_novel_state->ticTacToe.currentPlayer == 1){
+                    visual_novel_state->ticTacToe.board[x][y] = 1;
+
+                    int winner = check_tic_tac_toe_winner(&visual_novel_state->ticTacToe);
+                    if(winner != 0){
+                        visual_novel_state->ticTacToe.winner = winner;
+                        visual_novel_state->ticTacToe.isGameOver = true;
+                    }else{
+                        visual_novel_state->ticTacToe.currentPlayer = 2;
+                    }
+
+                    // printf("[INFO] Tic-Tac-Toe: %d, %d\n", x, y);
+                }
+                break;
+        }
     }
 }

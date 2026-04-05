@@ -13,7 +13,11 @@ typedef enum {
     SEARCHING_FOR_SCISSORS,
     MITA_OR_BONK,
     PRE_TIC_TAC_TOE,
-    PLAYING_TIC_TAC_TOE
+    PLAYING_TIC_TAC_TOE,
+    AFTER_TIC_TAC_TOE,
+    DECISION_TIME,
+    ESCAPE_ROUTE,
+    STAY_WITH_MITA
 } QuestState;
 
 typedef struct{
@@ -22,6 +26,8 @@ typedef struct{
     bool isShowingUI;
     Dialogue dialogue;
     QuestState quest_state;
+    TicTacToe ticTacToe;
+    DecisionUI decisionUI;
 } VisualNovelState;
 
 typedef enum{
@@ -57,6 +63,8 @@ typedef struct{
     TriggerZone TryToEnterMitasRoom;
     TriggerZone MitaTakeScissors;
     TriggerZone LidarChangesToFast;
+    TriggerZone PlayTicTacToe;
+    TriggerZone InvestigateMitasCloset;
 } GameTriggerZones;
 
 #endif //SNAILSPACE_GAME_TYPES_H
