@@ -714,6 +714,41 @@ static const DialogueTemplate ALL_DIALOGUES[] = {
         {153, 22, 183, 255}, {153, 22, 183, 255},
         390, 600, 390, 540
     },
+    [DLG_PLAYER_LEAVING_MITA_ANGRY] = {
+        "MITA",
+        "Értem...",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_LEAVING_MITA_ANGRY2] = {
+        "MITA",
+        "Te sem...",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_LEAVING_MITA_ANGRY3] = {
+        "MITA",
+        "Ha ennyire tudni akarod, mi van a szekrényben, akkor megtudod...",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_LEAVING_MITA_ANGRY4] = {
+        "MITA",
+        "...most rögtön!",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_LEAVING_MITA_ANGRY5] = {
+        "MITA",
+        "...",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
 };
 
 Dialogue create_dialogue_from_id(DialogueID id, const char* name_placeholder, const UIElement* speaker_img){
@@ -1195,6 +1230,26 @@ void handle_mouse_input_visual_novel(SDL_Event* event, VisualNovelState* visual_
                     stopSounds();
                     // newDialog = create_dialogue_from_id(DLG_MITA_REJECT_INVESTIGATE_BONGING20, visual_novel_state->playerName, &texture_assets->Mita_Angry);
                     // increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_PLAYER_LEAVING_MITA_ANGRY:
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_LEAVING_MITA_ANGRY2, visual_novel_state->playerName, &texture_assets->Mita_Angry);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_PLAYER_LEAVING_MITA_ANGRY2:
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_LEAVING_MITA_ANGRY3, visual_novel_state->playerName, &texture_assets->Mita_Angry);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_PLAYER_LEAVING_MITA_ANGRY3:
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_LEAVING_MITA_ANGRY4, visual_novel_state->playerName, &texture_assets->Mita_Smack);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_PLAYER_LEAVING_MITA_ANGRY4:
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_LEAVING_MITA_ANGRY5, visual_novel_state->playerName, &texture_assets->Mita_Smack);
+                    visual_novel_state->isShowingUI = false;
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_PLAYER_LEAVING_MITA_ANGRY5:
+                    visual_novel_state->isShowingUI = false;
                     break;
                 default:
                     break;

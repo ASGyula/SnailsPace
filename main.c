@@ -84,7 +84,7 @@ int main(int argc, char *argv[]){
                     if(game.visualNovelState.isShowingUI){
                         handle_mouse_input_visual_novel(&event, &game.visualNovelState, &game.visualNovelState.dialogue, &game.textureAssets);
                     }else{
-                        handle_miside_interact_input(&event, &game.visualNovelState, &game.gameObjects.Scissors.triggerZone);
+                        handle_miside_interact_input(&event, &game.visualNovelState, &game.gameObjects.Scissors.triggerZone, &game.textureAssets);
                         handle_mouse_input(&event, &game.player.camera);
                     }
                     break;
@@ -328,6 +328,10 @@ int main(int argc, char *argv[]){
                     render_ui_texture(&game.visualNovelState.dialogue.speaker);
                 }
 
+                if(game.visualNovelState.currentDialogID == DLG_PLAYER_LEAVING_MITA_ANGRY5){
+                    scene_switch(&game, LIDAR);
+                }
+
                 if(game.visualNovelState.quest_state == SEARCHING_FOR_SCISSORS){
                     render_light_aura_model(&game.player.camera, &game.gameObjects.Scissors);
 
@@ -355,6 +359,8 @@ int main(int argc, char *argv[]){
                 enableFog(1, 10, 1.0f);
 
                 check_trigger_zones(&game);
+
+                game.visualNovelState.isShowingUI = false;
 
                 if(game.triggerZones.LidarChangesToFast.isActivated){
                     render_lidar_fast(game.gameObjects.LidarMap->number_of_vertex);
