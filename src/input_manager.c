@@ -155,7 +155,7 @@ void handle_wasd_input(Camera* camera, float deltaTime, Sounds sounds, GameScene
     }
 }
 
-void handle_miside_interact_input(SDL_Event* event, VisualNovelState* visual_novel_state, TriggerZone* trigger_zone){
+void handle_miside_interact_input(SDL_Event* event, VisualNovelState* visual_novel_state, TriggerZone* trigger_zone, TextureAssets* texture_assets){
     const Uint8* state = SDL_GetKeyboardState(NULL);
 
     static bool e_pressed = false;
@@ -174,7 +174,7 @@ void handle_miside_interact_input(SDL_Event* event, VisualNovelState* visual_nov
         const Uint8* state = SDL_GetKeyboardState(NULL);
 
         if(state[SDL_SCANCODE_Q]){
-            visual_novel_state->quest_state = ESCAPE_ROUTE;
+            jump_to_dialog_player_leaving(visual_novel_state, texture_assets);
         }
 
         if(state[SDL_SCANCODE_E]){
