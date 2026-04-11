@@ -362,7 +362,7 @@ int main(int argc, char *argv[]){
 
                 game.visualNovelState.isShowingUI = false;
 
-                if(game.triggerZones.LidarChangesToFast.isActivated){
+                if(!game.triggerZones.LidarChangesToFast.isActivated){
                     render_lidar_fast(game.gameObjects.LidarMap->number_of_vertex);
                     enableFog(1, 4, 1.0f);
                 }else{

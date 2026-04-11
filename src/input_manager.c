@@ -178,7 +178,7 @@ void handle_miside_interact_input(SDL_Event* event, VisualNovelState* visual_nov
         }
 
         if(state[SDL_SCANCODE_E]){
-            visual_novel_state->quest_state = STAY_WITH_MITA;
+            jump_to_dialog_player_staying(visual_novel_state, texture_assets);
         }
     }
 

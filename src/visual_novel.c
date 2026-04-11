@@ -24,6 +24,13 @@ void jump_to_dialog_player_leaving(VisualNovelState* visual_novel_state, Texture
     visual_novel_state->isShowingUI = true;
 }
 
+void jump_to_dialog_player_staying(VisualNovelState* visual_novel_state, TextureAssets* texture_assets){
+    visual_novel_state->quest_state = STAY_WITH_MITA;
+    visual_novel_state->currentDialogID = DLG_PLAYER_STAYING_MITA_HAPPY;
+    visual_novel_state->dialogue = create_dialogue_from_id(DLG_PLAYER_STAYING_MITA_HAPPY, visual_novel_state->playerName, &texture_assets->Mita_Disappointed);
+    visual_novel_state->isShowingUI = true;
+}
+
 // void change_scene(){
     // scene_switch(&game, DEALER_ROOM);
 // }

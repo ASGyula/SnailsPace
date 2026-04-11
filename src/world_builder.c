@@ -112,14 +112,14 @@ void build_up_trigger_zones(Game* game){
 
 
 void build_up_game_objects(Game* game){
-    printf("[INICIALIZALAS] building_up_trigger_zones\n");
+    printf("[INICIALIZALAS] building_up_game_objects\n");
     
     //HELSIE
-    load_textured_obj("External/RedEyes/HelsieMidnightbyRedEyes.obj", &game->gameObjects.Helsie);
-    game->gameObjects.Helsie.textureID = load_texture("External/RedEyes/T_MysticFang_Body_D.png");
+    load_model_binary("External/RedEyes/HelsieMidnight/HelsieMidnightbyRedEyes.obj.bin", &game->gameObjects.Helsie);
+    game->gameObjects.Helsie.textureID = load_texture("External/RedEyes/HelsieMidnight/T_MysticFang_Body_D.png");
 
     //MITA
-    load_textured_obj("External/vanessacampbell701/mitasidegirl/model.obj", &game->gameObjects.Mita.model);
+    load_model_binary("External/vanessacampbell701/mitasidegirl/model.obj.bin", &game->gameObjects.Mita.model);
     game->gameObjects.Mita.model.textureID = load_texture("External/vanessacampbell701/mitasidegirl/Baked_Atlas.png");
     game->gameObjects.Mita.x = 0.85f;
     game->gameObjects.Mita.y = 0.85f;
@@ -133,18 +133,17 @@ void build_up_game_objects(Game* game){
     game->gameObjects.Mita.isMoving = false;
 
     //MISIDE HÁZ
-    load_textured_obj("External/FarawellGames/Miside_room/model.obj", &game->gameObjects.MitasRoom);
+    load_model_binary("External/FarawellGames/Miside_room/model.obj.bin", &game->gameObjects.MitasRoom);
     game->gameObjects.MitasRoom.textureID = load_texture("External/FarawellGames/Miside_room/Baked_Atlas.png");
 
     //LIDAR MAP
-    load_obj("External/heyisah78/miside-horror-stage/model.obj", &game->gameObjects.LidarMap);
+    game->gameObjects.LidarMap = load_vertex_binary("External/heyisah78/miside-horror-stage/model.obj.bin");
 
-    load_textured_obj("External/heyisah78/miside-horror-stage/Lidar.obj", &game->gameObjects.LidarMapWT);
+    load_model_binary("External/heyisah78/miside-horror-stage/Lidar.obj.bin", &game->gameObjects.LidarMapWT);
     game->gameObjects.LidarMapWT.textureID = load_texture("External/RedEyes/HelsieMidnight/T_BlackMask.png");
 
-
     //DEALER
-    load_textured_obj("External/VibaPop/TheDealer.obj", &game->gameObjects.Dealer.model);
+    load_model_binary("External/VibaPop/TheDealer.obj.bin", &game->gameObjects.Dealer.model);
     game->gameObjects.Dealer.model.textureID = load_texture("External/Vibapop/TheDealerTextureB.png");
     game->gameObjects.Dealer.x = 0;
     game->gameObjects.Dealer.y = 0.0f;
@@ -156,11 +155,11 @@ void build_up_game_objects(Game* game){
     game->gameObjects.Dealer.isMoving = true;
     
     //BAT VISION MAP
-    load_textured_obj("External/bat_vision_map/map.obj", &game->gameObjects.BatVisionMap);
+    load_model_binary("External/bat_vision_map/map.obj.bin", &game->gameObjects.BatVisionMap);
     game->gameObjects.BatVisionMap.textureID = load_texture("External/RedEyes/HelsieMidnight/T_BlackMask.png");
 
     //PRE-LIDAR MAP
-    load_textured_obj("External/volvor/The_Japanese_School_Classroom/model.obj", &game->gameObjects.PreLidarMap.model);
+    load_model_binary("External/volvor/The_Japanese_School_Classroom/model.obj.bin", &game->gameObjects.PreLidarMap.model);
     game->gameObjects.PreLidarMap.model.textureID = load_texture("External/RedEyes/HelsieMidnight/T_MysticFang_Body_D.png");
     game->gameObjects.PreLidarMap.r = 1.00f;
     game->gameObjects.PreLidarMap.g = 1.00f;
@@ -172,11 +171,11 @@ void build_up_game_objects(Game* game){
     game->gameObjects.PreLidarMap.triggerZone.type = TRIGGER_DRINK;
 
     //VAPE
-    load_textured_obj("External/Figusorasu/lostvape-centaurus-mod-low-poly/model.obj", &game->gameObjects.Vapelt3.model);
+    load_model_binary("External/Figusorasu/lostvape-centaurus-mod-low-poly/model.obj.bin", &game->gameObjects.Vapelt3.model);
     game->gameObjects.Vapelt3.model.textureID = load_texture("External/Figusorasu/lostvape-centaurus-mod-low-poly/texture.png");
     
     //MONSTER ENERGIAITAL SZERETEM SZERETEM HASAMBA BETESZEM
-    load_textured_obj("External/Kleyton3D/lata-de-monster/model.obj", &game->gameObjects.PunchPacificMonster.model);
+    load_model_binary("External/Kleyton3D/lata-de-monster/model.obj.bin", &game->gameObjects.PunchPacificMonster.model);
     game->gameObjects.PunchPacificMonster.model.textureID = load_texture("External/Kleyton3D/lata-de-monster/pipeline_punch.png");
     game->gameObjects.PunchPacificMonster.r = 0.89f;
     game->gameObjects.PunchPacificMonster.g = 0.22f;
@@ -187,7 +186,7 @@ void build_up_game_objects(Game* game){
     game->gameObjects.PunchPacificMonster.triggerZone.isActivated = false;
     game->gameObjects.PunchPacificMonster.triggerZone.type = TRIGGER_DRINK;
 
-    load_textured_obj("External/Kleyton3D/lata-de-monster/model.obj", &game->gameObjects.WhiteMonster.model);
+    load_model_binary("External/Kleyton3D/lata-de-monster/model.obj.bin", &game->gameObjects.WhiteMonster.model);
     game->gameObjects.WhiteMonster.model.textureID = load_texture("External/Kleyton3D/lata-de-monster/white.png");
     game->gameObjects.WhiteMonster.r = 1.0f;
     game->gameObjects.WhiteMonster.g = 1.0f;
@@ -207,7 +206,7 @@ void build_up_game_objects(Game* game){
     game->gameObjects.WhiteMonster.triggerZone.z = game->gameObjects.WhiteMonster.z;
 
     //OLLÓ
-    load_textured_obj("External/tuturu/day-3-scissors/model.obj", &game->gameObjects.Scissors.model);
+    load_model_binary("External/tuturu/day-3-scissors/model.obj.bin", &game->gameObjects.Scissors.model);
     game->gameObjects.Scissors.model.textureID = load_texture("External/tuturu/day-3-scissors/3_scissors_bc.png");
     game->gameObjects.Scissors.r = 0.56f;
     game->gameObjects.Scissors.g = 0.56f;
@@ -224,7 +223,7 @@ void build_up_game_objects(Game* game){
     game->gameObjects.Scissors.z = -4.1f;
 
     //IMMORTAL SNAIL
-    load_textured_obj("External/rudolfs/snail/model.obj", &game->gameObjects.ImmortalSnail.model);
+    load_model_binary("External/rudolfs/snail/model.obj.bin", &game->gameObjects.ImmortalSnail.model);
     game->gameObjects.ImmortalSnail.model.textureID = load_texture("External/rudolfs/snail/snail_dif.png");
     game->gameObjects.ImmortalSnail.triggerZone.x = 0;
     game->gameObjects.ImmortalSnail.triggerZone.z = 0;
