@@ -749,6 +749,62 @@ static const DialogueTemplate ALL_DIALOGUES[] = {
         {153, 22, 183, 255}, {153, 22, 183, 255},
         390, 600, 390, 540
     },
+    [DLG_PLAYER_STAYING_MITA_HAPPY] = {
+        "MITA",
+        "Értem...",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_STAYING_MITA_HAPPY2] = {
+        "MITA",
+        "Vagyis... várjunk...",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_STAYING_MITA_HAPPY3] = {
+        "MITA",
+        "Komolyan mondod? Tényleg?",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_STAYING_MITA_HAPPY4] = {
+        "MITA",
+        "Annyira, de annyira boldog vagyok most!",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_STAYING_MITA_HAPPY5] = {
+        "MITA",
+        "És egy kicsit zavarodott...",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_STAYING_MITA_HAPPY6] = {
+        "MITA",
+        "De jól van!",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_STAYING_MITA_HAPPY7] = {
+        "MITA",
+        "Kérlek, maradj velem!",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
+    [DLG_PLAYER_STAYING_MITA_HAPPY8] = {
+        "MITA",
+        "Örökkön örökké!",
+        {1.0f, 0.8f, 0.9f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        390, 600, 390, 540
+    },
 };
 
 Dialogue create_dialogue_from_id(DialogueID id, const char* name_placeholder, const UIElement* speaker_img){
@@ -1249,6 +1305,44 @@ void handle_mouse_input_visual_novel(SDL_Event* event, VisualNovelState* visual_
                     increase_visual_novel_state_by_one(visual_novel_state);
                     break;
                 case DLG_PLAYER_LEAVING_MITA_ANGRY5:
+                    visual_novel_state->isShowingUI = false;
+                    break;
+                case DLG_PLAYER_STAYING_MITA_HAPPY:
+                    visual_novel_state->isShowingUI = true;
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_STAYING_MITA_HAPPY2, visual_novel_state->playerName, &texture_assets->Mita_Happy);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_PLAYER_STAYING_MITA_HAPPY2:
+                    visual_novel_state->isShowingUI = true;
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_STAYING_MITA_HAPPY3, visual_novel_state->playerName, &texture_assets->Mita_Happy);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_PLAYER_STAYING_MITA_HAPPY3:
+                    visual_novel_state->isShowingUI = true;
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_STAYING_MITA_HAPPY4, visual_novel_state->playerName, &texture_assets->Mita_Happy);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_PLAYER_STAYING_MITA_HAPPY4:
+                    visual_novel_state->isShowingUI = true;
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_STAYING_MITA_HAPPY5, visual_novel_state->playerName, &texture_assets->Mita_Happy);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_PLAYER_STAYING_MITA_HAPPY5:
+                    visual_novel_state->isShowingUI = true;
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_STAYING_MITA_HAPPY6, visual_novel_state->playerName, &texture_assets->Mita_Happy);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_PLAYER_STAYING_MITA_HAPPY6:
+                    visual_novel_state->isShowingUI = true;
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_STAYING_MITA_HAPPY7, visual_novel_state->playerName, &texture_assets->Mita_Blush);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_PLAYER_STAYING_MITA_HAPPY7:
+                    visual_novel_state->isShowingUI = true;
+                    newDialog = create_dialogue_from_id(DLG_PLAYER_STAYING_MITA_HAPPY8, visual_novel_state->playerName, &texture_assets->Mita_Blush);
+                    increase_visual_novel_state_by_one(visual_novel_state);
+                    break;
+                case DLG_PLAYER_STAYING_MITA_HAPPY8:
                     visual_novel_state->isShowingUI = false;
                     break;
                 default:

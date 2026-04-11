@@ -72,4 +72,8 @@ bool load_textured_obj(const char* filename, Model* model);
 
 void change_loaded_moveable_obj_positon(MoveableModel* object, float x, float y, float z, float pitch, float yaw, float roll);
 
+Vertex* load_vertex_binary(const char* filename);
+
+bool load_model_binary(const char* name, Model* model);
+
 #endif //SNAILSPACE_OBJ_LOADER_H

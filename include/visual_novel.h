@@ -13,5 +13,6 @@ void increase_visual_novel_state(VisualNovelState *visual_novel_state, int id);
 void increase_visual_novel_state_by_one(VisualNovelState* visual_novel_state);
 
 void jump_to_dialog_player_leaving(VisualNovelState* visual_novel_state, TextureAssets* texture_assets);
+void jump_to_dialog_player_staying(VisualNovelState* visual_novel_state, TextureAssets* texture_assets);
 
 #endif //SNAILSPACE_TEXTURE_ASSETS_H
