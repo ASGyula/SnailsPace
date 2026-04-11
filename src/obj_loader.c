@@ -8,12 +8,72 @@
 #include <string.h>
 #define ASSETS_PREFIX "../assets/"
 
+void save_vertex_binary(const char* filename, Vertex* vertices, int count) {
+    printf("[INFO] %s vertex binaris mentese\n", filename);
+    FILE* file = fopen(filename, "wb");
+    if(!file) return;
+    fwrite(&count, sizeof(int), 1, file);
+    fwrite(vertices, sizeof(Vertex), count, file);
+    fclose(file);
+    printf("[SIKER] %s sikeresen mentve\n", filename);
+}
+
+void save_model_binary(const char* filename, Model* model){
+    printf("[INFO] %s model binaris mentese\n", filename);
+
+    FILE* file = fopen(filename, "wb");
+    if(!file) return;
+    fwrite(&model->number_of_vertex, sizeof(int), 1, file);
+    fwrite(model->vertices, sizeof(ModelVertex), model->number_of_vertex, file);
+    fclose(file);
+    printf("[SIKER] %s sikeresen mentve\n", filename);
+}
+
+Vertex* load_vertex_binary(const char* name){
+    char filename[256];
+    snprintf(filename, sizeof(filename), "%s%s", ASSETS_PREFIX, name);
+    printf("[INFO] Vertex binaris obj betoltese: %s \n", name);
+
+    FILE* file = fopen(filename, "rb");
+    if(!file) return NULL;
+
+    int count;
+    fread(&count, sizeof(int), 1, file);
+    if(count == 0){
+        printf("[HIBA] Nem talalhato pont a kovetkezo fajlban: %s\n", filename);
+        fclose(file);
+    }
+
+    Vertex* vertices = (Vertex*)malloc(count * sizeof(Vertex));
+    vertices->number_of_vertex = count;
+
+    fread(vertices, sizeof(Vertex), count, file);
+    fclose(file);
+    printf("[SIKER] %s sikeresen beolvasva (v=%f)\n", filename, (*vertices).number_of_vertex);
+    return vertices;
+}
+
+bool load_model_binary(const char* name, Model* model){
+    char filename[256];
+    snprintf(filename, sizeof(filename), "%s%s", ASSETS_PREFIX, name);
+    printf("[INFO] Model binaris obj betoltese: %s \n", name);
+
+    FILE* file = fopen(filename, "rb");
+    if(!file) return false;
+
+    fread(&model->number_of_vertex, sizeof(int), 1, file);
+    model->vertices = malloc(sizeof(ModelVertex) * model->number_of_vertex);
+    fread(model->vertices, sizeof(ModelVertex), model->number_of_vertex, file);
+
+    fclose(file);
+    printf("[SIKER] %s sikeresen beolvasva (v=%f)\n", filename, (*model).number_of_vertex);
+    return true;
+}
+
 void load_obj(const char* name, Vertex** vertices){
     char filename[256];
     snprintf(filename, sizeof(filename), "%s%s", ASSETS_PREFIX, name);
     printf("[INFO] Texurazott obj betoltese: %s \n", name);
-
-    printf("[INFO] %s beolvasasa elkezdodott\n", filename);
 
     FILE* file = fopen(filename, "r");
     if(!file){
@@ -51,6 +111,8 @@ void load_obj(const char* name, Vertex** vertices){
     }
     fclose(file);
     printf("[SIKER] %s sikeresen beolvasva (v=%f)\n", filename, (*vertices)->number_of_vertex);
+    snprintf(filename, sizeof(filename), "%s%s%s", ASSETS_PREFIX, name, ".bin");
+    save_vertex_binary(filename, *vertices, count);
 }
 
 bool load_textured_obj(const char* name, Model* model){
@@ -150,6 +212,8 @@ bool load_textured_obj(const char* name, Model* model){
     free(temp_v);
     if(temp_vt) free(temp_vt);
     fclose(file);
+    snprintf(filename, sizeof(filename), "%s%s%s", ASSETS_PREFIX, name, ".bin");
+    save_model_binary(filename, model);
     return true;
 }
 
