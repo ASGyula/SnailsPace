@@ -357,13 +357,13 @@ int main(int argc, char *argv[]){
 
                 if(game.visualNovelState.dialogue.isFinished){
                     if(nextDialogueTimer == 0){
-                        nextDialogueTimer = currentTime + 2500;
+                        nextDialogueTimer = currentTime + 1300;
                     }
 
                     if(currentTime > nextDialogueTimer){
                         nextDialogueTimer = 0;
 
-                        if(game.visualNovelState.currentDialogID < DLG_MITA_VOID_MONOLOGUE8){
+                        if(game.visualNovelState.currentDialogID < DLG_MITA_VOID_MONOLOGUE14){
                             game.visualNovelState.currentDialogID++;
                             game.visualNovelState.dialogue = create_dialogue_from_id(game.visualNovelState.currentDialogID, game.visualNovelState.playerName, &game.textureAssets.Mita_Angry);
                             Coordinates coordinates = {game.visualNovelState.dialogue.bgColor.red, game.visualNovelState.dialogue.bgColor.green, game.visualNovelState.dialogue.bgColor.blue};
