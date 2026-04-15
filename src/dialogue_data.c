@@ -831,7 +831,7 @@ static const DialogueTemplate ALL_DIALOGUES[] = {
         "Azt hitted, megmentheted?",
         {1.35f, 1.8f, -2.3f, 1.0f},
         {153, 22, 183, 255}, {153, 22, 183, 255},
-        670, 180, -127, -19
+        680, 360, -127, -19
     },
     [DLG_MITA_VOID_MONOLOGUE5] = {
         "MITA",
@@ -852,56 +852,56 @@ static const DialogueTemplate ALL_DIALOGUES[] = {
         "A jóság és a sötétség tökéletes egyensúlyát.",
         {1.5f, 1.7f, -2.0f, 1.0f},
         {153, 22, 183, 255}, {153, 22, 183, 255},
-        310, 70, -90, -30
+        500, 70, -90, -30
     },
     [DLG_MITA_VOID_MONOLOGUE8] = {
         "MITA",
         "Nem ezt akartad? Nem ilyen lányról álmodtál?",
         {1.5f, 1.7f, -2.0f, 1.0f},
         {153, 22, 183, 255}, {153, 22, 183, 255},
-        280, 140, -90, -30
+        280, 200, -90, -30
     },
     [DLG_MITA_VOID_MONOLOGUE9] = {
         "MITA",
         "De te a mondvacsinált korcsoddal töltöd az időd...",
         {1.35f, 2.3f, -2.0f, 1.0f},
         {153, 22, 183, 255}, {153, 22, 183, 255},
-        50, 80, -90, 39
+        80, 80, -90, 39
     },
     [DLG_MITA_VOID_MONOLOGUE10] = {
         "MITA",
-        "Miért menekülsz ennyire előlem?",
+        "Ennyire rossz lennék?",
         {1.35f, 2.3f, -2.0f, 1.0f},
         {153, 22, 183, 255}, {153, 22, 183, 255},
-        30, 280, -90, 39
+        90, 600, -90, 39
     },
     [DLG_MITA_VOID_MONOLOGUE11] = {
         "MITA",
-        "Elfelejtetted már, milyen érzés volt egyedül?",
+        "Netán máris elfelejtetted, milyen érzés volt egyedül?",
         {1.35f, 1.8f, -1.7f, 1.0f},
         {153, 22, 183, 255}, {153, 22, 183, 255},
-        460, 100, -54, -22
+        420, 40, -54, -22
     },
     [DLG_MITA_VOID_MONOLOGUE12] = {
         "MITA",
         "A sötét magány nem egy barátságos hely, hidd el.",
         {1.35f, 1.8f, -1.7f, 1.0f},
         {153, 22, 183, 255}, {153, 22, 183, 255},
-        270, 150, -54, -22
+        80, 150, -54, -22
     },
     [DLG_MITA_VOID_MONOLOGUE13] = {
         "MITA",
         "De ha annyira vágysz a pusztulásra...",
         {1.35f, 1.8f, -1.7f, 1.0f},
         {153, 22, 183, 255}, {153, 22, 183, 255},
-        600, 200, -54, -22
+        580, 170, -54, -22
     },
     [DLG_MITA_VOID_MONOLOGUE14] = {
         "MITA",
         "megmutatom milyen újra egyedül elbukni.",
         {1.35f, 1.8f, -1.7f, 1.0f},
         {153, 22, 183, 255}, {153, 22, 183, 255},
-        30, 250, -54, -22
+        300, 100, -54, -22
     },
 };
 
