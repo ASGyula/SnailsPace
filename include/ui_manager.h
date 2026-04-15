@@ -111,6 +111,8 @@ void render_dialogue_box(int screenWidth, int screenHeight, Dialogue* dialogue);
 
 void render_dialogue_text(Dialogue* dialogue, TTF_Font* font);
 
+void render_meta_dialogue(Dialogue* dialogue, TTF_Font* font);
+
 void render_dialogue_name(Dialogue* dialogue, TTF_Font* font);
 
 void update_dialogue(Dialogue* d, Uint32 currentTime);

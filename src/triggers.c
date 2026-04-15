@@ -37,7 +37,6 @@ void check_trigger_zones(Game* game){
             game->gameObjects.ImmortalSnail.x = game->gameObjects.PunchPacificMonster.x;
             game->gameObjects.ImmortalSnail.y = game->gameObjects.PunchPacificMonster.y;
             game->gameObjects.ImmortalSnail.z = game->gameObjects.PunchPacificMonster.z;
-            // scene_switch(game, PRE_LIDAR);
         }
     }
 
@@ -49,7 +48,7 @@ void check_trigger_zones(Game* game){
 
         if(distance < game->gameObjects.WhiteMonster.triggerZone.radius){
             game->gameObjects.WhiteMonster.triggerZone.isActivated = true;
-            scene_switch(game, PRE_LIDAR);
+            scene_switch(game, LAST_ROOM);
         }
     }
 
