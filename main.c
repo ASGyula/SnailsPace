@@ -89,12 +89,13 @@ int main(int argc, char *argv[]){
                     }
                     break;
                 case PRE_LIDAR:
-                    handle_mouse_invert_input(&event, &game.player.camera);
+                    handle_mouse_input(&event, &game.player.camera);
                     break;
                 case LIDAR:
                     handle_mouse_input(&event, &game.player.camera);
                     break;
                 case LAST_ROOM:
+                    handle_mouse_invert_input(&event, &game.player.camera);
                     break;
                 case DEAD_ROOM:
                     if(event.type == SDL_KEYDOWN){
@@ -329,7 +330,7 @@ int main(int argc, char *argv[]){
                 }
 
                 if(game.visualNovelState.currentDialogID == DLG_PLAYER_LEAVING_MITA_ANGRY5){
-                    scene_switch(&game, LIDAR);
+                    scene_switch(&game, PRE_LIDAR);
                 }
 
                 if(game.visualNovelState.quest_state == SEARCHING_FOR_SCISSORS){
@@ -343,8 +344,36 @@ int main(int argc, char *argv[]){
             case PRE_LIDAR:
                 setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);
                 update_camera_view(&game.player.camera);
-                enable_pre_lidar_lights(&game.gameObjects.PreLidarMap, &game.player.camera);
 
+                glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+                render_white_mita(&game.gameObjects.Mita);
+
+                update_dialogue(&game.visualNovelState.dialogue, currentTime);
+                render_meta_dialogue(&game.visualNovelState.dialogue, game.textureAssets.mainFont);
+
+                static Uint32 nextDialogueTimer = 0;
+
+                if(game.visualNovelState.dialogue.isFinished){
+                    if(nextDialogueTimer == 0){
+                        nextDialogueTimer = currentTime + 2500;
+                    }
+
+                    if(currentTime > nextDialogueTimer){
+                        nextDialogueTimer = 0;
+
+                        if(game.visualNovelState.currentDialogID < DLG_MITA_VOID_MONOLOGUE8){
+                            game.visualNovelState.currentDialogID++;
+                            game.visualNovelState.dialogue = create_dialogue_from_id(game.visualNovelState.currentDialogID, game.visualNovelState.playerName, &game.textureAssets.Mita_Angry);
+                            Coordinates coordinates = {game.visualNovelState.dialogue.bgColor.red, game.visualNovelState.dialogue.bgColor.green, game.visualNovelState.dialogue.bgColor.blue};
+                            set_camera_position(&game.player.camera, coordinates, game.visualNovelState.dialogue.nameStartX, game.visualNovelState.dialogue.nameStartY);
+                            change_camera_input_handler(&game, false, false);
+                        }else{
+                            scene_switch(&game, LIDAR);
+                        }
+                    }
+                }
                 break;
             case LIDAR:
                 setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -371,6 +400,9 @@ int main(int argc, char *argv[]){
 
                 break;
             case LAST_ROOM:
+                setup_projection(SCREEN_WIDTH, SCREEN_HEIGHT);
+                update_camera_view(&game.player.camera);
+                enable_pre_lidar_lights(&game.gameObjects.PreLidarMap, &game.player.camera);
 
                 break;
             case DEAD_ROOM:
@@ -385,7 +417,8 @@ int main(int argc, char *argv[]){
         }
 
         handle_esc_input(&event, &game, &game.isRunning, &game.scene);
-        if(!game.visualNovelState.isShowingUI)handle_wasd_input(&game.player.camera, deltaTime, game.sounds, game.scene);
+        // if(!game.visualNovelState.isShowingUI)
+            handle_wasd_input(&game.player.camera, deltaTime, game.sounds, game.scene);
         render_ui_texture(&game.textureAssets.ESCButton);
 
         SDL_GL_SwapWindow(game.window);

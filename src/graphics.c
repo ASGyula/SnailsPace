@@ -704,3 +704,27 @@ void render_chromatic(Model* model, float intensity){
 
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 }
+
+void render_white_mita(MoveableModel* model){
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_COLOR_MATERIAL);
+
+    glColor3f(1.0f, 1.0f, 1.0f);
+
+    glPushMatrix();
+    glTranslatef(model->x, model->y, model->z);
+    glRotatef(model->yaw, 0.0f, 1.0f, 0.0f);
+    glRotatef(model->pitch, 1.0f, 0.0f, 0.0f);
+    glRotatef(model->roll, 0.0f, 0.0f, 1.0f);
+
+    glBegin(GL_TRIANGLES);
+    for(int i = 0; i < model->model.number_of_vertex; i++){
+        glVertex3f(model->model.vertices[i].x, model->model.vertices[i].y, model->model.vertices[i].z);
+    }
+    glEnd();
+
+    glPopMatrix();
+
+    glEnable(GL_TEXTURE_2D);
+}

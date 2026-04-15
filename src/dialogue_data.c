@@ -805,6 +805,62 @@ static const DialogueTemplate ALL_DIALOGUES[] = {
         {153, 22, 183, 255}, {153, 22, 183, 255},
         390, 600, 390, 540
     },
+    [DLG_MITA_VOID_MONOLOGUE] = {
+        "MITA",
+        "Miért keresed őt ennyire, %s?",
+        {1.35f, 2.0f, -2.0f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        550, 40, -90, 3
+    },
+    [DLG_MITA_VOID_MONOLOGUE2] = {
+        "MITA",
+        "Helsie csak egy hiba volt...",
+        {1.35f, 2.0f, -2.0f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        70, 100, -90, 3
+    },
+    [DLG_MITA_VOID_MONOLOGUE3] = {
+        "MITA",
+        "egy felesleges karakter, aki elterelte a figyelmedet rólam.",
+        {1.35f, 2.0f, -2.0f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        220, 60, -90, 3
+    },
+    [DLG_MITA_VOID_MONOLOGUE4] = {
+        "MITA",
+        "Azt hitted, megmentheted?",
+        {1.35f, 1.8f, -2.3f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        670, 180, -127, -19
+    },
+    [DLG_MITA_VOID_MONOLOGUE5] = {
+        "MITA",
+        "Ő már nem része ennek a világnak.",
+        {1.35f, 1.8f, -2.3f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        350, 60, -127, -19
+    },
+    [DLG_MITA_VOID_MONOLOGUE6] = {
+        "MITA",
+        "Én töröltem ki őt, mert csak mi ketten számítunk.",
+        {1.35f, 1.8f, -2.3f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        50, 140, -127, -19
+    },
+    [DLG_MITA_VOID_MONOLOGUE7] = {
+        "MITA",
+        "De ha annyira ragaszkodsz hozzá...",
+        {1.5f, 1.7f, -2.0f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        350, 70, -90, -30
+    },
+    [DLG_MITA_VOID_MONOLOGUE8] = {
+        "MITA",
+        "megmutatom milyen egyedül lenni a sötétben...",
+        {1.5f, 1.7f, -2.0f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        270, 90, -90, -30
+    },
 };
 
 Dialogue create_dialogue_from_id(DialogueID id, const char* name_placeholder, const UIElement* speaker_img){
