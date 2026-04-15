@@ -62,4 +62,6 @@ void render_game_over_scene(Model* model, Uint32 currentTime, float lightIntensi
 
 void render_chromatic(Model* model, float intensity);
 
+void render_white_mita(MoveableModel* model);
+
 #endif //SNAILSPACE_GRAPHICS_H

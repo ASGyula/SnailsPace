@@ -392,3 +392,17 @@ void render_decision_ui(Screen screen, DecisionUI* decisionUI, TextureAssets* te
     glMatrixMode(GL_MODELVIEW);
     glEnable(GL_DEPTH_TEST);
 }
+
+void render_meta_dialogue(Dialogue* d, TTF_Font* font){
+    if(!font || !d->currentVisibleText[0]) return;
+
+    if(d->charIndex != d->lastCharIndex && d->charIndex != 0){
+        if(d->textTexture != 0) glDeleteTextures(1, &d->textTexture);
+
+        SDL_Color white = {255, 255, 255, 255};
+        d->textTexture = create_text_texture(font, d->currentVisibleText, white, &d->textWidth, &d->textHeight);
+        d->lastCharIndex = d->charIndex;
+    }
+
+    draw_texture_2d(d->textTexture, d->textStartX, d->textStartY, d->textWidth, d->textHeight);
+}

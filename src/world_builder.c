@@ -606,10 +606,32 @@ void build_scene_mita_saves_player(Game* game){
 
 void build_scene_pre_lidar(Game* game){
     printf("PRE_LIDAR\n");
-    Coordinates coordinates = {0.6f, 1.6f, 0.0f};
-    set_camera_position(&game->player.camera, coordinates, 90.0f, 0.0f);
-    prepare_lidar_data(game->gameObjects.LidarMap);
-    SDL_SetWindowBrightness(game->window, 1.0f);
+
+    game->visualNovelState.currentDialogID = DLG_MITA_VOID_MONOLOGUE;
+    game->visualNovelState.dialogue = create_dialogue_from_id(DLG_MITA_VOID_MONOLOGUE, game->visualNovelState.playerName, &game->textureAssets.Mita_Relieved);
+    game->visualNovelState.dialogue.isFinished = false;
+    game->visualNovelState.dialogue.isShowing = true;
+    game->visualNovelState.isShowingUI = true;
+
+    game->gameObjects.Mita.x = 0.93f;
+    game->gameObjects.Mita.y = 0.93f;
+    game->gameObjects.Mita.z = -2.0f;
+    game->gameObjects.Mita.targetX = 0.85f;
+    game->gameObjects.Mita.targetY = 1.0f;
+    game->gameObjects.Mita.targetZ = -2.0f;
+    game->gameObjects.Mita.pitch = 0.0f;
+    game->gameObjects.Mita.yaw = -270.0f;
+    game->gameObjects.Mita.animSpeed = MITA_SPEED;
+    game->gameObjects.Mita.isMoving = false;
+
+    game->visualNovelState.isShowingUI = false;
+
+    glDisable(GL_LIGHT3);
+    Coordinates coordinates = {1.35f, 2.0f, -2.0f};
+    set_camera_position(&game->player.camera, coordinates,-90, 3);
+    setup_projection(game->screen.screenWidth, game->screen.screenHeight);
+    change_camera_input_handler(game, false, false);
+
     SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 
@@ -625,6 +647,10 @@ void build_scene_lidar(Game* game){
 
 void build_scene_last_room(Game* game){
     printf("LAST_ROOM\n");
+    Coordinates coordinates = {0.6f, 1.6f, 0.0f};
+    set_camera_position(&game->player.camera, coordinates, 90.0f, 0.0f);
+    prepare_lidar_data(game->gameObjects.LidarMap);
+    SDL_SetWindowBrightness(game->window, 1.0f);
     SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 
