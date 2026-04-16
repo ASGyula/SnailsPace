@@ -44,6 +44,7 @@ typedef struct{
     UIElement SpaceButton;
     UIElement VButton;
     UIElement EButton;
+    UIElement QButton;
     UIElement TicTacToeControll;
 } TextureAssets;
 

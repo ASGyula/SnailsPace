@@ -417,6 +417,13 @@ void paint_texture_assets(Game *game){
     game->textureAssets.EButton.y = game->screen.screenHeight/2 - game->textureAssets.EButton.h/2;
     game->textureAssets.EButton.isShowing = true;
 
+    game->textureAssets.QButton.textureID = load_texture("External/littleicon/letter-q.png");
+    game->textureAssets.QButton.w = 64;
+    game->textureAssets.QButton.h = 64;
+    game->textureAssets.QButton.x = (game->screen.screenWidth/2 - 10);
+    game->textureAssets.QButton.y = game->screen.screenHeight/2 - game->textureAssets.QButton.h/2;
+    game->textureAssets.QButton.isShowing = true;
+
     SDL_Color white = {255, 255, 255, 255};
 
     game->visualNovelState.decisionUI.leaveButton = create_text_ui_element(game->textureAssets.mainFont, "NE MARADJ VELE", white, 150, game->screen.screenHeight / 2);
