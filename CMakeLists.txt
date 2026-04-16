@@ -55,3 +55,20 @@ add_executable(SnailsPace main.c include/obj_loader.h src/obj_loader.c
 
 #összekapcsolás
 target_link_libraries(SnailsPace mingw32 SDL2main SDL2 SDL2_image SDL2_ttf SDL2_mixer opengl32 advapi32)
+
+if(WIN32)
+    set(SDL2_BIN "${SDL2_PATH}/bin")
+    set(SDL2_IMAGE_BIN "${SDL2_IMAGE_PATH}/bin")
+    set(SDL2_TTF_BIN "${SDL2_TTF_PATH}/bin")
+    set(SDL2_MIXER_BIN "${SDL2_MIXER_PATH}/bin")
+
+    set(DLL_FILES "${SDL2_BIN}/SDL2.dll" "${SDL2_IMAGE_BIN}/SDL2_image.dll" "${SDL2_TTF_BIN}/SDL2_ttf.dll" "${SDL2_MIXER_BIN}/SDL2_mixer.dll")
+
+    foreach(dll ${DLL_FILES})
+        add_custom_command(TARGET SnailsPace POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                "${dll}"
+                "$<TARGET_FILE_DIR:SnailsPace>"
+        )
+    endforeach()
+endif()

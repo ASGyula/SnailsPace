@@ -13,3 +13,4 @@ A: https://www.flaticon.com/free-icon/letter-a_17942535
 S: https://www.flaticon.com/free-icon/letter-s_17942573
 D: https://www.flaticon.com/free-icon/letter-d_17942543
 E: https://www.flaticon.com/free-icon/letter-e_17942545
+Q: https://www.flaticon.com/free-icon/letter-q_17942571

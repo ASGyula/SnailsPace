@@ -380,7 +380,7 @@ void render_decision_ui(Screen screen, DecisionUI* decisionUI, TextureAssets* te
     glEnable(GL_TEXTURE_2D);
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
-    draw_texture_2d(textureAssets->VButton.textureID, 60, centerY + 10, 60, 60);
+    draw_texture_2d(textureAssets->QButton.textureID, 60, centerY + 10, 60, 60);
     draw_texture_2d(decisionUI->leaveButton.textureID, 130, centerY + 25, decisionUI->leaveButton.w, decisionUI->leaveButton.h);
 
     draw_texture_2d(textureAssets->EButton.textureID, screen.screenWidth - 300, centerY + 10, 60, 60);
