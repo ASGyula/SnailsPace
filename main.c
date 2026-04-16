@@ -417,8 +417,7 @@ int main(int argc, char *argv[]){
         }
 
         handle_esc_input(&event, &game, &game.isRunning, &game.scene);
-        // if(!game.visualNovelState.isShowingUI)
-            handle_wasd_input(&game.player.camera, deltaTime, game.sounds, game.scene);
+        if(!game.visualNovelState.isShowingUI)handle_wasd_input(&game.player.camera, deltaTime, game.sounds, game.scene);
         render_ui_texture(&game.textureAssets.ESCButton);
 
         SDL_GL_SwapWindow(game.window);
