@@ -32,7 +32,7 @@ Game init_game(const int screen_width, const int screen_height, const char* play
 
     game.scene = MAIN_MENU;
     game.lastCheckpoint = VN_INTRO;
-    scene_switch(&game, PRE_LIDAR);
+    scene_switch(&game, MAIN_MENU);
     game.isLoading = false;
     return game;
 }
