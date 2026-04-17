@@ -8,6 +8,7 @@
 #include <stdio.h>
 
 #include "graphics.h"
+#include "graphics_lighting.h"
 #include "world_builder.h"
 
 void initialize_camera(Camera* camera){
@@ -59,7 +60,6 @@ void update_camera_view(Camera* camera){
 
 void update_vaping(Camera* camera, float deltaTime){
     if(camera->vape.isVaping){
-        enable_vape_light(&camera->vape);
         camera->vape.usedLiquid+=0.05f*deltaTime;
         camera->vape.smokeAmount += 0.25f * deltaTime;
         if(camera->vape.smokeAmount >= 1.0f)camera->vape.smokeAmount = 1.0f;
