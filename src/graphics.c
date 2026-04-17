@@ -7,20 +7,15 @@
 #include <SDL_opengl.h>
 #include <SDL2/SDL_image.h>
 #include <math.h>
-#include <SDL_mixer.h>
-#include <SDL_ttf.h>
 #include <stdio.h>
-#include <stdbool.h>
+
+#include "graphics_lighting.h"
 
 #define FOV 60.0f
 #define farVal 100.0f
 #define LIDAR_DRAW_DISTANCE 10.0f
 
-#define QUEUE_SIZE 10
-
 #define ASSETS_PREFIX "../assets/"
-#define MAX_PARTICLES 100
-Particle smoke_particles[MAX_PARTICLES];
 
 typedef struct{
     Uint32 start_time;
@@ -32,6 +27,7 @@ typedef struct{
     char source;
 } SoundWave;
 
+#define QUEUE_SIZE 10
 static SoundWave wave_queue[QUEUE_SIZE];
 static int queue_count = 0;
 static SoundWave active_wave;
@@ -253,17 +249,18 @@ void enable_colored_fog(float start, float end, float r, float g, float b, float
     glFogf(GL_FOG_END, end);
 }
 
-void enableVapeFog(float start, float end, float alpha){
-    glEnable(GL_FOG);
-    float fogColor[] = {1.0f, 0.21f, 0.41f, alpha};
-    glFogfv(GL_FOG_COLOR, fogColor);
-    glFogf(GL_FOG_MODE, GL_LINEAR);
-    glFogf(GL_FOG_START, start);
-    glFogf(GL_FOG_END, end);
-}
-
 void disableFog(){
     glDisable(GL_FOG);
+}
+
+void set_bat_vision_color(char modifier, float brightness){
+    if(modifier == 'n'){
+        glColor3f(brightness, brightness, brightness);
+    }else if(modifier == 's'){
+        glColor4f(1.0f, 0.0f, 0.0f, brightness);
+    }else if(modifier == 'm'){
+        glColor4f(1.0f, 0.8f, 0.9f, brightness);
+    }
 }
 
 void render_bat_vision(const Model* model, const Uint32 currentTime, char modifier){
@@ -431,7 +428,6 @@ void update_moveable_model_position(MoveableModel* objectum, float deltaTime){
     objectum->x += (dx/distance)*objectum->animSpeed*deltaTime;
     objectum->y += (dy/distance)*objectum->animSpeed*deltaTime;
     objectum->z += (dz/distance)*objectum->animSpeed*deltaTime;
-
 }
 
 void render_moveable_model(MoveableModel* object) {
@@ -447,8 +443,13 @@ void render_moveable_model(MoveableModel* object) {
     glPopMatrix();
 }
 
-
 void render_vape_in_hand(MoveableModel* object, Camera* camera){
+    if(camera->vape.smokeAmount <= 0.0f && !camera->vape.isVaping){
+        disable_vape_light();
+    }else{
+        enable_vape_light(camera);
+    }
+
     glPushMatrix();
     glLoadIdentity();
 
@@ -463,246 +464,6 @@ void render_vape_in_hand(MoveableModel* object, Camera* camera){
     glRotatef(-10.0f, 0.0f, 1.0f, 0.0f);
     render_model(&object->model);
     glPopMatrix();
-}
-
-void enable_vape_light(Vape* vape){
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT1);
-
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
-
-    float lightColor[] = {1.0f, 0.3f, 0.0f, vape->smokeAmount};
-    float lightPos[] = {0.0f, -0.2f, 0.0f, 1.0f};
-
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, lightColor);
-    glLightfv(GL_LIGHT1, GL_POSITION, lightPos);
-
-    float direction[] = {0.0f, 0.0f, -1.0f};
-    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, direction);
-    glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, (90.0f*vape->smokeAmount));
-    glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 1.0f);
-
-    glPopMatrix();
-}
-
-void disable_vape_light(){
-    glDisable(GL_LIGHTING);
-    glDisable(GL_LIGHT1);
-}
-
-void spawn_smoke(PointData point_data, Camera* camera){
-    float rad_yaw = camera->yaw * (M_PI / 180.0f);
-    float rad_pitch = camera->pitch * (M_PI / 180.0f);
-
-    float directionX = sinf(rad_yaw) * cosf(rad_pitch);
-    float directionY = -sinf(rad_pitch);
-    float directionZ = -cosf(rad_yaw) * cosf(rad_pitch);
-    for(int i = 0; i < MAX_PARTICLES; i++){
-        smoke_particles[i].point_data.x = point_data.x+directionX;
-        smoke_particles[i].point_data.y = point_data.y+directionY-0.2f;
-        smoke_particles[i].point_data.z = point_data.z+directionZ;
-
-        float speed = ((rand() % 100) / 200.0f) + 0.1f;
-        float spread = ((rand() % 100) / 1000.0f) - 0.05f;
-        smoke_particles[i].vx = directionX * speed + spread;
-        smoke_particles[i].vy = directionY * speed + 0.05f;
-        smoke_particles[i].vz = directionZ * speed + spread;
-
-        smoke_particles[i].life = 1.0f;
-        smoke_particles[i].size = 1.0f + (rand()%100);
-    }
-}
-
-void update_and_render_smoke(float deltaTime){
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_DEPTH_TEST);
-    glDisable(GL_LIGHTING);
-
-    for(int i = 0; i<MAX_PARTICLES; i++){
-        if(smoke_particles[i].life > 0.0f){
-            smoke_particles[i].point_data.x += smoke_particles[i].vx * deltaTime;
-            smoke_particles[i].point_data.y += smoke_particles[i].vy * deltaTime;
-            smoke_particles[i].point_data.z += smoke_particles[i].vz * deltaTime;
-
-            smoke_particles[i].life -= 0.1f * deltaTime;
-            smoke_particles[i].size -= 0.1f * deltaTime;
-
-            glColor4f(0.8f, 0.8f, 0.8f, smoke_particles[i].life);
-            glPointSize(smoke_particles[i].size);
-            glBegin(GL_POINTS);
-            glVertex3f(smoke_particles[i].point_data.x, smoke_particles[i].point_data.y, smoke_particles[i].point_data.z);
-            glEnd();
-        }
-    }
-}
-
-void render_light_aura_model(Camera* camera, LightAuraModel* model){
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT2);
-    // glDisable(GL_FOG);
-    glMatrixMode(GL_MODELVIEW);
-
-    float brightness = camera->auraLightBrightness;
-
-    float lightColor[] = {model->r * brightness, model->g * brightness, model->b * brightness, 1.0f};
-    float lightPos[] = {model->x, model->y+0.5f, model->z, 1.0f};
-
-    // float emissionColor[] = {0.4f* brightness, 0.4f * brightness, 0.4f* brightness, 1.0f};
-    // glMaterialfv(GL_FRONT, GL_EMISSION, emissionColor);
-
-    glLightfv(GL_LIGHT2, GL_DIFFUSE, lightColor);
-    glLightfv(GL_LIGHT2, GL_POSITION, lightPos);
-
-    glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, 180.0f);
-
-    glLightf(GL_LIGHT2, GL_CONSTANT_ATTENUATION, 1.0f);
-    glLightf(GL_LIGHT2, GL_LINEAR_ATTENUATION, 0.5f / model->radius);
-    glLightf(GL_LIGHT2, GL_QUADRATIC_ATTENUATION, 0.1f / (model->radius * model->radius));
-
-    glPushMatrix();
-    glTranslatef(model->x, model->y, model->z);
-    glRotatef(model->yaw, 0.0f, 1.0f, 0.0f);
-
-    render_model(&model->model);
-
-    // float noEmission[] = {0.0f, 0.0f, 0.0f, 1.0f};
-    // glMaterialfv(GL_FRONT, GL_EMISSION, noEmission);
-    glPopMatrix();
-
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_DEPTH_TEST);
-
-    glPushMatrix();
-    glTranslatef(model->x, model->y, model->z);
-
-    if(model->a != 0){
-        glColor4f(model->r, model->g, model->b, brightness*model->a);
-
-        glBegin(GL_TRIANGLE_FAN);
-        glVertex3f(0.f, 0.f, 0.f);
-        for(int i = 0; i <= 360; i += 10){
-            float angle = i * M_PI / 180.0f;
-            glVertex3f(cosf(angle) * (model->radius*0.15), sinf(angle) * (model->radius*0.15) + 0.15, 0);
-        }
-        glEnd();
-    }
-
-
-    glPopMatrix();
-
-    glDisable(GL_LIGHTING);
-    glDisable(GL_BLEND);
-}
-
-void enable_snail_caught_lights(MoveableModel* model, Uint32 currentTime, Uint32 caughtTime){
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT3);
-    glMatrixMode(GL_MODELVIEW);
-
-    float lightColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
-    float lightPos[] = {model->x, model->y+3, model->z, 1.0f};
-
-    glLightfv(GL_LIGHT3, GL_DIFFUSE, lightColor);
-    glLightfv(GL_LIGHT3, GL_POSITION, lightPos);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_DEPTH_TEST);
-    glPushMatrix();
-
-    enable_colored_fog(0.01f, 3.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f);
-
-    if(currentTime > (caughtTime+500)){
-        glPushMatrix();
-        glLoadIdentity();
-
-        // glTranslatef(0.0f, -0.5f, -0.4f);
-        glTranslatef(0.0f, -1.0f, -1.8f);
-        glRotatef(180.0f, 0.0f, 1.0f, 0.0f);
-
-        glRotatef(45.0f, 1.0f, 0.0f, 0.0f);
-        render_model(&model->model);
-        glPopMatrix();
-    }
-
-    glDisable(GL_LIGHTING);
-    glDisable(GL_BLEND);
-    disableFog();
-}
-
-void enable_pre_lidar_lights(LightAuraModel* map, Camera* camera){
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT3);
-    glMatrixMode(GL_MODELVIEW);
-
-    float lightColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
-    float lightPos[] = {map->x, map->y+10, map->z, 1.0f};
-
-    glLightfv(GL_LIGHT3, GL_DIFFUSE, lightColor);
-    glLightfv(GL_LIGHT3, GL_POSITION, lightPos);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_DEPTH_TEST);
-    glPushMatrix();
-
-    enable_colored_fog(0.01f, 3.0f, 0.89f, 0.22f, 0.31f, 1.0f, 1.0f);
-
-    render_light_aura_model(camera, map);
-
-    glPopMatrix();
-
-    glDisable(GL_LIGHTING);
-    glDisable(GL_BLEND);
-    disableFog();
-}
-
-void render_game_over_scene(Model* model, Uint32 currentTime, float lightIntensity) {
-    glEnable(GL_DEPTH_TEST);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    enableFog(0.1f, 10.0f, 0.8f);
-    float fogDensity = 0.2f + (sinf(currentTime / 500.0f) * 0.1f);
-    glFogf(GL_FOG_DENSITY, fogDensity);
-
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-    float lightPulse = 0.5f + (sinf(currentTime / 100.0f) * 0.5f);
-    float lightColor[] = {lightPulse, 0.0f, 0.0f, 1.0f};
-    float lightPos[] = {0.0f, 2.0f, 0.0f, 1.0f};
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor);
-    glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
-
-    glPushMatrix();
-    float scale = 1.0f + (sinf(currentTime / 1000.0f) * 0.1f);
-    glScalef(scale, scale, scale);
-    glRotatef(currentTime / 100.0f, 0.0f, 1.0f, 0.0f);
-
-    render_model_without_texture(model);
-    glPopMatrix();
-
-    update_and_render_smoke(0.01f);
-}
-
-void render_chromatic(Model* model, float intensity){
-    glColorMask(GL_TRUE, GL_FALSE, GL_FALSE, GL_TRUE);
-    glPushMatrix();
-    glTranslatef(-intensity, 0.0f, 0.0f);
-    render_model(model);
-    glPopMatrix();
-
-    glColorMask(GL_FALSE, GL_TRUE, GL_FALSE, GL_TRUE);
-    render_model(model);
-
-    glColorMask(GL_FALSE, GL_FALSE, GL_TRUE, GL_TRUE);
-    glPushMatrix();
-    glTranslatef(intensity, 0.0f, 0.0f);
-    render_model(model);
-    glPopMatrix();
-
-    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 }
 
 void render_white_mita(MoveableModel* model){

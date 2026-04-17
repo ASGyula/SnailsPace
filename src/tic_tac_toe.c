@@ -73,7 +73,6 @@ void clear_tic_tac_toe(TicTacToe* ttt){
     memset(ttt->board, 0, sizeof(ttt->board));
 
     ttt->round = currentRound + 1;
-    ttt->round++;
     ttt->cursorX = 1;
     ttt->cursorY = 1;
     ttt->currentPlayer = 1;

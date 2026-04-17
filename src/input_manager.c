@@ -11,6 +11,8 @@
 #include "dialogue_data.h"
 #include "game_manager.h"
 #include "graphics.h"
+#include "graphics_lighting.h"
+#include "graphics_particles.h"
 
 void handle_mouse_invert_input(SDL_Event* event, Camera* camera){
     if(camera->isEnabledRotation){
@@ -158,16 +160,12 @@ void handle_wasd_input(Camera* camera, float deltaTime, Sounds sounds, GameScene
 void handle_miside_interact_input(SDL_Event* event, VisualNovelState* visual_novel_state, TriggerZone* trigger_zone, TextureAssets* texture_assets){
     const Uint8* state = SDL_GetKeyboardState(NULL);
 
-    static bool e_pressed = false;
     if(state[SDL_SCANCODE_E]){
         if(trigger_zone->isActivated == true && visual_novel_state->quest_state == SEARCHING_FOR_SCISSORS){
-            e_pressed = true;
             increase_visual_novel_state(visual_novel_state, DLG_PLAYER_CONFUSED_SCISSORS_LOCATION);
             visual_novel_state->isShowingUI = true;
             visual_novel_state->quest_state = MITA_OR_BONK;
         }
-    }else{
-        e_pressed = false;
     }
 
     if(visual_novel_state->quest_state == DECISION_TIME){
