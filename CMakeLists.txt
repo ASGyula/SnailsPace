@@ -51,6 +51,14 @@ add_executable(SnailsPace main.c include/obj_loader.h src/obj_loader.c
         src/input_manager.c
         include/tic_tac_toe.h
         src/tic_tac_toe.c
+        include/scene.h
+        src/scene.c
+        include/graphics_effects.h
+        src/graphics_effects.c
+        include/graphics_lighting.h
+        src/graphics_lighting.c
+        include/graphics_particles.h
+        src/graphics_particles.c
 )
 
 #összekapcsolás

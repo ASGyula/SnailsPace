@@ -11,6 +11,23 @@
 #include "dialogue_data.h"
 #include "game_manager.h"
 
+static void rotate_camera_towards_mita(Game* game, const MoveableModel* mita){
+    const float targetX = mita->x;
+    const float targetY = mita->y + 1.0f;
+    const float targetZ = mita->z;
+
+    const float dx = targetX - game->player.camera.x;
+    const float dy = targetY - game->player.camera.y;
+    const float dz = targetZ - game->player.camera.z;
+
+    float targetYaw = atan2f(dx, -dz) * (180.0f / (float)M_PI);
+    float horizontalDist = sqrtf(dx * dx + dz * dz);
+    float targetPitch = atan2f(dy, horizontalDist) * (180.0f / (float)M_PI);
+
+    game->player.camera.yaw = targetYaw;
+    game->player.camera.pitch = targetPitch;
+}
+
 void check_trigger_zones(Game* game){
     if(!game->triggerZones.BatVisionHelsieTakeAHint.isActivated){
         const float dx = game->player.camera.x - game->triggerZones.BatVisionHelsieTakeAHint.x;
@@ -73,6 +90,8 @@ void check_miside_trigger_zones(Game* game, TextureAssets* texture_assets, Movea
         if(distance < game->triggerZones.MitaAsksForAScissors.radius){
             game->triggerZones.MitaAsksForAScissors.isActivated = true;
 
+            rotate_camera_towards_mita(game, Mita);
+
             game->visualNovelState.isShowingUI = true;
             increase_visual_novel_state(&game->visualNovelState, DLG_MITA_ASKS_FOR_A_SCISSORS);
         }
@@ -111,6 +130,9 @@ void check_miside_trigger_zones(Game* game, TextureAssets* texture_assets, Movea
         if(distance < game->triggerZones.TryToEnterMitasRoom.radius){
             game->triggerZones.TryToEnterMitasRoom.isActivated = true;
             game->tryToEnterMitasRoom = SDL_GetTicks();
+
+            rotate_camera_towards_mita(game, Mita);
+
             game->visualNovelState.isShowingUI = true;
             increase_visual_novel_state(&game->visualNovelState, DLG_PLAYER_DIZZINESS);
         }
@@ -127,6 +149,9 @@ void check_miside_trigger_zones(Game* game, TextureAssets* texture_assets, Movea
 
             game->triggerZones.MitaTakeScissors.isActivated = true;
             game->visualNovelState.isShowingUI = true;
+
+            rotate_camera_towards_mita(game, Mita);
+
             increase_visual_novel_state(&game->visualNovelState, DLG_PLAYER_GIVE_MITA_THE_SCISSORS);
         }
     }
@@ -143,6 +168,9 @@ void check_miside_trigger_zones(Game* game, TextureAssets* texture_assets, Movea
             game->triggerZones.PlayTicTacToe.isActivated = true;
             game->visualNovelState.quest_state = PLAYING_TIC_TAC_TOE;
             game->visualNovelState.isShowingUI = true;
+
+            rotate_camera_towards_mita(game, Mita);
+
             change_camera_input_handler(game, false, false);
             increase_visual_novel_state(&game->visualNovelState, DLG_MITA_TALK_ABOUT_TIC_TAC_TOE);
         }

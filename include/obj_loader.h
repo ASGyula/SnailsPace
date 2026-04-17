@@ -50,7 +50,7 @@ typedef struct{
 } MoveableModel;
 
 typedef struct {
-    Model Helsie;
+    // Model Helsie;
     MoveableModel Mita;
     Model MitasRoom;
     Model BatVisionMap;

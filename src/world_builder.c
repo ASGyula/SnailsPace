@@ -113,10 +113,10 @@ void build_up_trigger_zones(Game* game){
 
 void build_up_game_objects(Game* game){
     printf("[INICIALIZALAS] building_up_game_objects\n");
-    
-    //HELSIE
-    load_model_binary("External/RedEyes/HelsieMidnight/HelsieMidnightbyRedEyes.obj.bin", &game->gameObjects.Helsie);
-    game->gameObjects.Helsie.textureID = load_texture("External/RedEyes/HelsieMidnight/T_MysticFang_Body_D.png");
+
+    // //HELSIE
+    // load_model_binary("External/RedEyes/HelsieMidnight/HelsieMidnightbyRedEyes.obj.bin", &game->gameObjects.Helsie);
+    // game->gameObjects.Helsie.textureID = load_texture("External/RedEyes/HelsieMidnight/T_MysticFang_Body_D.png");
 
     //MITA
     load_model_binary("External/vanessacampbell701/mitasidegirl/model.obj.bin", &game->gameObjects.Mita.model);
@@ -565,8 +565,8 @@ void build_scene_bat_vision(Game* game){
 void build_scene_mita_saves_player(Game* game){
     printf("MITA_SAVES_PLAYER\n");
     glDisable(GL_LIGHT3);
-    Coordinates coordinates = {1.35f, 2.0f, -2.0f};
-    set_camera_position(&game->player.camera, coordinates,-90, 3);
+    Coordinates coordinates = {-0.07f, 2.0f, -1.62f};
+    set_camera_position(&game->player.camera, coordinates,0, 3);
     setup_projection(game->screen.screenWidth, game->screen.screenHeight);
 
     memset(&game->visualNovelState.ticTacToe, 0, sizeof(TicTacToe));
@@ -579,14 +579,14 @@ void build_scene_mita_saves_player(Game* game){
     game->visualNovelState.ticTacToe.winner = 0;
     game->visualNovelState.ticTacToe.isGameOver = false;
 
-    game->gameObjects.Mita.x = 0.85f;
+    game->gameObjects.Mita.x = -0.05f;
     game->gameObjects.Mita.y = 0.85f;
-    game->gameObjects.Mita.z = -2.0f;
-    game->gameObjects.Mita.targetX = 0.85f;
+    game->gameObjects.Mita.z = -2.14f;
+    game->gameObjects.Mita.targetX = -0.05f;
     game->gameObjects.Mita.targetY = 1.0f;
-    game->gameObjects.Mita.targetZ = -2.0f;
+    game->gameObjects.Mita.targetZ = -2.14f;
     game->gameObjects.Mita.pitch = 0.0f;
-    game->gameObjects.Mita.yaw = -270.0f;
+    game->gameObjects.Mita.yaw = 0.0f;
     game->gameObjects.Mita.animSpeed = MITA_SPEED;
     game->gameObjects.Mita.isMoving = false;
 
