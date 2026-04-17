@@ -45,7 +45,7 @@ void sounds_tuning_up(Game* game){
     printf("[INICIALIZALAS] sounds_tuning_up\n");
     game->sounds.Mita_Bonk = Mix_LoadWAV("../assets/External/AIHASTO/Mita_Bonk.wav");
     game->sounds.Overture = Mix_LoadWAV("../assets/External/Gemini/Overture.wav");
-    game->sounds.ShoutSound = Mix_LoadWAV("../assets/External/YouTube/Shout.wav");
+    game->sounds.ShoutSound = Mix_LoadWAV("../assets/External/Klangkobold/547964__klangkobold__panic-stricken-screaming-2.wav");
     game->sounds.VapeFincsiVape = Mix_LoadWAV("../assets/asgyu/VapeNyamiFincsaVape.wav");
 }
 
