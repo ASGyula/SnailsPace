@@ -1,3 +1,7 @@
+//
+// Created by asgyu on 2026. ápr. 17..
+//
+
 #include "scene.h"
 
 #include <SDL.h>
