@@ -489,3 +489,33 @@ void render_white_mita(MoveableModel* model){
 
     glEnable(GL_TEXTURE_2D);
 }
+
+void render_black_overlay(int screenWidth, int screenHeight, float alpha){
+    glDisable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glOrtho(0, screenWidth, screenHeight, 0, -1, 1);
+
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+
+    glColor4f(0.0f, 0.0f, 0.0f, alpha);
+    glBegin(GL_QUADS);
+    glVertex2f(0, 0);
+    glVertex2f(screenWidth, 0);
+    glVertex2f(screenWidth, screenHeight);
+    glVertex2f(0, screenHeight);
+    glEnd();
+
+    glPopMatrix();
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+
+    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_BLEND);
+}

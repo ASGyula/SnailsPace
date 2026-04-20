@@ -59,6 +59,7 @@ add_executable(SnailsPace main.c include/obj_loader.h src/obj_loader.c
         src/graphics_lighting.c
         include/graphics_particles.h
         src/graphics_particles.c
+        include/credits.h
 )
 
 #összekapcsolás

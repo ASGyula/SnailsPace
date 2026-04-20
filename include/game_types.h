@@ -40,7 +40,8 @@ typedef enum{
     PRE_LIDAR,
     LIDAR,
     LAST_ROOM,
-    DEAD_ROOM
+    DEAD_ROOM,
+    CREDITS
 } GameScene;
 
 typedef enum{

@@ -903,6 +903,13 @@ static const DialogueTemplate ALL_DIALOGUES[] = {
         {153, 22, 183, 255}, {153, 22, 183, 255},
         300, 100, -54, -22
     },
+    [DLG_MITA_LAST_WORDS_BEFORE_CREDITS] = {
+        "MITA",
+        "Most légy okos, angyalom.",
+        {1.35f, 1.8f, -1.7f, 1.0f},
+        {153, 22, 183, 255}, {153, 22, 183, 255},
+        380, 100, -54, -22
+    },
 };
 
 Dialogue create_dialogue_from_id(DialogueID id, const char* name_placeholder, const UIElement* speaker_img){
