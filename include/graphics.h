@@ -48,4 +48,6 @@ void render_vape_in_hand(MoveableModel* object, Camera* camera);
 
 void render_white_mita(MoveableModel* model);
 
+void render_black_overlay(int screenWidth, int screenHeight, float alpha);
+
 #endif //SNAILSPACE_GRAPHICS_H

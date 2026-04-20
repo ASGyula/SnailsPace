@@ -45,7 +45,7 @@ void change_camera_input_handler(Game* game, bool is_enabled_movement, bool is_e
 void scene_switch(Game* game, GameScene game_scene){
     printf("[INFO] Uj jelenet: ");
 
-    if(game->scene != DEAD_ROOM && game->scene != MAIN_MENU){
+    if(game->scene != DEAD_ROOM && game->scene != MAIN_MENU && game->scene != CREDITS){
         game->lastCheckpoint = game->scene;
     }
 

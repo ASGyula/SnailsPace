@@ -654,8 +654,15 @@ void build_scene_lidar(Game* game){
 
 void build_scene_last_room(Game* game){
     printf("LAST_ROOM\n");
+
+    game->visualNovelState.currentDialogID = DLG_MITA_LAST_WORDS_BEFORE_CREDITS;
+    game->visualNovelState.dialogue = create_dialogue_from_id(DLG_MITA_LAST_WORDS_BEFORE_CREDITS, game->visualNovelState.playerName, &game->textureAssets.Mita_Relieved);
+    game->visualNovelState.dialogue.isFinished = false;
+    game->visualNovelState.dialogue.isShowing = true;
+    game->visualNovelState.isShowingUI = true;
+
     Coordinates coordinates = {0.6f, 1.6f, 0.0f};
-    set_camera_position(&game->player.camera, coordinates, 90.0f, 0.0f);
+    set_camera_position(&game->player.camera, coordinates, 90.0f, -10.0f);
     prepare_lidar_data(game->gameObjects.LidarMap);
     SDL_SetWindowBrightness(game->window, 1.0f);
     SDL_SetRelativeMouseMode(SDL_TRUE);
@@ -664,6 +671,15 @@ void build_scene_last_room(Game* game){
 void build_scene_dead_room(Game* game){
     printf("DEAD_ROOM\n");
     glDisable(GL_LIGHT2);
+    set_camera_position_default(&game->player.camera);
+    SDL_SetRelativeMouseMode(SDL_TRUE);
+}
+
+void build_scene_credits(Game* game){
+    printf("CREDITS\n");
+    glDisable(GL_LIGHT1);
+    glDisable(GL_LIGHT2);
+    glDisable(GL_LIGHT3);
     set_camera_position_default(&game->player.camera);
     SDL_SetRelativeMouseMode(SDL_TRUE);
 }
@@ -699,6 +715,9 @@ void build_scene(Game* game, GameScene game_scene){
             break;
         case DEAD_ROOM:
             build_scene_dead_room(game);
+            break;
+        case CREDITS:
+            build_scene_credits(game);
             break;
         default:
             printf("default\n");

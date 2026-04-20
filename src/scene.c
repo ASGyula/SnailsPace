@@ -8,6 +8,7 @@
 #include <SDL_opengl.h>
 
 #include "ai.h"
+#include "credits.h"
 #include "dialogue_data.h"
 #include "graphics_effects.h"
 #include "graphics_lighting.h"
@@ -260,11 +261,7 @@ static void render_pre_lidar_scene(Game* game, Uint32 currentTime){
 
             if(game->visualNovelState.currentDialogID < DLG_MITA_VOID_MONOLOGUE14){
                 game->visualNovelState.currentDialogID++;
-                game->visualNovelState.dialogue = create_dialogue_from_id(
-                    game->visualNovelState.currentDialogID,
-                    game->visualNovelState.playerName,
-                    &game->textureAssets.Mita_Angry
-                );
+                game->visualNovelState.dialogue = create_dialogue_from_id(game->visualNovelState.currentDialogID,game->visualNovelState.playerName,&game->textureAssets.Mita_Angry);
 
                 Coordinates coordinates = {
                     game->visualNovelState.dialogue.bgColor.red,
@@ -272,12 +269,7 @@ static void render_pre_lidar_scene(Game* game, Uint32 currentTime){
                     game->visualNovelState.dialogue.bgColor.blue
                 };
 
-                set_camera_position(
-                    &game->player.camera,
-                    coordinates,
-                    game->visualNovelState.dialogue.nameStartX,
-                    game->visualNovelState.dialogue.nameStartY
-                );
+                set_camera_position(&game->player.camera,coordinates,game->visualNovelState.dialogue.nameStartX, game->visualNovelState.dialogue.nameStartY);
 
                 change_camera_input_handler(game, false, false);
             }else{
@@ -308,10 +300,35 @@ static void render_lidar_scene(Game* game){
     }
 }
 
-static void render_last_room_scene(Game* game){
+static void render_last_room_scene(Game* game, Uint32 currentTime){
+    static Uint32 startTime = 0;
+    if(startTime == 0 || game->lastCheckpoint == LIDAR){
+        startTime = SDL_GetTicks();
+    }
+    Uint32 elapsed = SDL_GetTicks() - startTime;
+
     setup_projection(game->screen.screenWidth, game->screen.screenHeight);
     update_camera_view(&game->player.camera);
     enable_pre_lidar_lights(&game->gameObjects.PreLidarMap, &game->player.camera);
+
+    float alpha = 0.0f;
+    if(elapsed > 3000){
+        alpha = (float)(elapsed - 3000) / 12000.0f;
+        if(alpha > 1.0f) alpha = 1.0f;
+    }
+
+    render_black_overlay(game->screen.screenWidth, game->screen.screenHeight, alpha);
+    game->visualNovelState.dialogue.startTime = startTime+4000;
+
+    if(elapsed > 4000 && elapsed < 8000){
+        update_dialogue(&game->visualNovelState.dialogue, currentTime);
+        render_meta_dialogue(&game->visualNovelState.dialogue, game->textureAssets.mainFont);
+    }
+
+    if(elapsed > 12000){
+        startTime = 0;
+        scene_switch(game, CREDITS);
+    }
 }
 
 static void render_dead_room_scene(Game* game, Uint32 currentTime){
@@ -319,6 +336,25 @@ static void render_dead_room_scene(Game* game, Uint32 currentTime){
     update_camera_view(&game->player.camera);
     render_game_over_scene(&game->gameObjects.Dealer.model, currentTime, game->player.camera.auraLightBrightness);
     render_ui_texture(&game->textureAssets.SpaceButton);
+}
+
+static void render_credits_scene(Game* game, Uint32 currentTime) {
+    static Uint32 startTime = 0;
+    if (startTime == 0) startTime = currentTime;
+    Uint32 elapsed = currentTime - startTime;
+
+    int page = (elapsed / 3000) % CREDIT_PAGE_COUNT;
+
+    if((elapsed / 3000) >= CREDIT_PAGE_COUNT){
+        scene_switch(game, MAIN_MENU);
+        return;
+    }
+
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    render_text_centered(game->textureAssets.mainFont, credits[page].title, 300);
+    render_text_centered(game->textureAssets.mainFont, credits[page].content, 400);
 }
 
 void handle_scene_events(Game* game, SDL_Event* event){
@@ -394,10 +430,13 @@ void render_scene(Game* game, Uint32 currentTime, float deltaTime){
             render_lidar_scene(game);
             break;
         case LAST_ROOM:
-            render_last_room_scene(game);
+            render_last_room_scene(game, currentTime);
             break;
         case DEAD_ROOM:
             render_dead_room_scene(game, currentTime);
+            break;
+        case CREDITS:
+            render_credits_scene(game, currentTime);
             break;
         default:
             break;

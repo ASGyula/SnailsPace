@@ -49,6 +49,43 @@ static GLuint create_text_texture(TTF_Font* font, const char* text, SDL_Color co
     return textureID;
 }
 
+static GLuint create_text_texture_wt_wrap(TTF_Font* font, const char* text, SDL_Color color, int* width, int* height){
+    SDL_Surface* s = TTF_RenderUTF8_Blended(font, text, color);
+    if(!s) return 0;
+
+    GLuint textureID;
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    int mode = GL_RGBA;
+    if(s->format->BytesPerPixel == 4){
+        if(s->format->Rmask == 0x000000ff) mode = GL_RGBA;
+        else mode = GL_BGRA;
+    }else if(s->format->BytesPerPixel == 3){
+        if(s->format->Rmask == 0x000000ff) mode = GL_RGB;
+        else mode = GL_BGR;
+    }
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, s->pitch / s->format->BytesPerPixel);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, s->w, s->h, 0, mode, GL_UNSIGNED_BYTE, s->pixels);
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+
+    if(width) *width = s->w;
+    if(height) *height = s->h;
+
+    SDL_FreeSurface(s);
+    return textureID;
+}
+
 static void draw_texture_2d(GLuint textureID, int x, int y, int w, int h){
     if(textureID == 0) return;
 
@@ -405,4 +442,17 @@ void render_meta_dialogue(Dialogue* d, TTF_Font* font){
     }
 
     draw_texture_2d(d->textTexture, d->textStartX, d->textStartY, d->textWidth, d->textHeight);
+}
+
+void render_text_centered(TTF_Font* font, const char* text, int y){
+    int w, h;
+    SDL_Color color = {255, 255, 255, 255};
+
+    GLuint tex = create_text_texture_wt_wrap(font, text, color, &w, &h);
+
+    int x = (1000 - w) / 2;
+
+    draw_texture_2d(tex, x, y, w, h);
+
+    glDeleteTextures(1, &tex);
 }

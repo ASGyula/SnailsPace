@@ -128,4 +128,6 @@ void render_tic_tac_toe(TicTacToe* ttt, GLuint texX, GLuint texO, int screenWidt
 
 void render_decision_ui(Screen screen, DecisionUI* decisionUI, TextureAssets* textureAssets);
 
+void render_text_centered(TTF_Font* font, const char* text, int y);
+
 #endif //SNAILSPACE_UI_MANAGER_H
