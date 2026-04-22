@@ -565,8 +565,6 @@ void build_scene_bat_vision(Game* game){
 void build_scene_mita_saves_player(Game* game){
     printf("MITA_SAVES_PLAYER\n");
     glDisable(GL_LIGHT3);
-    Coordinates coordinates = {-0.07f, 2.0f, -1.62f};
-    set_camera_position(&game->player.camera, coordinates,0, 3);
     setup_projection(game->screen.screenWidth, game->screen.screenHeight);
 
     memset(&game->visualNovelState.ticTacToe, 0, sizeof(TicTacToe));
@@ -579,20 +577,39 @@ void build_scene_mita_saves_player(Game* game){
     game->visualNovelState.ticTacToe.winner = 0;
     game->visualNovelState.ticTacToe.isGameOver = false;
 
-    game->gameObjects.Mita.x = -0.05f;
-    game->gameObjects.Mita.y = 0.85f;
-    game->gameObjects.Mita.z = -2.14f;
-    game->gameObjects.Mita.targetX = -0.05f;
-    game->gameObjects.Mita.targetY = 1.0f;
-    game->gameObjects.Mita.targetZ = -2.14f;
+    glEnable(GL_TEXTURE_2D);
     game->gameObjects.Mita.pitch = 0.0f;
-    game->gameObjects.Mita.yaw = 0.0f;
     game->gameObjects.Mita.animSpeed = MITA_SPEED;
     game->gameObjects.Mita.isMoving = false;
 
-    glEnable(GL_TEXTURE_2D);
-    game->visualNovelState.currentDialogID = 35;
-    game->visualNovelState.dialogue = create_dialogue_from_id(DLG_MITA_SAVES_PLAYER, game->visualNovelState.playerName, &game->textureAssets.Mita_Relieved);
+    if(game->isMitaEnding){
+        game->visualNovelState.currentDialogID = DLG_MITA_TALK_ABOUT_TIC_TAC_TOE;
+        game->visualNovelState.dialogue = create_dialogue_from_id(DLG_MITA_TALK_ABOUT_TIC_TAC_TOE, game->visualNovelState.playerName, &game->textureAssets.Mita_Happy);
+        game->gameObjects.Mita.x = -7.048f;
+        game->gameObjects.Mita.y = 0.85f;
+        game->gameObjects.Mita.z = -7.91f;
+        game->gameObjects.Mita.targetX = -0.05f;
+        game->gameObjects.Mita.targetY = 1.0f;
+        game->gameObjects.Mita.targetZ = -2.14f;
+        game->gameObjects.Mita.yaw = -290.0f;
+        game->visualNovelState.quest_state = PRE_TIC_TAC_TOE;
+        Coordinates coordinates = {game->triggerZones.PlayTicTacToe.x, 2.0f, game->triggerZones.PlayTicTacToe.z};
+        set_camera_position(&game->player.camera, coordinates,0, 3);
+    }else{
+        game->gameObjects.Mita.x = -0.05f;
+        game->gameObjects.Mita.y = 0.85f;
+        game->gameObjects.Mita.z = -2.14f;
+        game->gameObjects.Mita.targetX = -0.05f;
+        game->gameObjects.Mita.targetY = 1.0f;
+        game->gameObjects.Mita.targetZ = -2.14f;
+        game->visualNovelState.currentDialogID = 35;
+        game->visualNovelState.dialogue = create_dialogue_from_id(DLG_MITA_SAVES_PLAYER, game->visualNovelState.playerName, &game->textureAssets.Mita_Relieved);
+        game->gameObjects.Mita.yaw = 0.0f;
+        game->visualNovelState.quest_state = KITCHEN_START;
+        Coordinates coordinates = {-0.07f, 2.0f, -1.62f};
+        set_camera_position(&game->player.camera, coordinates,0, 3);
+    }
+
     game->visualNovelState.dialogue.isFinished = false;
     game->visualNovelState.dialogue.isShowing = true;
     game->visualNovelState.isShowingUI = true;
@@ -604,7 +621,6 @@ void build_scene_mita_saves_player(Game* game){
     game->triggerZones.PlayTicTacToe.isActivated = false;
     game->triggerZones.InvestigateMitasCloset.isActivated = false;
     game->tryToEnterMitasRoom=0;
-    game->visualNovelState.quest_state = KITCHEN_START;
     change_camera_input_handler(game, true, true);
     SDL_SetRelativeMouseMode(SDL_TRUE);
 
@@ -662,7 +678,7 @@ void build_scene_last_room(Game* game){
     game->visualNovelState.isShowingUI = true;
 
     Coordinates coordinates = {0.6f, 1.6f, 0.0f};
-    set_camera_position(&game->player.camera, coordinates, 90.0f, -10.0f);
+    set_camera_position(&game->player.camera, coordinates, 90.0f, 40.0f);
     prepare_lidar_data(game->gameObjects.LidarMap);
     SDL_SetWindowBrightness(game->window, 1.0f);
     SDL_SetRelativeMouseMode(SDL_TRUE);
@@ -682,6 +698,21 @@ void build_scene_credits(Game* game){
     glDisable(GL_LIGHT3);
     set_camera_position_default(&game->player.camera);
     SDL_SetRelativeMouseMode(SDL_TRUE);
+    if(game->visualNovelState.quest_state == CREDITS_STATE){
+        game->isMitaEnding = true;
+        FILE* mita_file = fopen("mita_ending.dat", "w");
+        if(mita_file){
+            fprintf(mita_file, "1");
+            fclose(mita_file);
+        }
+    }else{
+        game->isLeaveEnding = true;
+        FILE* mita_file = fopen("leave_ending.dat", "w");
+        if(mita_file){
+            fprintf(mita_file, "1");
+            fclose(mita_file);
+        }
+    }
 }
 
 void build_scene(Game* game, GameScene game_scene){

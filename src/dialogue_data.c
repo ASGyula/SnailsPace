@@ -1449,6 +1449,7 @@ void handle_mouse_input_visual_novel(SDL_Event* event, VisualNovelState* visual_
                     break;
                 case DLG_PLAYER_STAYING_MITA_HAPPY8:
                     visual_novel_state->isShowingUI = false;
+                    visual_novel_state->quest_state = CREDITS_STATE;
                     break;
                 default:
                     break;

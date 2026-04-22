@@ -22,6 +22,8 @@ typedef struct{
 typedef struct{
     bool isRunning;
     bool isLoading;
+    bool isMitaEnding;
+    bool isLeaveEnding;
     Player player;
     Uint32 lastTime;
     Uint32 caughtBySnailAt;

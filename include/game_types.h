@@ -17,7 +17,8 @@ typedef enum {
     AFTER_TIC_TAC_TOE,
     DECISION_TIME,
     ESCAPE_ROUTE,
-    STAY_WITH_MITA
+    STAY_WITH_MITA,
+    CREDITS_STATE
 } QuestState;
 
 typedef struct{
