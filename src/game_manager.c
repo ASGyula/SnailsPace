@@ -21,6 +21,18 @@ Game init_game(const int screen_width, const int screen_height, const char* play
     game.screen.screenWidth = screen_width;
     game.screen.screenHeight = screen_height;
 
+    FILE* mita_file = fopen("mita_ending.dat", "r");
+    if(mita_file){
+        game.isMitaEnding = true;
+        fclose(mita_file);
+    }
+
+    FILE* leave_file = fopen("leave_ending.dat", "r");
+    if(leave_file){
+        game.isLeaveEnding = true;
+        fclose(leave_file);
+    }
+
     game.isRunning = true;
     game.isLoading = true;
 
@@ -32,7 +44,12 @@ Game init_game(const int screen_width, const int screen_height, const char* play
 
     game.scene = MAIN_MENU;
     game.lastCheckpoint = VN_INTRO;
-    scene_switch(&game, MAIN_MENU);
+    if(game.isMitaEnding)scene_switch(&game, MITA_SAVES_PLAYER);
+    else if(game.isLeaveEnding)scene_switch(&game, PRE_LIDAR);
+    else{
+        scene_switch(&game, MAIN_MENU);
+    }
+
     game.isLoading = false;
     return game;
 }

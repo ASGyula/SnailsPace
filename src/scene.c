@@ -6,6 +6,7 @@
 
 #include <SDL.h>
 #include <SDL_opengl.h>
+#include <stdio.h>
 
 #include "ai.h"
 #include "credits.h"
@@ -199,7 +200,7 @@ static void render_mita_scene(Game* game, Uint32 currentTime, float deltaTime){
             static Uint32 closeTimer = 0;
             if(closeTimer == 0) closeTimer = currentTime + 1000;
             if(currentTime > closeTimer){
-                if(game->visualNovelState.ticTacToe.round >= 2){
+                if(game->visualNovelState.ticTacToe.round >= 2 && !game->isMitaEnding){
                     game->visualNovelState.quest_state = AFTER_TIC_TAC_TOE;
                     change_camera_input_handler(game, true, true);
                     game->visualNovelState.dialogue = create_dialogue_from_id(DLG_PLAYER_INVESTIGATE_BONKING, game->visualNovelState.playerName, &game->textureAssets.Gyulasz_Thinking);
@@ -218,6 +219,27 @@ static void render_mita_scene(Game* game, Uint32 currentTime, float deltaTime){
     if(game->visualNovelState.quest_state == DECISION_TIME){
         render_decision_ui(game->screen, &game->visualNovelState.decisionUI, &game->textureAssets);
     }
+
+    if(game->visualNovelState.quest_state == CREDITS_STATE){
+        static Uint32 startTime = 0;
+        if(startTime == 0){
+            startTime = SDL_GetTicks();
+        }else{
+            Uint32 elapsed = SDL_GetTicks() - startTime;
+            float alpha = 0.0f;
+            if(elapsed > 1000){
+                alpha = (float)(elapsed - 1000) / 4000.0f;
+            }
+            if(alpha > 1) alpha=1.0f;
+            render_black_overlay(game->screen.screenWidth, game->screen.screenHeight, alpha);
+
+            if(elapsed > 5000){
+                scene_switch(game, CREDITS);
+            }
+        }
+    }
+
+
 
     if(game->visualNovelState.isShowingUI){
         render_dialogue_box(game->screen.screenWidth, game->screen.screenHeight, &game->visualNovelState.dialogue);
@@ -273,6 +295,7 @@ static void render_pre_lidar_scene(Game* game, Uint32 currentTime){
 
                 change_camera_input_handler(game, false, false);
             }else{
+                if(game->isLeaveEnding)game->isRunning = false;
                 scene_switch(game, LIDAR);
             }
         }
@@ -313,14 +336,14 @@ static void render_last_room_scene(Game* game, Uint32 currentTime){
 
     float alpha = 0.0f;
     if(elapsed > 3000){
-        alpha = (float)(elapsed - 3000) / 12000.0f;
+        alpha = (float)(elapsed - 3000) / 11000.0f;
         if(alpha > 1.0f) alpha = 1.0f;
     }
 
     render_black_overlay(game->screen.screenWidth, game->screen.screenHeight, alpha);
     game->visualNovelState.dialogue.startTime = startTime+4000;
 
-    if(elapsed > 4000 && elapsed < 8000){
+    if(elapsed > 4000 && elapsed < 11500){
         update_dialogue(&game->visualNovelState.dialogue, currentTime);
         render_meta_dialogue(&game->visualNovelState.dialogue, game->textureAssets.mainFont);
     }
@@ -346,7 +369,8 @@ static void render_credits_scene(Game* game, Uint32 currentTime) {
     int page = (elapsed / 3000) % CREDIT_PAGE_COUNT;
 
     if((elapsed / 3000) >= CREDIT_PAGE_COUNT){
-        scene_switch(game, MAIN_MENU);
+        if(game->isMitaEnding) scene_switch(game, MITA_SAVES_PLAYER);
+        else game->isRunning = false;
         return;
     }
 
