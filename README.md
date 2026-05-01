@@ -43,7 +43,7 @@ A projekt lefordításához és futtatásához szükségesek az **SDL2** könyvt
 ## Hibaelhárítás és Fejlesztői megjegyzések
 
 ### Belépési pont módosítása
-Amennyiben a program indításkor nem a főmenübe tölt be, a kezdő jelenet manuálisan felülbírálható. A `src/game_manager.c` fájl 35. sorát kell módosítani az alábbira:
+Amennyiben a program indításkor nem a főmenübe tölt be, a kezdő jelenet manuálisan felülbírálható. A `src/game_manager.c` fájl 50. sorát kell módosítani az alábbira:
 
 `scene_switch(&game, MAIN_MENU);`
 
