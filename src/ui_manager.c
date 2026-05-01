@@ -12,7 +12,7 @@
 
 #include "game_types.h"
 
-static GLuint create_text_texture(TTF_Font* font, const char* text, SDL_Color color, int* width, int* height){
+GLuint create_text_texture(TTF_Font* font, const char* text, SDL_Color color, int* width, int* height){
     SDL_Surface* s = TTF_RenderUTF8_Blended_Wrapped(font, text, color, 600);
     if(!s) return 0;
 
@@ -49,7 +49,7 @@ static GLuint create_text_texture(TTF_Font* font, const char* text, SDL_Color co
     return textureID;
 }
 
-static GLuint create_text_texture_wt_wrap(TTF_Font* font, const char* text, SDL_Color color, int* width, int* height){
+GLuint create_text_texture_wt_wrap(TTF_Font* font, const char* text, SDL_Color color, int* width, int* height){
     SDL_Surface* s = TTF_RenderUTF8_Blended(font, text, color);
     if(!s) return 0;
 

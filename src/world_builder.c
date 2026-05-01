@@ -586,28 +586,30 @@ void build_scene_mita_saves_player(Game* game){
         game->visualNovelState.currentDialogID = DLG_MITA_TALK_ABOUT_TIC_TAC_TOE;
         game->visualNovelState.dialogue = create_dialogue_from_id(DLG_MITA_TALK_ABOUT_TIC_TAC_TOE, game->visualNovelState.playerName, &game->textureAssets.Mita_Happy);
         game->gameObjects.Mita.x = -7.048f;
-        game->gameObjects.Mita.y = 0.85f;
+        game->gameObjects.Mita.y = 0.9f;
         game->gameObjects.Mita.z = -7.91f;
+        game->gameObjects.Mita.pitch = 0.0f;
+        game->gameObjects.Mita.yaw = -290.0f;
         game->gameObjects.Mita.targetX = -0.05f;
         game->gameObjects.Mita.targetY = 1.0f;
         game->gameObjects.Mita.targetZ = -2.14f;
-        game->gameObjects.Mita.yaw = -290.0f;
         game->visualNovelState.quest_state = PRE_TIC_TAC_TOE;
         Coordinates coordinates = {game->triggerZones.PlayTicTacToe.x, 2.0f, game->triggerZones.PlayTicTacToe.z};
         set_camera_position(&game->player.camera, coordinates,0, 3);
     }else{
-        game->gameObjects.Mita.x = -0.05f;
-        game->gameObjects.Mita.y = 0.85f;
-        game->gameObjects.Mita.z = -2.14f;
+        game->gameObjects.Mita.x = -0.043f;
+        game->gameObjects.Mita.y = 0.9f;
+        game->gameObjects.Mita.z = -1.8250f;
         game->gameObjects.Mita.targetX = -0.05f;
         game->gameObjects.Mita.targetY = 1.0f;
         game->gameObjects.Mita.targetZ = -2.14f;
+        game->gameObjects.Mita.pitch = 0.0f;
+        game->gameObjects.Mita.yaw = 60.0f;
         game->visualNovelState.currentDialogID = 35;
         game->visualNovelState.dialogue = create_dialogue_from_id(DLG_MITA_SAVES_PLAYER, game->visualNovelState.playerName, &game->textureAssets.Mita_Relieved);
-        game->gameObjects.Mita.yaw = 0.0f;
         game->visualNovelState.quest_state = KITCHEN_START;
-        Coordinates coordinates = {-0.07f, 2.0f, -1.62f};
-        set_camera_position(&game->player.camera, coordinates,0, 3);
+        Coordinates coordinates = {0.3851f, 2.0f, -1.59738f};
+        set_camera_position(&game->player.camera, coordinates,-62, 6.0f);
     }
 
     game->visualNovelState.dialogue.isFinished = false;

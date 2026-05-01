@@ -218,7 +218,7 @@ void check_player_collision_miside_room(Camera* camera, const Model* model, floa
         }
     }
 
-    if (collisionDetected){
+    if(collisionDetected){
         camera->x = camera->lastSafeX;
         camera->z = camera->lastSafeZ;
     }else{

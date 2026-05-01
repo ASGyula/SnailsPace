@@ -97,15 +97,17 @@ void check_miside_trigger_zones(Game* game, TextureAssets* texture_assets, Movea
         }
     }
 
-    if(!game->gameObjects.Scissors.triggerZone.isActivated){
-        const float dx = game->player.camera.x - game->gameObjects.Scissors.triggerZone.x;
-        const float dz = game->player.camera.z - game->gameObjects.Scissors.triggerZone.z;
-        const float distance = sqrtf(dx * dx + dz * dz);
+    const float scissorDx = game->player.camera.x - game->gameObjects.Scissors.triggerZone.x;
+    const float scissorDz = game->player.camera.z - game->gameObjects.Scissors.triggerZone.z;
+    const float scissorDistance = sqrtf(scissorDx * scissorDx + scissorDz * scissorDz);
 
-        if(distance < game->gameObjects.Scissors.triggerZone.radius){
-            game->gameObjects.Scissors.triggerZone.isActivated = true;
-       }else{
+    if(game->gameObjects.Scissors.triggerZone.isActivated){
+        if(scissorDistance > game->gameObjects.Scissors.triggerZone.radius){
             game->gameObjects.Scissors.triggerZone.isActivated = false;
+        }
+    }else{
+        if(scissorDistance < game->gameObjects.Scissors.triggerZone.radius){
+            game->gameObjects.Scissors.triggerZone.isActivated = true;
         }
     }
 
@@ -181,7 +183,7 @@ void check_miside_trigger_zones(Game* game, TextureAssets* texture_assets, Movea
         const float distance = sqrtf(dx * dx + dz * dz);
 
         if(distance < game->triggerZones.InvestigateMitasCloset.radius){
-            change_loaded_moveable_obj_positon(Mita, -7.83f, 0.85f, -8.7354f, 0, -310, 0);
+            change_loaded_moveable_obj_positon(Mita, -7.83f, 0.9f, -8.7354f, 0, -310, 0);
             Dialogue newDialog = create_dialogue_from_id(DLG_MITA_REJECT_INVESTIGATE_BONGING9, game->visualNovelState.playerName, &texture_assets->Mita_Disappointed);
             game->visualNovelState.dialogue = newDialog;
 

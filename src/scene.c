@@ -157,13 +157,13 @@ static void render_mita_scene(Game* game, Uint32 currentTime, float deltaTime){
         if(game->triggerZones.TryToEnterMitasRoom.isActivated){
             if(game->visualNovelState.currentDialogID < DLG_MITA_CLEARS_PLAYER_DIZZINESS){
                 if(game->visualNovelState.currentDialogID == DLG_PLAYER_DIZZINESS){
-                    change_loaded_moveable_obj_positon(&game->gameObjects.Mita, -3.69f, 0.85f, -5.47f, 0.0f, 90.0f, 0.0f);
+                    change_loaded_moveable_obj_positon(&game->gameObjects.Mita, -3.69f, 0.9f, -5.47f, 0.0f, 90.0f, 0.0f);
                     rotate_camera_towards_mita(game, &game->gameObjects.Mita);
                 }
                 render_chromatic(&game->gameObjects.MitasRoom, 1.0f);
             }else{
                 if(game->visualNovelState.currentDialogID == DLG_MITA_CLEARS_PLAYER_DIZZINESS2){
-                    change_loaded_moveable_obj_positon(&game->gameObjects.Mita, -7.048f, 0.85f, -7.91f, 0.0f, -290.0f, 0.0f);
+                    change_loaded_moveable_obj_positon(&game->gameObjects.Mita, -7.048f, 0.9f, -7.91f, 0.0f, -290.0f, 0.0f);
                 }
                 render_model(&game->gameObjects.MitasRoom);
                 enable_colored_fog(50.0f, 80.0f, 1.0f, 0.8f, 0.9f, 1.0f, 0.1f);
@@ -174,10 +174,10 @@ static void render_mita_scene(Game* game, Uint32 currentTime, float deltaTime){
             enable_colored_fog(50.0f, 80.0f, 1.0f, 0.8f, 0.9f, 1.0f, 0.1f);
 
             if(game->visualNovelState.currentDialogID == DLG_PLAYER_ACCEPT_MITAS_INVITATION){
-                change_loaded_moveable_obj_positon(&game->gameObjects.Mita, -9.03f, 0.85f, -2.75f, 0.0f, -90.0f, 0.0f);
+                change_loaded_moveable_obj_positon(&game->gameObjects.Mita, -9.03f, 0.9f, -2.75f, 0.0f, -90.0f, 0.0f);
             }
             if(game->visualNovelState.currentDialogID == DLG_MITA_TAKE_THE_SCISSORS){
-                change_loaded_moveable_obj_positon(&game->gameObjects.Mita, -7.048f, 0.85f, -7.91f, 0.0f, -290.0f, 0.0f);
+                change_loaded_moveable_obj_positon(&game->gameObjects.Mita, -7.048f, 0.9f, -7.91f, 0.0f, -290.0f, 0.0f);
             }
         }
     }
