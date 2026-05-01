@@ -11,10 +11,10 @@
 #include "dialogue_data.h"
 #include "game_manager.h"
 
-static void rotate_camera_towards_mita(Game* game, const MoveableModel* mita){
-    const float targetX = mita->x;
-    const float targetY = mita->y + 1.0f;
-    const float targetZ = mita->z;
+void rotate_camera_towards_mita(Game* game, const MoveableModel* Mita){
+    const float targetX = Mita->x;
+    const float targetY = Mita->y + 1.0f;
+    const float targetZ = Mita->z;
 
     const float dx = targetX - game->player.camera.x;
     const float dy = targetY - game->player.camera.y;
@@ -131,7 +131,6 @@ void check_miside_trigger_zones(Game* game, TextureAssets* texture_assets, Movea
             game->triggerZones.TryToEnterMitasRoom.isActivated = true;
             game->tryToEnterMitasRoom = SDL_GetTicks();
 
-            rotate_camera_towards_mita(game, Mita);
 
             game->visualNovelState.isShowingUI = true;
             increase_visual_novel_state(&game->visualNovelState, DLG_PLAYER_DIZZINESS);

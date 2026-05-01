@@ -10,4 +10,6 @@ void check_trigger_zones(Game* game);
 
 void check_miside_trigger_zones(Game* game, TextureAssets* texture_assets, MoveableModel* Mita);
 
+void rotate_camera_towards_mita(Game* game, const MoveableModel* Mita);
+
 #endif //SNAILSPACE_TRIGGERS_H
