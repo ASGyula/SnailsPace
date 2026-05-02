@@ -172,7 +172,7 @@ void build_up_game_objects(Game* game){
 
     //VAPE
     load_model_binary("External/Figusorasu/lostvape-centaurus-mod-low-poly/model.obj.bin", &game->gameObjects.Vapelt3.model);
-    game->gameObjects.Vapelt3.model.textureID = load_texture("External/Figusorasu/lostvape-centaurus-mod-low-poly/texture.png");
+    game->gameObjects.Vapelt3.model.textureID = load_texture("External/Figusorasu/lostvape-centaurus-mod-low-poly/Baked_Atlas.png");
     
     //MONSTER ENERGIAITAL SZERETEM SZERETEM HASAMBA BETESZEM
     load_model_binary("External/Kleyton3D/lata-de-monster/model.obj.bin", &game->gameObjects.PunchPacificMonster.model);

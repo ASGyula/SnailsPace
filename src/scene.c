@@ -326,7 +326,7 @@ static void render_lidar_scene(Game* game){
 
 static void render_last_room_scene(Game* game, Uint32 currentTime){
     static Uint32 startTime = 0;
-    if(startTime == 0 || game->lastCheckpoint == LIDAR){
+    if(startTime == 0){
         startTime = SDL_GetTicks();
     }
     Uint32 elapsed = SDL_GetTicks() - startTime;

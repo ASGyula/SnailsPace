@@ -65,7 +65,7 @@ static const DialogueTemplate ALL_DIALOGUES[] = {
     },
     [DLG_DEALER_KNOWS_HELSIE] = {
         "TITOKZATOS ALAK",
-        "Helsie hangja csak a csali. Itt a vágyaid válnak a börnödöddé. De én adhatok neked egy kiutat.",
+        "Helsie hangja csak a csali. Itt a vágyaid válnak a börtnödöddé. De én adhatok neked egy kiutat.",
         {0.0f, 0.0f, 0.1f, 0.9f},
         {255, 255, 255, 255}, {255, 204, 0, 255},
         50, 600, 50, 540

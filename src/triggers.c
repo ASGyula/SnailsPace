@@ -25,7 +25,7 @@ void rotate_camera_towards_mita(Game* game, const MoveableModel* Mita){
     float targetPitch = atan2f(dy, horizontalDist) * (180.0f / (float)M_PI);
 
     game->player.camera.yaw = targetYaw;
-    game->player.camera.pitch = targetPitch;
+    game->player.camera.pitch = targetPitch + 20;
 }
 
 void check_trigger_zones(Game* game){
@@ -183,7 +183,7 @@ void check_miside_trigger_zones(Game* game, TextureAssets* texture_assets, Movea
         const float distance = sqrtf(dx * dx + dz * dz);
 
         if(distance < game->triggerZones.InvestigateMitasCloset.radius){
-            change_loaded_moveable_obj_positon(Mita, -7.83f, 0.9f, -8.7354f, 0, -310, 0);
+            change_loaded_moveable_obj_positon(Mita, -7.83f, 0.9f, -8.7354f, 0, -280, 0);
             Dialogue newDialog = create_dialogue_from_id(DLG_MITA_REJECT_INVESTIGATE_BONGING9, game->visualNovelState.playerName, &texture_assets->Mita_Disappointed);
             game->visualNovelState.dialogue = newDialog;
 
@@ -191,6 +191,7 @@ void check_miside_trigger_zones(Game* game, TextureAssets* texture_assets, Movea
             game->triggerZones.InvestigateMitasCloset.isActivated = true;
             game->visualNovelState.isShowingUI = true;
             increase_visual_novel_state(&game->visualNovelState, DLG_MITA_REJECT_INVESTIGATE_BONGING9);
+            rotate_camera_towards_mita(game, &game->gameObjects.Mita);
         }
     }
 }
